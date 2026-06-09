@@ -744,14 +744,14 @@ end
     K -->|do/verify| L
 
  %% colors
-classDef proj_blue fill:#0968F1,color:#ffffff
-classDef epic_green fill:#04bd51
-classDef feat_rose fill:#ff79fb
-classDef task_yellow fill:#ffde07
+classDef proj_blue fill:#9DD9F3
+classDef epic_green fill:#A8E6A3
+classDef feat_pink fill:#FFB7D5
+classDef task_yellow fill:#FFE699
 
 class A,B proj_blue
 class D,F epic_green
-class G,I,J feat_rose
+class G,I,J feat_pink
 class K task_yellow
 ```
 
