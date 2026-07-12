@@ -2,23 +2,14 @@
 
 A comprehensive product development workflow: **Plan** your product → **Doc**ument specifications → **Do** the work → **Follow** up with verification.
 
-Structured planning with built-in business reviews, single-source-of-truth status tracking, and clear routing from product vision to shipped features.
-
-Good for keeping a good and consistent project documentation and also for a structured way of AI coding.
+Structured planning with built-in business reviews, single-source-of-truth status tracking, scope-change management, and clear routing from product vision to shipped features. Project- and environment-agnostic: works for backend, frontend, fullstack, mobile, SaaS, or batch projects, in Claude Code, Cursor, GitHub Copilot, or any AI environment that reads skills.
 
 ## Installation
 
 ### Cursor (project skill)
 
-Clone into your repository:
-
 ```bash
 git submodule add git@github.com:codeAvecCyril/ia-skill-plan-doc-do-follow.git .claude/skills/plan-doc-do-follow
-```
-
-Add a thin wrapper so Cursor auto-discovers the skill:
-
-```bash
 mkdir -p .cursor/skills/plan-doc-do-follow
 ```
 
@@ -38,215 +29,107 @@ git submodule add git@github.com:codeAvecCyril/ia-skill-plan-doc-do-follow.git .
 
 ### Project prerequisites
 
-This skill expects a repository with:
-
 - `docs/product.md` — product vision
 - `docs/global_architecture.md` — system architecture
 - `docs/technical-stack.md` — technology decisions
-- `.github/instructions/` — coding standards (optional)
-- `.github/copilot-instructions.md` — repository conventions (optional)
+- A repository instruction file, whichever your environment uses: `CLAUDE.md`, `AGENTS.md`, `.github/copilot-instructions.md`, or `.cursor/rules/` (optional)
 
-## 🎯 The Workflow
+## Design principles
 
-```mermaid
-sequenceDiagram
-    participant Project
-    participant Epic
-    participant Feature
-    participant Code
-    participant Tests
+- **One fact, one file.** Each status is written in exactly one owning table: task status in `feat-tasks.md`, feature status in `epic-status.md`, epic status in `docs/project-status.md`. No `feat-status.md` file, no per-task status lines, no duplicated legends. Nothing to keep in sync means nothing drifts.
+- **Status Sync.** One deterministic, idempotent procedure recomputes every level bottom-up from document reality. Every status-changing route ends with it, and `do/sync-status` repairs any drift on demand.
+- **Epic-first architecture.** The epic architecture is the real design level. Features carry a short "Architecture Delta" in their PRD; a dedicated `feat-arch.md` exists only when explicit trigger criteria fire (new integration, new entity, new component, new security surface).
+- **Living global docs.** `docs/data-model.md` (schema truth), `docs/ui-map.md` (navigation truth), `docs/design-guidelines.md` (style contract), and `docs/decisions.md` (binding user decisions) are updated in the same change that affects them — `do/verify` enforces the data and UI gates.
+- **Reviews built for humans.** The AI auto-verifies mechanical checks and collapses them to one line; the human validates at most 10 plain-sentence decisions per review. Validated decisions are recorded and respected by every later route.
+- **Product Spirit.** A 5–10 sentence distillation of the product's identity sits at the top of `project-status.md` and is injected into every planning route and reviewer, so the vision never dissolves into generic AI knowledge.
+- **Model tiering.** Planning routes and reviewers assume a strong model; `plan/tasks` produces tasks a weaker model can execute without opening the PRD, verified by a self-containment check.
+- **Token economy.** `SKILL.md` is a thin router; each route's playbook loads on demand; reviewer subagents get scoped briefs, not "read everything"; execution subagents get self-contained task packets.
 
-    Project->>Epic: plan/proj + plan/epic
-    Note over Epic: Epic Specifications<br/>& Design
-    loop for each epic
-      Epic->>Epic: plan/epic-arch
-      Epic->>Feature: plan/feat
-      Note over Feature: Feature Specifications<br/>& Design
-      loop for each feature
-        Feature->>Feature: plan/feat-arch
-        Feature->>Feature: plan/tasks
-        Note over Feature: Implementation Tasks
-        loop for each task
-          Feature->>Code: do/task
-          Note over Code: Code Implementation
-        end
-        Code->>Tests: do/verify
-        Note over Tests: Verified & Complete ✅
-      end
-    end
-    Tests->>Project: Progress Updated
-```
+## 16 Routes, 2 Phases
 
-## 🚀 Quick Start
+**Plan Phase**:
+- `plan/proj` — Extract epics from product vision, bootstrap living docs
+- `plan/proj-review` — Validate epics
+- `plan/epic` — Create epic PRD
+- `plan/epic-review` — Validate epic PRD or architecture
+- `plan/epic-arch` — Design epic architecture
+- `plan/feat` — Create feature PRD (with Entry Points and Architecture Delta)
+- `plan/feat-review` — Validate feature PRD or architecture
+- `plan/feat-arch` — Design feature architecture (exception cases only)
+- `plan/tasks` — Break into self-contained tasks
+- `plan/change` — Scope change: add or update a feature/epic, **including on an already implemented epic**
+- `plan/migrate` — One-shot migration of a v2-documented project to the v3 structure
 
-### Try It Now
-```
-"Use plan/proj to extract major epics from our product vision"
-"Use plan/feat to define the user authentication feature"
-"Use plan/tasks to break authentication into tasks"
-"Use do/task to implement the first task"
-"Use do/verify to check if it's complete"
-```
+**Do Phase**:
+- `do/task` — Implement a task
+- `do/all-tasks` — Implement all feature tasks in parallel waves
+- `do/verify` — Verify completion (the only route that sets 🟢 DONE)
+- `do/sync-status` — Recompute all statuses from reality, repair drift
+- `do/memorize` — Document patterns and best practices
 
-### 13 Routes, 2 Phases
+## Reviewer subagents
 
-**Plan Phase** (Create specs & validations):
-- `plan/proj` - Extract epics from product
-- `plan/proj-review` - Validate epics
-- `plan/epic` - Create epic PRD
-- `plan/epic-review` - Validate epic
-- `plan/epic-arch` - Design epic architecture
-- `plan/feat` - Create feature PRD
-- `plan/feat-review` - Validate feature
-- `plan/feat-arch` - Design feature architecture
-- `plan/tasks` - Break into tasks
+Defined in `reviewers.md`, each with a scoped input list:
 
-**Do Phase** (Execute & verify):
-- `do/task` - Implement a task
-- `do/all-tasks` - Implement all feature tasks
-- `do/verify` - Verify completion
-- `do/memorize` - Document patterns and best practices
+- **PRD Critic** — vision fit, differentiating vs unnecessary features, user journey, clarity of sentences
+- **Arch Critic** — data-path validity, global-architecture fit, alternatives, simplification
+- **UI Consistency Reviewer** — entry point reachable, style/terminology/states consistent with the design guidelines (runs at `do/verify` for UI features)
+- **Task Self-Containment Check** — every task executable without opening the PRD (runs at `plan/tasks`)
+- **Doc Coherence Reviewer** — statuses, living docs, and links match reality (runs at epic completion and after `plan/change`)
 
-## 📂 Templates Included
-
-The skill includes ready-to-use templates:
-
-**Project Level**:
-- `template-proj-status.md` - Project status and epic roadmap
-- `template-proj-review.md` - Project review checklist
-
-**Epic Level**:
-- `template-epic-brief.md` - Epic brief summary
-- `template-epic-prd.md` - Epic PRD structure
-- `template-epic-review.md` - Epic review checklist
-- `template-epic-arch.md` - Epic architecture design
-- `template-epic-status.md` - Epic status tracking
-
-**Feature Level**:
-- `template-feat-prd.md` - Feature PRD structure
-- `template-feat-review.md` - Feature review checklist
-- `template-feat-arch.md` - Feature architecture design
-- `template-feat-tasks.md` - Task breakdown
-- `template-feat-status.md` - Feature status tracking
-
-## 🎯 How It Works
-
-1. **Extract** what you're building with `plan/proj`
-2. **Design** the epic with `plan/epic` + `plan/epic-arch`
-3. **Define** features with `plan/feat` + `plan/feat-arch`
-4. **Break down** into tasks with `plan/tasks`
-5. **Implement** with `do/task`
-6. **Verify** with `do/verify`
-
-Each route creates clear deliverables and tracks progress automatically.
-
-## 📊 Output Files
-
-Routes create organized documentation:
+## Output Files
 
 ```
 docs/
-├── project-status.md              ← from plan/proj
-├── project-review.md              ← from plan/proj-review
-├── patterns/                      ← from do/memorize
-│   └── {pattern-name}.md          (e.g., python-environment-management.md)
-└── epics/e{n}-{epic-name}/        (e.g., e2-orm-discovery)
-    ├── epic-brief.md              ← from plan/proj
-    ├── epic-prd.md                ← from plan/epic
-    ├── epic-status.md             ← from plan/epic
-    ├── epic-arch.md               ← from plan/epic-arch
-    ├── epic-review.md             ← from plan/epic-review
-    └── features/f{n}-{feat-name}/ (e.g., f3-backend-api)
-        ├── feat-prd.md            ← from plan/feat
-        ├── feat-status.md         ← from plan/feat
-        ├── feat-arch.md           ← from plan/feat-arch
-        ├── feat-tasks.md          ← from plan/tasks
-        └── feat-review.md         ← from plan/feat-review
+├── project-status.md          ← Product Spirit + epic statuses (owning table)
+├── project-review.md
+├── decisions.md               ← binding user decisions (living)
+├── data-model.md              ← global schema truth (living)
+├── ui-map.md                  ← global navigation truth (living, UI projects)
+├── design-guidelines.md       ← UI style contract (living, UI projects)
+├── patterns/                  ← from do/memorize
+└── epics/e{n}-{epic-name}/
+    ├── epic-brief.md
+    ├── epic-prd.md
+    ├── epic-status.md         ← feature statuses (owning table)
+    ├── epic-arch.md
+    ├── epic-review.md
+    └── features/f{n}-{feat-name}/
+        ├── feat-prd.md        ← includes Entry Points & Architecture Delta
+        ├── feat-arch.md       ← exception cases only
+        ├── feat-tasks.md      ← task statuses (owning table)
+        └── feat-review.md
 ```
 
-## ✨ Key Features
+## Status Tracking
 
-✅ **13 Focused Routes** - Each does one thing well
-✅ **Short Names** - Easy to remember and type (plan/proj, do/task, etc.)
-✅ **Single Source of Truth** - Status tracked in one file per level
-✅ **Progressive Detail** - Information gets more detailed as you go
-✅ **Built-in Reviews** - Business validation at each stage
-✅ **Auto Progress** - Task completion automatically updates epic/project %
-✅ **Clear Templates** - Ready-to-use formats for all documents
-✅ **Technical Integration** - References technical-stack.md and coding standards
-✅ **Flexible Usage** - Use routes sequentially or jump as needed
-✅ **Professional** - Production-grade workflow
+| Status | Emoji | Meaning                    |
+| ------ | ----- | -------------------------- |
+| TODO   | ⚪    | Not started                |
+| SPEC   | 🟡    | Specified                  |
+| PLAN   | 🟣    | Tasks generated            |
+| DEV    | 🔵    | Implementation in progress |
+| DONE   | 🟢    | Verified complete          |
 
-## 💡 Typical Usage
+Statuses are **derived, not maintained**: the Status Model in `SKILL.md` defines how each level is computed from the level below, and Status Sync applies it.
 
-**New project planning:**
-```
-plan/proj → plan/epic → plan/epic-arch → plan/feat → plan/feat-arch → plan/tasks
-```
+## Typical Usage
 
-**Existing project, new feature:**
-```
-plan/feat → plan/feat-arch → plan/tasks → do/task → do/verify
-```
+**New project:** `plan/proj → plan/epic → plan/epic-arch → plan/feat → plan/tasks → do/task → do/verify`
 
-**Bulk feature implementation:**
-```
-plan/tasks → do/all-tasks → do/verify (if all tasks can run in parallel)
-```
+**New feature on a shipped epic:** `plan/change` (classifies, reopens statuses, routes to `plan/feat`)
 
-**Code-first work:**
-```
-do/task → do/verify (if tasks already exist)
-```
+**Changed my mind about an implemented feature:** `plan/change` (appends tasks, never rewrites history)
 
-## 🔗 Integration
+**Statuses look wrong:** `do/sync-status`
 
-This skill references:
-- `docs/product.md` - Product vision
-- `docs/global_architecture.md` - System architecture
-- `docs/technical-stack.md` - Technology decisions
-- `docs/patterns/` - Documented best practices (created by do/memorize)
-- `.github/instructions/` - Coding standards
-- `.github/copilot-instructions.md` - Repository conventions
+## Migrating from v2
 
-## 📝 Status Tracking
-
-Work progresses through clear statuses (with emoji indicators):
-
-| Status | Emoji | Meaning                   |
-| ------ | ----- | ------------------------- |
-| TODO   | ⚪   | Not started                |
-| SPEC   | 🟡   | Business spec reviewed     |
-| PLAN   | 🟣   | Tasks generated            |
-| DEV    | 🔵   | Implementation in progress |
-| DONE   | 🟢   | Verified complete          |
-
-Progress is calculated automatically:
-```
-Feature % = Completed Tasks / Total Tasks
-Epic % = Sum(Completed Tasks in All Features) / Sum(Total Tasks in All Features)
-Project % = Sum(Completed Tasks in All Epics) / Sum(Total Tasks in All Epics)
-```
-
-## 🤔 Common Questions
-
-**Q: Can I skip routes?**
-A: Yes. *-review routes can be skipped, and you can jump between phases.
-
-**Q: How do I reference technical decisions?**
-A: Routes mention `docs/technical-stack.md` - use it for architecture and feature-design routes.
-
-**Q: What team size is this designed for?**
-A: Works for teams of 1-50+ developers. Self-adjusts to team velocity.
-
-**Q: Can multiple features be planned in parallel?**
-A: Absolutely. One team can be in `plan/feat` while another is in `do/task`.
+Run `plan/migrate` once — it works even with epics and features half implemented. It consolidates task statuses from all the v2 locations into the owning tables (most-advanced-wins, with 🟢 spot-checked against the code), removes `feat-status.md` files, distills the Product Spirit block, bootstraps the living docs (seeding `docs/decisions.md` from old review sign-offs and reverse-engineering `docs/data-model.md` and `docs/ui-map.md` from the implemented code), runs Status Sync plus the Doc Coherence Reviewer, and hands you a migration report. Legacy PRDs are not rewritten: missing v3 sections are filled lazily the first time a route touches that feature.
 
 ---
 
-**Version**: 2.0 (Optimized for brevity and usability)
-**Status**: Production Ready
-**Last Updated**: June 2026
+**Version**: 3.0 (single-source status, scope changes, v2 migration, living docs, scoped reviewers, token-optimized routing)
 **License**: Apache-2.0 — see [LICENSE](LICENSE)
 
 **The philosophy**: Plan well, document clearly, execute focused, follow up consistently. Build great products.

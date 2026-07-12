@@ -1,129 +1,53 @@
-# Feature Architecture & Technical Design
+# Feature Architecture — {feature-name}
 
 > **Code**: E{n} F{n}
 >
-> **Slug**: e{n}-{epic-name}/f{n}-{feat-name} (e.g., e2-orm-discovery/f3-backend-api)
+> **Slug**: e{n}-{epic-name}/f{n}-{feat-name}
 >
-> **Status**: ⚪ Not Started | 🟡 In Review | 🟢 Approved | 🔴 Needs Changes
+> **Trigger**: {which criterion from routes/plan-feat-arch.md justified this document}
 >
 > **Last Updated**: {date}
 
-## High-Level Design
+<!-- This document exists only for exception cases (see routes/plan-feat-arch.md).
+     Describe ONLY the delta relative to epic-arch.md; reference it for everything else.
+     Delete sections that do not apply — never "N/A". -->
 
-[Diagram or description of feature architecture within the epic]
+## Design Delta
 
-# Architecture Compliance
+{Diagram or description of what this feature adds or changes within the epic architecture.}
 
-Respect of global_architecture.md and technical_stack.md
+## New Components & Modules
 
-## Components & Modules
+1. **{Module}**: {purpose, responsibilities, interactions}
 
-1. **Module 1**: [Purpose, responsibilities, and interactions]
-2. **Module 2**: [Purpose, responsibilities, and interactions]
-3. **Module 3**: [Purpose, responsibilities, and interactions]
+## Data Model Delta
 
-## Data Models & Schema
+<!-- docs/data-model.md is the global truth — update it in the same change. -->
 
-[Entity mermaid diagrams and descriptions]
+- {new/changed entity or field}: {description} → recorded in `docs/data-model.md#{anchor}`
 
-### Database Schema
+## API / Interface Delta
 
-```
-Entity 1:
-- Field 1: [type and description]
-- Field 2: [type and description]
+### {METHOD} /api/{path} (or function signature)
 
-Entity 2:
-[Similar structure]
-```
-
-## API/Interface Design
-
-### Router Objects:
-
-### Models:
-
-### Endpoints:
-
-#### Function 1: [function name]
-
-- **Parameters**: [param1: type, param2: type]
-- **Returns**: [return type and description]
-- **Throws**: [exceptions or error cases]
-- **Example**: [code example]
-
-#### Function 2: [function name]
-
-[Similar structure]
-
-
-### Service Layer
+- **Purpose** · **Request/Parameters** · **Response/Returns** · **Errors**
 
 ## Technology Decisions
 
-
-Reference: [Link to technical-stack.md]
-
-- **Library 1**: [Why chosen over alternatives]
-- **Library 2**: [Why chosen over alternatives]
-- **Pattern**: [Design pattern used and why]
-
-## Implementation Strategy
-
-[Step-by-step approach to implementing this feature]
-
-### Phase 1: [Phase name]
-
-- [ ] Task 1
-- [ ] Task 2
-
-### Phase 2: [Phase name]
-
-- [ ] Task 3
-- [ ] Task 4
-
-## Performance Considerations
-
-- **Target Performance**: [metric and target]
-- **Optimization Strategy**: [approach]
-- **Caching**: [what to cache, if applicable]
-- **Bottlenecks**: [known bottlenecks and mitigation]
+{Only decisions specific to this feature, each with a one-sentence rationale; reference `docs/technical-stack.md` otherwise.}
 
 ## Security Considerations
 
-- **Input Validation**: [approach]
-- **Authentication/Authorization**: [requirements]
-- **Data Protection**: [mechanisms]
-- **Known Vulnerabilities**: [mitigations]
+{Only if this feature opens a new security surface: input validation, authorization, data protection.}
+
+## Error Handling & Observability
+
+{Key error scenarios, what to log, what to monitor — only where feature-specific.}
 
 ## Testing Strategy
 
-- **Unit Testing**: [approach and coverage target]
-- **Integration Testing**: [approach]
-- **E2E Testing**: [approach]
-- **Performance Testing**: [approach]
+{Approach for the delta: what needs unit / integration / end-to-end coverage.}
 
-## Deployment Considerations
+## Known Constraints & Trade-offs
 
-- **Configuration**: [environment variables, secrets management]
-- **Database Migrations**: [schema changes needed]
-- **Feature Flags**: [if applicable]
-- **Rollback Plan**: [how to rollback if needed]
-
-## Error Handling & Logging
-
-- **Error Scenarios**: [key error scenarios and handling]
-- **Logging**: [what to log and at what level]
-- **Monitoring**: [key metrics to monitor]
-
-## Known Constraints & Limitations
-
-- [Constraint 1]: [why and impact]
-- [Constraint 2]: [why and impact]
-
-## Future Enhancements
-
-- [Enhancement 1]: [description]
-- [Enhancement 2]: [description]
-
-## Document History
+- {constraint}: {impact, why accepted}

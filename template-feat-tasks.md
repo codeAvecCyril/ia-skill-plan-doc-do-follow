@@ -1,127 +1,78 @@
-# Task Breakdown & Implementation Plan
+# Task Breakdown — {feature-name}
 
-> **Feature**: {feature-name} (F{n})
+> **Feature**: F{n} — {feature-name}
 >
-> **Epic**: {epic-name} (E{n})
+> **Epic**: E{n} — {epic-name}
 >
-> **Total Effort**: X story points
->
-> **Timeline**: Y weeks
->
-> **Team Size**: Z developers
+> **Last Updated**: {date}
 
-## Task Dependencies
+<!-- Delete any section that does not apply. Never write "N/A".
+     In solo mode, omit the Effort column. -->
+
+## Task Summary
+
+<!-- OWNING TABLE: this is the SINGLE source of truth for task status.
+     Per-task sections below carry NO status — update only this table. -->
+
+| Code | Task    | Type                                        | Depends on | Status |
+| ---- | ------- | ------------------------------------------- | ---------- | ------ |
+| T1   | {title} | Database/Backend/API/Frontend/Test/Config   | —          | ⚪     |
+| T2   | {title} | {type}                                      | T1         | ⚪     |
+
+**Parallelizable**: {e.g. T2 and T3 are independent}
+**Critical path**: {e.g. T1 → T2 → T4}
+
+## Dependency Graph (optional, decorative)
+
+<!-- Regenerated from the Task Summary table; never a source of truth. -->
 
 ```mermaid
 graph TD
-    T1[T1: Title]
-    T2[T2: Title]
-    T3[T3: Title]
-    T4[T4: Title]
-
-    T1 --> T2
-    T1 --> T3
-    T2 --> T4
-    T3 --> T4
-
-    classDef todo_white fill:#ffffff,color:#000000
-    classDef spec_yellow fill:#ffde07,color:#000000
-    classDef plan_violet fill:#ff79fb
-    classDef dev_blue fill:#0968f1,color:#ffffff
-    classDef done_green fill:#04bd51,color:#ffffff
-
-    class T1 done_green
-    class T2,T3,T4 todo_white
-
+    T1[T1: title] --> T2[T2: title]
 ```
 
-## Task List
+---
 
-### Summary
+## Task Details
 
-| Code | Task | Type | Est. | Dependencies | Status |
-|------|------|------|------|-------------|--------|
+<!-- Every task must be executable by a weaker model WITHOUT opening the PRD
+     or any other document: WHAT / WHERE / HOW / WHY / DONE all explicit. -->
 
-### Task 1: [Title] (X story points)
+### T1: {title}
 
-- **Type:** Database / Backend / API / Frontend / Test / Config
-- **Effort**: X story points | **Duration**: Y days | **Assigned**: [optional]
-- **Status**: ⚪ TODO
-- **Depends on**: None (can start immediately)
+**Objective (WHAT/WHY)**: {one complete sentence: what is built and why}
+**Context**: {2–3 sentences of everything needed to work standalone}
 
-**Objective:** {single sentence}
-**Context:** {2-3 sentences}
+**Files (WHERE)**:
+- Create: `exact/path/to/file`
+- Modify: `exact/path/to/file`
 
-**Files:**
-- Create: `...`
-- Modify: `...`
+**Steps (HOW)**:
+1. {concrete step}
+2. {concrete step}
 
-**Steps:**
-1. ...
-2. ...
+**Pattern reference**: `docs/patterns/{pattern}.md` (if one applies)
 
-**Acceptance Criteria**:
-- [ ] Criterion 1
-- [ ] Criterion 2
-- [ ] Criterion 3
+**Done when (DONE)**:
+- [ ] {verifiable criterion}
+- [ ] Tests: {what to test and how}
+- [ ] Validation command(s): `{runnable command}`
 
-**Technical Requirements**:
-[Specific implementation details, tech stack, code patterns]
-- Follow `path/to/file` (relevant lines)
-
-**Testing Requirements**:
-- [ ] Unit tests (coverage ≥ 80%)
-- [ ] Integration tests
-- [ ] Manual testing steps: [list]
-
-**Blocking/Notes**:
-[Any known issues, dependencies, or considerations]
+**Notes**: {known pitfalls — delete if none}
 
 ---
 
-### Task 2: [Title] (X story points)
+### T2: {title}
 
-- **Type:** Database / Backend / API / Frontend / Test / Config
-- **Effort**: X story points | **Duration**: Y days
-- **Status**: ⚪ TODO
-- **Depends on**: Task 1
-
-[Similar structure]
+{same structure}
 
 ---
 
-### Task 3: [Title] (X story points)
+## Blockers
 
-[Similar structure]
+- [ ] {blocker, as a complete sentence — delete section if none}
 
----
+## Risks (optional)
 
-## Effort Estimation Reference
-
-- **1-3 points**: Few hours, straightforward
-- **3-5 points**: 1-2 days, some complexity
-- **5-8 points**: 2-3 days, moderate complexity
-- **8+ points**: Too large, should break down further
-
-## Critical Path
-
-[Tasks on the critical path that must be completed before others can start]
-1. Task 1 → Task 2 → Task 4
-
-## Parallelizable Tasks
-
-[Tasks that can be worked on simultaneously]
-- Task 2 and Task 3 can be done in parallel (independent modules)
-
-## Risk Assessment
-
-| Risk | Probability | Impact | Mitigation |
-|------|-------------|--------|-----------|
-| [Risk 1] | [High/Med/Low] | [High/Med/Low] | [mitigation strategy] |
-
-## Success Metrics
-
-- All acceptance criteria met
-- Test coverage ≥ 80%
-- Performance targets met
-- Code review approval
+| Risk | Likelihood | Impact | Mitigation |
+| ---- | ---------- | ------ | ---------- |

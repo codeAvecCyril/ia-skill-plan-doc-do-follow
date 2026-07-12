@@ -1,7 +1,5 @@
-# Epic Review Checklist
+# Epic Review — {epic-name} (E{n})
 
-> **Epic**: {epic-name} (E{n})
->
 > **Review Date**: {date}
 >
 > **Reviewed By**: {stakeholder names}
@@ -10,81 +8,51 @@
 
 ## Executive Summary
 
-Brief overview of epic, features, and proposed timeline.
+{3–5 complete sentences: what this epic delivers, its features, and the main open risk.}
 
-## Review Items
+## Automated Checks (verified by the AI)
 
-### Scope & Features
+> ✅ {n}/{total} structural checks passed — {one line listing any failures}.
 
-- [ ] Feature list is complete for epic scope
-- [ ] Feature scopes are appropriately sized (3-5 days of work each)
-- [ ] Features are prioritized correctly
-- [ ] Dependencies between features are clear
-- [ ] No critical requirements are missing
-- [ ] Scope is achievable within timeline
+<details><summary>Details — PRD review</summary>
 
-**Comments**:
-
-### Requirements & Success Criteria
-
-- [ ] User stories are clear and testable
-- [ ] Acceptance criteria are specific and measurable
-- [ ] Edge cases are documented
-- [ ] Non-functional requirements are explicit
+- [ ] Feature list covers the epic scope; features are sized and prioritized
+- [ ] User stories are clear and testable; acceptance criteria are measurable
+- [ ] Edge cases and out-of-scope are documented
 - [ ] Success metrics are defined
-- [ ] Definition of done is clear
+- [ ] Every statement is a complete sentence with no unexplained abbreviations
+- [ ] Consistent with the Product Spirit block and `docs/decisions.md`
 
-**Comments**:
+</details>
 
-### Architecture & Technical Design
+<details><summary>Details — Architecture review</summary>
 
-- [ ] Architecture aligns with system design
-- [ ] APIs and data models are appropriate
-- [ ] Integration points are clear
-- [ ] Technology choices are justified
-- [ ] Performance targets are realistic
-- [ ] Security requirements are addressed
+- [ ] End-to-end data path is traced and valid
+- [ ] Design fits `docs/global_architecture.md` and `docs/technical-stack.md`
+- [ ] Data model delta is recorded in `docs/data-model.md`
+- [ ] Navigation impact is recorded in `docs/ui-map.md` (UI epics)
+- [ ] Security, performance, and failure modes addressed proportionally to risk
 
-**Comments**:
+</details>
 
-### Resources & Timeline
+## Decisions Requiring Your Validation
 
-- [ ] Team skillset matches requirements
-- [ ] Capacity aligns with timeline
-- [ ] Estimate is realistic
-- [ ] Parallel work is identified
-- [ ] Blockers are understood
-- [ ] Dependencies on other teams are minimal
+<!-- Max 10 self-contained plain sentences. Validated decisions go to docs/decisions.md. -->
 
-**Comments**:
+1. {Plain-sentence decision statement}. **Confirm?**
 
-### Quality & Testing
+## Open Questions
 
-- [ ] Test strategy is defined
-- [ ] Unit/integration/e2e coverage is planned
-- [ ] Test scenarios cover edge cases
-- [ ] Performance testing is planned
-- [ ] Security testing is planned
-
-**Comments**:
-
-### Risks & Dependencies
-
-- [ ] Risks are identified and mitigated
-- [ ] External dependencies are documented
-- [ ] Team dependencies are minimized
-- [ ] Critical path is clear
-- [ ] Rollback/contingency plan exists
-
-**Comments**:
+- [blocking] {question}
+- [important] {question}
+- [minor] {question}
 
 ## Sign-Off
 
-| Role            | Name   | Date   | Status  |
-| --------------- | ------ | ------ | ------- |
-| Product Manager | {name} | {date} | ⚪ ⚡ 🟢 🔴 |
-| Technical Lead  | {name} | {date} | ⚪ ⚡ 🟢 🔴 |
-| Architect       | {name} | {date} | ⚪ ⚡ 🟢 🔴 |
+| Role            | Scope        | Name   | Date   | Status  |
+| --------------- | ------------ | ------ | ------ | ------- |
+| Product Manager | PRD          | {name} | {date} | ⚪ ⚡ 🟢 🔴 |
+| Technical Lead  | Architecture | {name} | {date} | ⚪ ⚡ 🟢 🔴 |
 
 Legend: ⚪ Pending, ⚡ In Review, 🟢 Approved, 🔴 Needs Changes
 
@@ -92,28 +60,9 @@ Legend: ⚪ Pending, ⚡ In Review, 🟢 Approved, 🔴 Needs Changes
 
 | Item     | Owner   | Due Date |
 | -------- | ------- | -------- |
-| {action} | {owner} | {date}   |
-
-## Feedback Summary
-
-### What's Working Well
-
-- {positive feedback item}
-
-### Needs Improvement
-
-- {improvement item}
 
 ## Next Steps
 
-If approved:
-- [ ] Create full feature PRDs: `@plan/feat E{n} F{n}` for each feature
-- [ ] Schedule feature review meetings
-- [ ] Kick off first feature
-
-If needs rework:
-- [ ] Address feedback items
-- [ ] Schedule follow-up review
-- [ ] Resubmit for approval
-
-**Approval Status**: {Pending Approval / Approved / Needs Rework}
+- PRD approved: `@plan/epic-arch E{n}`
+- Architecture approved: `@plan/feat E{n} F1`
+- Needs rework: address the items above, then resubmit.

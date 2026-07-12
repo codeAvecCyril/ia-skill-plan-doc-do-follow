@@ -1,97 +1,66 @@
-# Epic Architecture
+# Epic Architecture — {epic-name}
 
 > **Code**: E{n}
 >
-> **Slug**: e{n}-{epic-name} (e.g., e2-orm-discovery)
+> **Slug**: e{n}-{epic-name}
 >
-> **Priority**: P{0|1|2}
+> **Last Updated**: {date}
+
+<!-- Where a topic does not differ from docs/global_architecture.md, write ONE sentence
+     referencing it instead of restating it. Delete sections that do not apply — never "N/A". -->
 
 ## System Overview
-[High-level diagram or description of the system components]
+
+{High-level diagram or description of the components this epic adds or touches.}
 
 ## Component Breakdown
-1. **Component 1**: [Purpose and responsibilities]
-2. **Component 2**: [Purpose and responsibilities]
-3. **Component 3**: [Purpose and responsibilities]
 
-## Data Models
-[Entity Relationship Diagram (ERD) or description]
+1. **{Component}**: {purpose, responsibilities, interactions}
 
-### Key Entities
-- **Entity 1**: [attributes and relationships]
-- **Entity 2**: [attributes and relationships]
+## Data Model Delta
+
+<!-- docs/data-model.md is the global truth — update it in the same change.
+     Here, describe only what this epic adds or changes, and link to it. -->
+
+- {new/changed entity}: {fields, relations} → recorded in `docs/data-model.md#{anchor}`
 
 ## API Specifications
 
-### Endpoint 1: [METHOD] /api/path
-- **Purpose**: [what it does]
-- **Request Schema**: [schema or example]
-- **Response Schema**: [schema or example]
-- **Auth Required**: [yes/no, what type]
-- **Rate Limits**: [if applicable]
+### {METHOD} /api/{path}
 
-### Endpoint 2: [METHOD] /api/path/{id}
-[Similar structure]
+- **Purpose**: {what it does}
+- **Request / Response**: {schema or example}
+- **Auth**: {requirement}
 
-## Technology Stack
+## Navigation Impact (UI epics)
 
-Reference: [Link to technical-stack.md]
+{New sections/screens added to the global navigation → recorded in `docs/ui-map.md`.}
 
-- **Backend Framework**: [technology & rationale]
-- **Database**: [technology & rationale]
-- **Frontend Framework**: [technology & rationale]
-- **Message Queue**: [technology & rationale, if applicable]
-- **Caching Layer**: [technology & rationale, if applicable]
+## Technology Decisions
 
-## Performance Targets
-- **Target Response Time**: [milliseconds]
-- **Target Throughput**: [requests/second]
-- **Expected Data Volume**: [size]
-- **Concurrent Users**: [number]
-
-## Security & Compliance
-- **Authentication Method**: [e.g., JWT, OAuth2]
-- **Authorization Model**: [e.g., RBAC]
-- **Data Encryption**:
-  - At rest: [algorithm]
-  - In transit: [protocol]
-- **Compliance Requirements**: [GDPR, HIPAA, PCI-DSS, etc., if applicable]
+Reference: `docs/technical-stack.md`. List only decisions **specific to this epic**, each with a one-sentence rationale.
 
 ## Integration Points
-- **Integrates with**: [other epics/systems]
-- **Data Exchange Format**: [JSON, XML, etc.]
-- **Frequency**: [real-time, batch, etc.]
-- **Impact**: [what happens if integration fails]
 
-## Deployment Architecture
-[Diagram or description of deployment topology]
+- **Integrates with**: {epics/systems} · format {…} · frequency {…} · failure impact {…}
 
-## Scalability Strategy
-- **Horizontal Scaling**: [approach]
-- **Vertical Scaling**: [approach]
-- **Database Scaling**: [sharding, replication, etc.]
-- **Caching Strategy**: [what to cache, TTL]
+## Performance & Scalability
 
-## High Availability
-- **Failover Mechanism**: [approach]
-- **Redundancy**: [what is redundant]
-- **RTO (Recovery Time Objective)**: [time]
-- **RPO (Recovery Point Objective)**: [acceptable data loss]
+{Only epic-specific targets and strategies; otherwise reference the global architecture.}
 
-## Monitoring & Observability
-- **Metrics**: [what to monitor]
-- **Logging**: [centralized logging approach]
-- **Tracing**: [distributed tracing approach]
-- **Alerting**: [critical alerts]
+## Security & Compliance
+
+{Only epic-specific concerns: new auth flows, sensitive data, compliance obligations.}
+
+## Deployment, Monitoring & Operations
+
+{Only what differs from the project's standard approach.}
 
 ## Known Constraints & Trade-offs
-- [Constraint 1]: [impact]
-- [Constraint 2]: [impact]
-- [Trade-off 1]: [why chosen]
 
-## Non-Functional Requirements
+- {constraint or trade-off}: {impact, why chosen}
 
-## Dependencies
+## Risks
 
-## Estimation
-
+| Risk | Likelihood | Impact | Mitigation |
+| ---- | ---------- | ------ | ---------- |

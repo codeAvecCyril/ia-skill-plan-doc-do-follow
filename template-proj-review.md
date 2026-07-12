@@ -1,7 +1,5 @@
-# Project Review Checklist
+# Project Review — {project-name}
 
-> **Project**: {project-name}
->
 > **Review Date**: {date}
 >
 > **Reviewed By**: {stakeholder names}
@@ -10,69 +8,43 @@
 
 ## Executive Summary
 
-Brief overview of project scope, epics, and proposed timeline.
+{3–5 complete sentences: what is being built, the proposed epics, the proposed sequencing, and the main risk.}
 
-## Review Items
+## Automated Checks (verified by the AI)
 
-### Scope & Epics
+> ✅ {n}/{total} structural checks passed — {one line listing any failures}.
 
-- [ ] Epic list is complete and captures all major work
-- [ ] Epic scopes are appropriately sized (2-4 weeks of work each)
-- [ ] Epics are prioritized correctly
-- [ ] Dependencies between epics are clear
-- [ ] No critical features are missing
-- [ ] Scope is achievable within constraints
+<details><summary>Details</summary>
 
-**Comments**:
+- [ ] Every epic has a brief with a clear business value statement
+- [ ] Epic dependency graph is valid (no cycles, no orphan references)
+- [ ] Epics are sized consistently and cover the whole product vision with no overlap
+- [ ] The technical stack supports every proposed epic
+- [ ] The Product Spirit block is present and consistent with `docs/product.md`
 
-### Business Value
+</details>
 
-- [ ] Each epic has clear business value
-- [ ] Success criteria are measurable
-- [ ] ROI/impact is understood
-- [ ] Alignment with product vision is clear
-- [ ] Competitive advantage is evident
+## Decisions Requiring Your Validation
 
-**Comments**:
+<!-- Max 10 items. Each is a complete, self-contained sentence the reviewer can
+     confirm or reject WITHOUT opening another document. Validated decisions are
+     appended to docs/decisions.md. -->
 
-### Resources & Timeline
+1. {Plain-sentence decision statement}. **Confirm?**
+2. {Plain-sentence decision statement}. **Confirm?**
 
-- [ ] Team capacity is sufficient
-- [ ] Required skills are available
-- [ ] Timeline is realistic for scope
-- [ ] Parallel work is identified
-- [ ] Risk factors are acknowledged
-- [ ] Critical path is understood
+## Open Questions
 
-**Comments**:
-
-### Technical Feasibility
-
-- [ ] Proposed architecture is sound
-- [ ] Technology stack aligns with product vision
-- [ ] Integration points are identified
-- [ ] Performance targets are realistic
-- [ ] Security considerations are addressed
-
-**Comments**:
-
-### Dependencies & Risks
-
-- [ ] External dependencies are documented
-- [ ] Team dependencies are minimized
-- [ ] Risks are identified and mitigation planned
-- [ ] Blockers are understood
-- [ ] Mitigation plans are in place
-
-**Comments**:
+- [blocking] {question}
+- [important] {question}
+- [minor] {question}
 
 ## Sign-Off
 
-| Role              | Name   | Date   | Status  |
-| ----------------- | ------ | ------ | ------- |
-| Product Manager   | {name} | {date} | ⚪ ⚡ 🟢 🔴 |
-| Technical Lead    | {name} | {date} | ⚪ ⚡ 🟢 🔴 |
-| Executive Sponsor | {name} | {date} | ⚪ ⚡ 🟢 🔴 |
+| Role            | Name   | Date   | Status  |
+| --------------- | ------ | ------ | ------- |
+| Product Manager | {name} | {date} | ⚪ ⚡ 🟢 🔴 |
+| Technical Lead  | {name} | {date} | ⚪ ⚡ 🟢 🔴 |
 
 Legend: ⚪ Pending, ⚡ In Review, 🟢 Approved, 🔴 Needs Changes
 
@@ -80,13 +52,8 @@ Legend: ⚪ Pending, ⚡ In Review, 🟢 Approved, 🔴 Needs Changes
 
 | Item     | Owner   | Due Date |
 | -------- | ------- | -------- |
-| {action} | {owner} | {date}   |
 
 ## Next Steps
 
-- [ ] Obtain all sign-offs
-- [ ] Create full epic PRDs: `@plan/epic E{n}` for each
-- [ ] Schedule epic review meetings
-- [ ] Kick off with first epic
-
-**Approval Status**: {Pending Approval / Approved / Needs Rework}
+- If approved: `@plan/epic E{n}` for the highest-priority epic.
+- If needs rework: address the items above, then resubmit.

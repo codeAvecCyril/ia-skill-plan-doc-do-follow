@@ -1,9 +1,5 @@
-# Feature Review Checklist
+# Feature Review — {feature-name} (E{n} F{n})
 
-> **Feature**: {feature-name} (F{n})
->
-> **Epic**: {epic-name} (E{n})
->
 > **Review Date**: {date}
 >
 > **Reviewed By**: {stakeholder names}
@@ -12,90 +8,51 @@
 
 ## Executive Summary
 
-Brief overview of feature, acceptance criteria, and proposed implementation approach.
+{3–5 complete sentences: what this feature does, how users reach it, and the main open risk.}
 
-## Review Items
+## Automated Checks (verified by the AI)
 
-### Scope & Requirements
+> ✅ {n}/{total} structural checks passed — {one line listing any failures}.
 
-- [ ] User stories are clear and testable
-- [ ] Acceptance criteria are specific and measurable
-- [ ] Edge cases are documented
-- [ ] Out-of-scope is clearly defined
-- [ ] Requirements are complete
-- [ ] No ambiguities remain
+<details><summary>Details — PRD review</summary>
 
-**Comments**:
-
-### Remaining functionnal questions
-- {remaining questions}
-
-**Answers**:
-
-### Technical Design (for arch review only)
-
-- [ ] Architecture fits within epic design
-- [ ] APIs are well-defined
-- [ ] Data model is appropriate
-- [ ] Technology choices are justified
-- [ ] Performance considerations are addressed
-- [ ] Security requirements are met
-
-**Comments**:
-
-### Implementation Approach (for arch review only)
-
-- [ ] Tasks are appropriately sized
-- [ ] Task breakdown is logical
-- [ ] Dependencies are minimal and clear
-- [ ] Parallelization opportunities are identified
-- [ ] Estimation is realistic
-- [ ] Team has required skills
-
-**Comments**:
-
-### Testing & Quality
-
+- [ ] User stories are clear and testable; acceptance criteria are specific and measurable
+- [ ] Edge cases and error scenarios are documented; out-of-scope is explicit
+- [ ] Entry Points & Navigation is filled and registered in `docs/ui-map.md` (UI features)
+- [ ] Architecture Delta is present (or explicitly "None")
 - [ ] Test strategy is defined
-- [ ] Unit test approach is clear
-- [ ] Integration test approach is clear
-- [ ] E2E test scenarios are identified
-- [ ] Edge cases are covered
-- [ ] Performance testing is planned
+- [ ] Every statement is a complete sentence with no unexplained abbreviations
+- [ ] Consistent with the Product Spirit block and `docs/decisions.md`
 
-**Comments**:
+</details>
 
-### Integration & Accessibility (for arch review only)
+<details><summary>Details — Architecture review</summary>
 
-- [ ] Integration points are clear
-- [ ] No breaking changes
-- [ ] Backward compatibility is maintained
-- [ ] Accessibility requirements are addressed
-- [ ] Localization needs are considered
+- [ ] The delta fits within the epic architecture
+- [ ] APIs are well-defined; data model delta is recorded in `docs/data-model.md`
+- [ ] Technology choices specific to this feature are justified
+- [ ] Security and performance implications are addressed where real
 
-**Comments**:
+</details>
 
-### Risks & Blockers
+## Decisions Requiring Your Validation
 
-- [ ] Risks are identified
-- [ ] Mitigation strategies exist
-- [ ] External dependencies are documented
-- [ ] No critical blockers
-- [ ] Contingency plans are in place
+<!-- Max 10 self-contained plain sentences. Validated decisions go to docs/decisions.md. -->
 
-**Comments**:
+1. {Plain-sentence decision statement}. **Confirm?**
 
-### Remaining architecture and technical questions
-- {remaining questions}
+## Open Questions
 
-**Answers**:
+- [blocking] {question}
+- [important] {question}
+- [minor] {question}
 
 ## Sign-Off
 
-| Role            | Name   | Date   | Status  |
-| --------------- | ------ | ------ | ------- |
-| Product Manager | {name} | {date} | ⚪ ⚡ 🟢 🔴 |
-| Technical Lead  | {name} | {date} | ⚪ ⚡ 🟢 🔴 |
+| Role            | Scope        | Name   | Date   | Status  |
+| --------------- | ------------ | ------ | ------ | ------- |
+| Product Manager | PRD          | {name} | {date} | ⚪ ⚡ 🟢 🔴 |
+| Technical Lead  | Architecture | {name} | {date} | ⚪ ⚡ 🟢 🔴 |
 
 Legend: ⚪ Pending, ⚡ In Review, 🟢 Approved, 🔴 Needs Changes
 
@@ -103,31 +60,9 @@ Legend: ⚪ Pending, ⚡ In Review, 🟢 Approved, 🔴 Needs Changes
 
 | Item     | Owner   | Due Date |
 | -------- | ------- | -------- |
-| {action} | {owner} | {date}   |
-
-## Feedback Summary
-
-### What's Working Well
-
-- {positive feedback item}
-
-### Needs Improvement
-
-- {improvement item}
 
 ## Next Steps
 
-If PRD approved:
-- [ ] Create feature architecture: `@plan/feat-arch E{n} F{n}`
-
-If architecture approved:
-- [ ] Break down into tasks: `@plan/tasks E{n} F{n}`
-- [ ] Start implementation
-
-If needs rework:
-- [ ] Address feedback items
-- [ ] Update feature PRD
-- [ ] Schedule follow-up review
-- [ ] Resubmit for approval
-
-**Approval Status**: {Pending Approval / Approved / Needs Rework}
+- PRD approved: `@plan/tasks E{n} F{n}` (or `@plan/feat-arch E{n} F{n}` if a trigger criterion fired)
+- Architecture approved: `@plan/tasks E{n} F{n}`
+- Needs rework: address the items above, then resubmit.

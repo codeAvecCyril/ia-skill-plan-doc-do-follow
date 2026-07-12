@@ -1,16 +1,21 @@
-# Epic Product Requirements Document (PRD)
+# Epic PRD — {epic-name}
 
 > **Code**: E{n}
 >
-> **Slug**: e{n}-{epic-name} (e.g., e2-orm-discovery)
+> **Slug**: e{n}-{epic-name}
 >
 > **Priority**: P{0|1|2}
 
+<!-- Writing rules: complete sentences a stakeholder can validate in isolation;
+     no unexplained abbreviations. Delete sections that do not apply — never "N/A". -->
+
 ## Overview
-[2-3 paragraph summary of the epic's purpose and scope]
+
+{2–3 paragraph summary of the epic's purpose and scope.}
 
 ## Business Value
-[Why this epic matters to the business and key stakeholders]
+
+{Why this epic matters to the business and key stakeholders.}
 
 ## Problem
 
@@ -20,38 +25,37 @@
 
 ## User Journeys
 
-## Success Criteria
-- [ ] KPI 1: [metric and target]
-- [ ] KPI 2: [metric and target]
-- [ ] KPI 3: [metric and target]
+{For UI epics: describe how users reach and traverse this epic's screens; keep consistent with `docs/ui-map.md`.}
 
-## Key Features
-1. [Feature 1 name]
-2. [Feature 2 name]
-3. [Feature 3 name]
+## Features
+
+<!-- The feature list drives plan/feat and epic-status.md. -->
+
+| Code | Feature | Priority | One-sentence intent |
+| ---- | ------- | -------- | ------------------- |
+| F1   | {name}  | P0       | {sentence}          |
 
 ## User Stories & Use Cases
-- As a [user role], I want to [action] so that [business value]
-- As a [user role], I want to [action] so that [business value]
-- As a [user role], I want to [action] so that [business value]
+
+- As a {role}, I want to {action} so that {business value}.
+
+## Success Criteria
+
+- [ ] {measurable criterion, as a complete sentence}
 
 ## Acceptance Criteria
-- [ ] Criterion 1
-- [ ] Criterion 2
-- [ ] Criterion 3
+
+- [ ] {complete, verifiable sentence}
 
 ## Constraints & Dependencies
-- **Depends on**: [Epic X, Epic Y]
-- **Performance**: [requirement]
-- **Security**: [requirement]
-- **Compliance**: [requirement if any]
 
-## Resources & Timeline
-- Estimated effort: [X story points]
-- Timeline: [duration, e.g., 8 weeks]
-- Team size: [number of developers]
-- Key stakeholders: [list]
+- **Depends on**: {epics/systems}
+- **Non-functional constraints**: {performance, security, compliance — only real ones}
 
-## Success Metrics & KPIs
-- [Metric 1]: [current baseline] → [target]
-- [Metric 2]: [current baseline] → [target]
+## Out of Scope
+
+- {explicitly excluded item}
+
+## Resources & Timeline (team mode only)
+
+- Estimated effort · timeline · team size · key stakeholders

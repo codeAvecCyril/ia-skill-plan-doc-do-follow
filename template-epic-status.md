@@ -1,69 +1,33 @@
-# Epic Status Tracking
+# Epic Status — {epic-name}
 
 > **Code**: E{n}
 >
-> **Slug**: e{n}-{epic-name} (e.g., e2-orm-discovery)
+> **Slug**: e{n}-{epic-name}
 >
-> **Last Updated**: YYYY-MM-DD
->
-> **Current Status**: ⚪ TODO (not started)
+> **Last Updated**: {date}
 
-## Status Definitions
+<!-- Epic-level status lives in docs/project-status.md (Epic Roadmap), not here. -->
+<!-- Delete any section below that does not apply. Never write "N/A". -->
 
-- ⚪ **TODO**: not started
-- 🟡 **SPEC**: business spec reviewed
-- 🟣 **PLAN**: tasks generated
-- 🔵 **DEV**: implementation in progress
-- 🟢 **DONE**: verified
+## Feature Table
 
-## Progress Calculation
+<!-- OWNING TABLE: this is the single source of truth for feature status and progress. -->
 
-Epic progress = sum(completed features) / sum(features)
+| Code | Feature        | Status | Progress (tasks) | Notes |
+| ---- | -------------- | ------ | ---------------- | ----- |
+| F1   | {feature-name} | ⚪     | 0/0              |       |
 
-## Progress Overview: 0% (0/0 features with tasks)
+Progress: `▓▓░░░░░░░░` {n}/{total} tasks
 
-```mermaid
-%%{init: {'theme': 'base', 'pie': {'sort': false}, 'themeVariables': {'pie1': '#c8e6c9','pie2': '#f5f5f5','pie3': '#fff9c4','pie4': '#e1bee7','pie5': '#bbdefb'}}}%%
-pie title Epic Progress
-	"DONE" : 0
-	"TODO" : 0
-	"SPEC" : 0
-	"PLAN" : 0
-	"DEV" : 0
-```
+## Dependencies (optional)
 
-## Feature Breakdown
+- Depends on: {epic/feature}: {one sentence}
+- Blocks: {epic/feature}: {one sentence}
 
-| Feature        | Status | Progress | Owner |
-| -------------- | ------ | -------- | ----- |
-| [feature-name] | ⚪ TODO | 0%       | -     |
+## Blockers
 
-## Dependencies
+- [ ] {blocker, as a complete sentence — delete section if none}
 
-{mermaid flow chart}
+## Changelog
 
-### Blocks
-
-- [Epic/Feature X]: [description]
-
-### Depends On
-
-- [Epic/Feature Y]: [description]
-
-### Related
-
-- [Epic/Feature Z]: [description]
-
-## Timeline
-
-- **Started**: [date]
-- **Target Completion**: [date]
-- **Current Phase**: [phase name]
-
-## Key Blockers
-
-- [ ] Blocker 1 (if any)
-
-## Notes
-
-[Any additional context]
+- {date}: {what changed}
