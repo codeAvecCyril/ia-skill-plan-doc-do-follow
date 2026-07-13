@@ -37,7 +37,15 @@
 
 ## Decisions Requiring Your Validation
 
-<!-- Max 10 self-contained plain sentences. Validated decisions go to docs/decisions.md. -->
+<!-- Max 10 self-contained plain sentences PER GATE. Validated decisions go to docs/decisions.md.
+     plan/epic fills the PRD subsection; plan/epic-arch fills the Architecture subsection.
+     Delete the subsection heading if only one gate exists yet. -->
+
+### PRD (filled by plan/epic, validated by the PM)
+
+1. {Plain-sentence decision statement}. **Confirm?**
+
+### Architecture (filled by plan/epic-arch, validated by the Tech Lead)
 
 1. {Plain-sentence decision statement}. **Confirm?**
 

@@ -24,4 +24,5 @@ If none applies, say so, keep the Architecture Delta in `feat-prd.md` as the arc
 4. Generate `feat-arch.md` from `template-feat-arch.md`; delete non-applicable sections.
 5. Sync the living docs in the same change: new entities → `docs/data-model.md`; new screens/navigation → `docs/ui-map.md`.
 6. Run the **Arch Critic** subagent (`reviewers.md`) with its scoped inputs; apply its comments or record why they were rejected.
-7. Handoff with `@plan/feat-review E{n} F{n} arch` or `@plan/tasks E{n} F{n}` as default next command.
+7. **Update `feat-review.md`** (create it from `template-feat-review.md` if it does not exist yet): auto-verify the architecture checklist and collapse it to one summary line; add an **"Architecture — Decisions Requiring Your Validation"** subsection (max 10 plain sentences) plus arch-specific open questions labeled blocking / important / minor; add or reset the Technical Lead sign-off row to ⚪ pending. Leave any PRD-review content untouched.
+8. Handoff with `@plan/feat-review E{n} F{n} arch` or `@plan/tasks E{n} F{n}` as default next command.
