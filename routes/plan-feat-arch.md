@@ -21,8 +21,8 @@ If none applies, say so, keep the Architecture Delta in `feat-prd.md` as the arc
 1. Verify `E{n}`/`F{n}` exist and state which trigger criterion fired.
 2. Design **only the delta**: what this feature adds or changes relative to `epic-arch.md`. Where a topic is already covered by the epic architecture, write one sentence referencing it.
 3. Ask interactive questions for any ambiguity in architectural decisions or constraints.
-4. Generate `feat-arch.md` from `template-feat-arch.md`; delete non-applicable sections.
+4. Generate `feat-arch.md` from `templates/feat-arch.md`; delete non-applicable sections.
 5. Sync the living docs in the same change: new entities → `docs/data-model.md`; new screens/navigation → `docs/ui-map.md`.
 6. Run the **Arch Critic** subagent (`reviewers.md`) with its scoped inputs; apply its comments or record why they were rejected.
-7. **Update `feat-review.md`** (create it from `template-feat-review.md` if it does not exist yet): auto-verify the architecture checklist and collapse it to one summary line; add an **"Architecture — Decisions Requiring Your Validation"** subsection (max 10 plain sentences) plus arch-specific open questions labeled blocking / important / minor; add or reset the Technical Lead sign-off row to ⚪ pending. Leave any PRD-review content untouched.
+7. **Update `feat-review.md`** (create it from `templates/feat-review.md` if it does not exist yet): auto-verify the architecture checklist and collapse it to one summary line; add an **"Architecture — Decisions Requiring Your Validation"** subsection (max 10 plain sentences) plus arch-specific open questions labeled blocking / important / minor; add or reset the Technical Lead sign-off row to ⚪ pending. Leave any PRD-review content untouched.
 8. Handoff with `@plan/feat-review E{n} F{n} arch` or `@plan/tasks E{n} F{n}` as default next command.

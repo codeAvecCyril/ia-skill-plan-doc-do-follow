@@ -14,7 +14,7 @@
 4. **Architecture Delta** (mandatory): list only what this feature adds or changes relative to `epic-arch.md` — new endpoints, new tables/columns, new components. If nothing, write "None — fully covered by the epic architecture." Check the `plan/feat-arch` trigger criteria and note whether a dedicated feature architecture is needed.
 5. Define explicit out-of-scope, dependencies, and test strategy sections.
 6. Ask blocking and important questions interactively, with impact labels.
-7. Generate `feat-prd.md` from `template-feat-prd.md`; delete non-applicable sections.
+7. Generate `feat-prd.md` from `templates/feat-prd.md`; delete non-applicable sections.
 8. Run the **PRD Critic** subagent (`reviewers.md`) with its scoped inputs; apply its comments or record why they were rejected.
-9. Generate `feat-review.md` from `template-feat-review.md`: auto-check mechanical items; keep only judgment calls in "Decisions requiring your validation".
+9. Generate `feat-review.md` from `templates/feat-review.md`: auto-check mechanical items; keep only judgment calls in "Decisions requiring your validation".
 10. Run Status Sync (feature becomes 🟡 in `epic-status.md`). Handoff with `@plan/feat-review E{n} F{n} prd` as default next command.

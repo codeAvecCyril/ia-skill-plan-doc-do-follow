@@ -43,7 +43,7 @@ git submodule add git@github.com:codeAvecCyril/ia-skill-plan-doc-do-follow.git .
 - **Reviews built for humans.** The AI auto-verifies mechanical checks and collapses them to one line; the human validates at most 10 plain-sentence decisions per review. Validated decisions are recorded and respected by every later route.
 - **Product Spirit.** A 5–10 sentence distillation of the product's identity sits at the top of `project-status.md` and is injected into every planning route and reviewer, so the vision never dissolves into generic AI knowledge.
 - **Model tiering.** Planning routes and reviewers assume a strong model; `plan/tasks` produces tasks a weaker model can execute without opening the PRD, verified by a self-containment check.
-- **Token economy.** `SKILL.md` is a thin router; each route's playbook loads on demand; reviewer subagents get scoped briefs, not "read everything"; execution subagents get self-contained task packets.
+- **Token economy.** `SKILL.md` is a thin router; each route's playbook loads on demand from `routes/`; document scaffolds load from `templates/`; reviewer subagents get scoped briefs, not "read everything"; execution subagents get self-contained task packets.
 
 ## 16 Routes, 2 Phases
 

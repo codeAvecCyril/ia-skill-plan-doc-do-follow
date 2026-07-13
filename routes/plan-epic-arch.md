@@ -11,7 +11,7 @@
 1. Verify `docs/project-status.md` contains `E{n}` and read `epic-prd.md`.
 2. Design: components, data model, APIs, integration points, risks, metrics. Where a topic does not differ from `docs/global_architecture.md`, write one sentence referencing it instead of restating it.
 3. Ask interactive questions for any ambiguity in architectural decisions or constraints.
-4. Generate `epic-arch.md` from `template-epic-arch.md`. Delete non-applicable sections.
+4. Generate `epic-arch.md` from `templates/epic-arch.md`. Delete non-applicable sections.
 5. Sync the living docs in the same change (Invariant 10):
    - New or changed entities → `docs/data-model.md` (the global truth; `epic-arch.md` only describes the delta and links to it).
    - New screens or navigation sections → `docs/ui-map.md`.

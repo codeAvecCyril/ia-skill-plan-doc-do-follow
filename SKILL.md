@@ -13,7 +13,7 @@ Product development workflow: **Plan** → **Doc** → **Do** → **Follow**. Gu
 1. Match the user's intent to a route below (first match wins).
 2. Read the route's playbook file in `routes/` and follow it exactly.
 3. Apply the Global Invariants and the Status Model on every route.
-4. **Token economy**: read only the route file you need plus the templates it references. Never load all routes or all templates.
+4. **Token economy**: read only the route file you need plus the templates in `templates/` it references. Never load all routes or all templates.
 
 ## Route Reference
 
@@ -141,6 +141,8 @@ For repository conventions and coding standards, use whichever of these exist, i
 
 ## Templates
 
-Project: `template-proj-status.md`, `template-proj-review.md`, `template-decisions.md`, `template-data-model.md`, `template-ui-map.md`, `template-design-guidelines.md`
-Epic: `template-epic-brief.md`, `template-epic-prd.md`, `template-epic-status.md`, `template-epic-review.md`, `template-epic-arch.md`
-Feature: `template-feat-prd.md`, `template-feat-review.md`, `template-feat-arch.md`, `template-feat-tasks.md`
+All templates live in `templates/` (no `template-` prefix; names mirror output files).
+
+Project: `templates/proj-status.md`, `templates/proj-review.md`, `templates/decisions.md`, `templates/data-model.md`, `templates/ui-map.md`, `templates/design-guidelines.md`
+Epic: `templates/epic-brief.md`, `templates/epic-prd.md`, `templates/epic-status.md`, `templates/epic-review.md`, `templates/epic-arch.md`
+Feature: `templates/feat-prd.md`, `templates/feat-review.md`, `templates/feat-arch.md`, `templates/feat-tasks.md`

@@ -11,12 +11,12 @@
 1. Verify the input files exist; ask for the missing ones.
 2. Distill the **Product Spirit block**: 5–10 complete sentences stating what the product is, who it is for, what makes it different, and what it deliberately is *not*. This block goes at the top of `docs/project-status.md` and is reused by every route and reviewer.
 3. Determine the **mode**: `solo` (default — no owners, estimates, or velocity in any document) or `team` (effort/owner columns enabled). Ask only if the context is ambiguous. Record the mode in the project-status header.
-4. Extract stack, patterns, and constraints. Build epics with codes (`E1…`), slugs `e{n}-{name}` (e.g. `e2-orm-discovery`), and briefs using `template-epic-brief.md`. Map dependencies and phases.
+4. Extract stack, patterns, and constraints. Build epics with codes (`E1…`), slugs `e{n}-{name}` (e.g. `e2-orm-discovery`), and briefs using `templates/epic-brief.md`. Map dependencies and phases.
 5. Ask questions for scope/priority/stack ambiguity (label blocking / important / minor).
 6. Bootstrap the living docs that apply (skip the ones that do not — Invariant 7):
-   - `docs/decisions.md` from `template-decisions.md` (always).
-   - If the project persists data: `docs/data-model.md` from `template-data-model.md` (may start as a pointer to existing schema docs).
-   - If the project has a UI: `docs/ui-map.md` from `template-ui-map.md`, and `docs/design-guidelines.md` from `template-design-guidelines.md` — if a design system already exists in the repo, reference it instead of writing a new one.
-7. Generate `docs/project-status.md` from `template-proj-status.md` (Spirit block, mode, epic roadmap table, project-level pie chart, dependency graph).
-8. Generate `docs/project-review.md` from `template-proj-review.md`.
+   - `docs/decisions.md` from `templates/decisions.md` (always).
+   - If the project persists data: `docs/data-model.md` from `templates/data-model.md` (may start as a pointer to existing schema docs).
+   - If the project has a UI: `docs/ui-map.md` from `templates/ui-map.md`, and `docs/design-guidelines.md` from `templates/design-guidelines.md` — if a design system already exists in the repo, reference it instead of writing a new one.
+7. Generate `docs/project-status.md` from `templates/proj-status.md` (Spirit block, mode, epic roadmap table, project-level pie chart, dependency graph).
+8. Generate `docs/project-review.md` from `templates/proj-review.md`.
 9. Run Status Sync. Handoff with `@plan/proj-review` as default next command.
