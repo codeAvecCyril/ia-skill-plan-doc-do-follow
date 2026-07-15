@@ -2,6 +2,8 @@
 
 **Purpose**: design a dedicated feature architecture. **Most features do not need this route** — the epic architecture plus the Architecture Delta section of `feat-prd.md` is normally enough.
 
+**Mindset**: staff architect on a scoped delta — design only what the epic architecture does not already cover. Strong model, deep thinking.
+
 ## Trigger criteria — run this route only if at least one applies
 
 1. The feature introduces a **new external integration** (third-party API, message broker, new infrastructure service).
@@ -19,10 +21,10 @@ If none applies, say so, keep the Architecture Delta in `feat-prd.md` as the arc
 ## Steps
 
 1. Verify `E{n}`/`F{n}` exist and state which trigger criterion fired.
-2. Design **only the delta**: what this feature adds or changes relative to `epic-arch.md`. Where a topic is already covered by the epic architecture, write one sentence referencing it.
+2. Design **only the delta**: what this feature adds or changes relative to `epic-arch.md`. Where a topic is already covered by the epic architecture, write one sentence referencing it. Ground unverified assumptions about existing code via a **repo-scout** subagent (`subagents/repo-scout.md`).
 3. Ask interactive questions for any ambiguity in architectural decisions or constraints.
 4. Generate `feat-arch.md` from `templates/feat-arch.md`; delete non-applicable sections.
 5. Sync the living docs in the same change: new entities → `docs/data-model.md`; new screens/navigation → `docs/ui-map.md`.
-6. Run the **Arch Critic** subagent (`reviewers.md`) with its scoped inputs; apply its comments or record why they were rejected.
+6. Run the **arch-critic** subagent (`subagents/arch-critic.md`) with its scoped inputs; apply its findings or record why they were rejected. Then check the trigger criteria at the top of `subagents/perf-critic-backend.md` and `subagents/perf-critic-frontend.md`: for each side that fires, run that perf critic on the design and resolve its blocker findings; if none fires, skip and note it.
 7. **Update `feat-review.md`** (create it from `templates/feat-review.md` if it does not exist yet): auto-verify the architecture checklist and collapse it to one summary line; add an **"Architecture — Decisions Requiring Your Validation"** subsection (max 10 plain sentences) plus arch-specific open questions labeled blocking / important / minor; add or reset the Technical Lead sign-off row to ⚪ pending. Leave any PRD-review content untouched.
 8. Handoff with `@plan/feat-review E{n} F{n} arch` or `@plan/tasks E{n} F{n}` as default next command.

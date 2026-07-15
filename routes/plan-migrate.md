@@ -2,6 +2,8 @@
 
 **Purpose**: migrate a project documented with skill v2 to the v3 structure in one pass, safely, with epics and features in any state of completion. Documentation only — this route never touches code. Run once; it is idempotent (re-running on a migrated project finds nothing to do).
 
+**Mindset**: careful archivist — preserve history, resolve conflicts by evidence, never rewrite what still works. Strong model.
+
 **Inputs**: the whole `docs/` tree · `docs/product.md` · old review files · the implemented code (read-only, to reverse-engineer schema and navigation).
 
 **Outputs**: consolidated owning tables · `feat-status.md` files removed · Product Spirit block · living docs bootstrapped (`decisions.md`, `data-model.md`, `ui-map.md`, `design-guidelines.md`) · a migration report.
@@ -18,6 +20,6 @@
    - `docs/ui-map.md`: build from the actual routing/navigation code for implemented screens; add planned screens from the feature PRDs, marked with their status.
    - `docs/design-guidelines.md`: point to the existing design system if the repo has one; otherwise write the minimal version from `templates/design-guidelines.md`.
 6. **Do not rewrite legacy documents.** Old PRDs, architecture docs, and completed reviews stay as they are. Missing v3 sections (Entry Points & Navigation, Architecture Delta) are filled **lazily** — the first time a v3 route touches that feature. List these pending documents in the migration report.
-7. **Run Status Sync** over everything, then the **Doc Coherence Reviewer** subagent (`reviewers.md`); fix the drift it reports.
+7. **Run Status Sync** over everything, then the **doc-coherence-reviewer** subagent (`subagents/doc-coherence-reviewer.md`); fix the drift it reports.
 8. **Produce the migration report**: status conflicts and how each was resolved · statuses changed by the sync (old → new, with reason) · living docs created and what seeded them · legacy documents pending lazy migration · open questions for the user (blocking first).
 9. Handoff with the most useful next command given the repaired state (typically the first unblocked `@do/task`, or `@do/verify` for a feature whose tasks are all 🟢).

@@ -2,6 +2,8 @@
 
 **Purpose**: validate the epic specification (prd) or the epic architecture (arch) with stakeholders.
 
+**Mindset**: review facilitator — protect the human's time; surface only genuine judgment calls, in plain sentences.
+
 **Inputs**:
 - prd: `epic-prd.md` · `epic-brief.md` · `epic-review.md`
 - arch: `epic-arch.md` · `epic-prd.md` · `docs/global_architecture.md` · `docs/technical-stack.md` · `epic-review.md`

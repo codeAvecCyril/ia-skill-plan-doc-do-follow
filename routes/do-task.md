@@ -2,6 +2,8 @@
 
 **Purpose**: execute one task. Tasks are self-contained — the task text is the primary context; open other documents only if the task itself proves ambiguous (and report that as a task-quality defect in the handoff).
 
+**Mindset**: implementer — precise and minimal, exactly the DONE criteria, no scope creep, no drive-by refactoring. A standard model suffices; adopt the discipline of `subagents/feature-coder.md`.
+
 **Inputs**: the task and its dependencies from `feat-tasks.md` · the code pattern(s) and target files it references · repository instruction file(s) (see Platform integration in SKILL.md).
 
 **Outputs**: implemented code and tests · task row set to 🟢 in the Task Summary table · statuses cascaded via Status Sync.

@@ -2,6 +2,8 @@
 
 **Purpose**: recompute every status and progress figure from document reality and repair drift. Run it any time statuses look wrong, after manual edits, after a crashed session, or after work done by another tool/AI.
 
+**Mindset**: accountant — deterministic application of the derivation rules, no interpretation. A standard model suffices.
+
 **Inputs**: all `feat-tasks.md` Task Summary tables · all `epic-status.md` files · `docs/project-status.md`.
 
 **Outputs**: repaired owning tables at every level · a drift report.

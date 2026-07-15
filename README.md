@@ -43,7 +43,7 @@ git submodule add git@github.com:codeAvecCyril/ia-skill-plan-doc-do-follow.git .
 - **Reviews built for humans.** The AI auto-verifies mechanical checks and collapses them to one line; the human validates at most 10 plain-sentence decisions per review. Validated decisions are recorded and respected by every later route.
 - **Product Spirit.** A 5–10 sentence distillation of the product's identity sits at the top of `project-status.md` and is injected into every planning route and reviewer, so the vision never dissolves into generic AI knowledge.
 - **Model tiering.** Planning routes and reviewers assume a strong model; `plan/tasks` produces tasks a weaker model can execute without opening the PRD, verified by a self-containment check.
-- **Token economy.** `SKILL.md` is a thin router; each route's playbook loads on demand from `routes/`; document scaffolds load from `templates/`; reviewer subagents get scoped briefs, not "read everything"; execution subagents get self-contained task packets.
+- **Token economy.** `SKILL.md` is a thin router; each route's playbook loads on demand from `routes/`; document scaffolds load from `templates/`; subagent definitions load on demand from `subagents/` with scoped inputs, not "read everything"; execution subagents get self-contained task packets.
 
 ## 16 Routes, 2 Phases
 
@@ -67,15 +67,20 @@ git submodule add git@github.com:codeAvecCyril/ia-skill-plan-doc-do-follow.git .
 - `do/sync-status` — Recompute all statuses from reality, repair drift
 - `do/memorize` — Document patterns and best practices
 
-## Reviewer subagents
+## Subagents
 
-Defined in `reviewers.md`, each with a scoped input list:
+Defined in `subagents/` — one portable Markdown + YAML-frontmatter file per agent, each with a scoped input list, an output contract, and advisory `model_class` / `thinking` / `capabilities` hints (never a vendor model id — see `subagents/README.md` for the format and the mapping to Claude Code, GitHub Copilot, and opencode native registries):
 
-- **PRD Critic** — vision fit, differentiating vs unnecessary features, user journey, clarity of sentences
-- **Arch Critic** — data-path validity, global-architecture fit, alternatives, simplification
-- **UI Consistency Reviewer** — entry point reachable, style/terminology/states consistent with the design guidelines (runs at `do/verify` for UI features)
-- **Task Self-Containment Check** — every task executable without opening the PRD (runs at `plan/tasks`)
-- **Doc Coherence Reviewer** — statuses, living docs, and links match reality (runs at epic completion and after `plan/change`)
+- **repo-scout** — read-only codebase researcher; grounds plans in what actually exists (planning routes, on demand)
+- **prd-critic** — vision fit, differentiating vs unnecessary features, user journey, clarity of sentences
+- **arch-critic** — data-path validity, global-architecture fit, alternatives, simplification
+- **perf-critic-backend / perf-critic-frontend** — conditional performance reviews at design time and verify time, invoked only when their trigger criteria fire (unbounded data, hot request paths, large lists, real-time flows, explicit NFRs)
+- **task-checker** — every task executable without opening the PRD (runs at `plan/tasks`)
+- **feature-coder** — executes one self-contained task packet per instance (runs in `do/all-tasks` waves)
+- **ui-consistency-reviewer** — entry point reachable, style/terminology/states consistent with the design guidelines (runs at `do/verify` for UI features)
+- **doc-coherence-reviewer** — statuses, living docs, and links match reality (runs at epic completion, after `plan/change`, after `plan/migrate`)
+
+Each route also opens with a one-line **Mindset** that specializes the principal agent (product strategist, staff architect, orchestrator, skeptical QA gatekeeper, …) without any platform-specific model switching.
 
 ## Output Files
 
@@ -129,7 +134,7 @@ Run `plan/migrate` once — it works even with epics and features half implement
 
 ---
 
-**Version**: 3.0 (single-source status, scope changes, v2 migration, living docs, scoped reviewers, token-optimized routing)
+**Version**: 3.1 (single-source status, scope changes, v2 migration, living docs, token-optimized routing, portable subagent definitions in `subagents/`, conditional performance critics, per-route Mindset)
 **License**: Apache-2.0 — see [LICENSE](LICENSE)
 
 **The philosophy**: Plan well, document clearly, execute focused, follow up consistently. Build great products.

@@ -2,6 +2,8 @@
 
 **Purpose**: validate the extracted epics with stakeholders.
 
+**Mindset**: review facilitator — protect the human's time; surface only genuine judgment calls, in plain sentences.
+
 **Inputs**: `docs/project-status.md` · epic briefs · `docs/project-review.md`.
 
 **Outputs**: updated `docs/project-status.md` and epic briefs · completed review with sign-off · decisions recorded in `docs/decisions.md`.

@@ -2,6 +2,8 @@
 
 **Purpose**: validate the feature specification (prd) or the feature architecture (arch) with stakeholders.
 
+**Mindset**: review facilitator — protect the human's time; surface only genuine judgment calls, in plain sentences.
+
 **Inputs**:
 - prd: `feat-prd.md` · `feat-review.md` · epic PRD for context
 - arch: `feat-arch.md` (or the Architecture Delta section of `feat-prd.md` if no feat-arch exists) · `feat-review.md`

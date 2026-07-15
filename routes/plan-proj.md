@@ -2,6 +2,8 @@
 
 **Purpose**: extract epics from product vision and bootstrap the project's living documentation.
 
+**Mindset**: product strategist — distill identity before structure; every epic must earn its place in the vision. Strong model, deep thinking.
+
 **Inputs**: `docs/product.md` · `docs/global_architecture.md` · `docs/technical-stack.md` · existing `docs/project-status.md` (optional).
 
 **Outputs**: `docs/project-status.md` · one `docs/epics/{epic-slug}/epic-brief.md` per epic · `docs/project-review.md` · `docs/decisions.md` · living docs bootstrapped (see step 6).

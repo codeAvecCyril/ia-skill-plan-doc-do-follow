@@ -13,7 +13,7 @@ Product development workflow: **Plan** → **Doc** → **Do** → **Follow**. Gu
 1. Match the user's intent to a route below (first match wins).
 2. Read the route's playbook file in `routes/` and follow it exactly.
 3. Apply the Global Invariants and the Status Model on every route.
-4. **Token economy**: read only the route file you need plus the templates in `templates/` it references. Never load all routes or all templates.
+4. **Token economy**: read only the route file you need, the templates in `templates/` it references, and the subagent definitions in `subagents/` it invokes. Never load all routes, all templates, or all subagents.
 
 ## Route Reference
 
@@ -58,7 +58,8 @@ Product development workflow: **Plan** → **Doc** → **Do** → **Follow**. Gu
 11. **Model tiering**: `plan/*` routes and reviewer subagents assume a strong model. Every task produced by `plan/tasks` must be executable by a weaker model without opening the PRD.
 12. **Status Sync**: every route that changes any status ends by running the Status Sync procedure below.
 13. **Handoff format**: end every route with a short summary, current progress, the exact next command, and open questions.
-14. **Scoped subagents**: reviewer subagents receive only the inputs listed in their brief (`reviewers.md`), never "read everything".
+14. **Scoped subagents**: subagents receive only the inputs listed in their definition (`subagents/{name}.md`), never "read everything".
+15. **Mindset per route**: each route playbook opens with a **Mindset** line — the working posture and model class the principal agent adopts for that route. It specializes the principal without any platform-specific model switching.
 
 ## Status Model
 
@@ -93,9 +94,23 @@ Run at the end of any route that changed a status, or standalone via `do/sync-st
 
 The procedure is deterministic and idempotent: running it twice changes nothing.
 
-## Reviewer subagents
+## Subagents
 
-Briefs live in `reviewers.md`: **PRD Critic**, **Arch Critic**, **UI Consistency Reviewer**, **Task Self-Containment Check**, **Doc Coherence Reviewer**. Routes state which reviewer to run and when. Pass each reviewer exactly the inputs its brief lists, always including the Product Spirit block. Apply their comments or record in the handoff why a comment was rejected.
+Definitions live in `subagents/` — one Markdown file per agent, with portable YAML frontmatter (`name`, `description`, plus advisory `model_class` / `thinking` / `capabilities` hints; format spec in `subagents/README.md`). To invoke one: read its file, assemble exactly the inputs it lists (always including the Product Spirit block for reviewers), and spawn a subagent with the file body as its system prompt. Apply reviewer findings or record in the handoff why a finding was rejected.
+
+| Subagent | Kind | Called by | When |
+| --- | --- | --- | --- |
+| `repo-scout` | research | `plan/epic-arch`, `plan/feat`, `plan/feat-arch`, `plan/change` | when the plan must be grounded in existing code |
+| `prd-critic` | reviewer | `plan/epic`, `plan/feat` | always |
+| `arch-critic` | reviewer | `plan/epic-arch`, `plan/feat-arch` | always |
+| `perf-critic-backend` | reviewer | `plan/epic-arch`, `plan/feat-arch`, `do/verify` | only when its trigger criteria fire |
+| `perf-critic-frontend` | reviewer | `plan/epic-arch`, `plan/feat-arch`, `do/verify` | only when its trigger criteria fire |
+| `task-checker` | reviewer | `plan/tasks` | always |
+| `feature-coder` | executor | `do/all-tasks` | one per parallelizable task in a wave |
+| `ui-consistency-reviewer` | reviewer | `do/verify` | features with UI requirements |
+| `doc-coherence-reviewer` | reviewer | `do/verify` · `plan/change` · `plan/migrate` | epic completion · after a change · after migration |
+
+The perf critics are **conditional**: the calling route checks the trigger criteria listed at the top of each definition (unbounded data growth, hot request paths, real-time flows, large lists, explicit NFRs, …) and skips the review when none applies.
 
 ## Human review UX
 

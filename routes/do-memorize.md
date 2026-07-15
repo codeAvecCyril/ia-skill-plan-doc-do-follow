@@ -2,6 +2,8 @@
 
 **Purpose**: capture good practices, patterns, fixes for recurring blockers, and project-specific usage (test commands, launch commands, dependency installation) for future reference.
 
+**Mindset**: librarian — one pattern, one file; generalize the lesson, keep the concrete example.
+
 **Inputs**: the practice/pattern/fix observed · existing `docs/patterns/` · the repository instruction file(s) present (resolution order in SKILL.md → Platform integration).
 
 **Outputs**: a pattern file in `docs/patterns/` · a reference added to the platform-native instruction file(s).
