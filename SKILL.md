@@ -142,12 +142,11 @@ docs/
         ├── epic-status.md                   (owning file: feature statuses)
         ├── epic-arch.md                     (from plan/epic-arch)
         ├── epic-review.md                   (from plan/epic-review)
-        └── features/
-            └── f{n}-{feat-name}/            (slug e.g. f3-backend-api)
-                ├── feat-prd.md              (from plan/feat; includes Entry Points and Architecture Delta)
-                ├── feat-arch.md             (from plan/feat-arch — exception cases only)
-                ├── feat-tasks.md            (owning file: task statuses)
-                └── feat-review.md           (from plan/feat-review)
+        └── f{n}-{feat-name}/                (slug e.g. f3-backend-api; direct child of the epic — no intermediate features/ directory)
+            ├── feat-prd.md                  (from plan/feat; includes Entry Points and Architecture Delta)
+            ├── feat-arch.md                 (from plan/feat-arch — exception cases only)
+            ├── feat-tasks.md                (owning file: task statuses)
+            └── feat-review.md               (from plan/feat-review)
 ```
 
 ## Platform integration (environment-agnostic)

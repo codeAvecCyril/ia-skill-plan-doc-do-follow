@@ -99,7 +99,7 @@ docs/
     ├── epic-status.md         ← feature statuses (owning table)
     ├── epic-arch.md
     ├── epic-review.md
-    └── features/f{n}-{feat-name}/
+    └── f{n}-{feat-name}/      ← direct child of the epic (no intermediate features/ directory)
         ├── feat-prd.md        ← includes Entry Points & Architecture Delta
         ├── feat-arch.md       ← exception cases only
         ├── feat-tasks.md      ← task statuses (owning table)

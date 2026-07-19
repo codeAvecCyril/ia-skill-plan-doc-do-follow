@@ -6,7 +6,7 @@
 
 **Inputs**: `feat-prd.md` (including its Architecture Delta) · `feat-arch.md` if it exists · `epic-arch.md` · `docs/patterns/` · repository instruction file(s) (see Platform integration in SKILL.md).
 
-**Outputs**: `features/{feat-slug}/feat-tasks.md` — the owning file for task statuses.
+**Outputs**: `{feat-slug}/feat-tasks.md` (direct child of the epic directory — never under an intermediate `features/` directory) — the owning file for task statuses.
 
 ## Task quality bar
 

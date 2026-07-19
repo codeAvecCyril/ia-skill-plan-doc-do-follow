@@ -6,7 +6,7 @@
 
 **Inputs**: `epic-prd.md` · `epic-arch.md` · `docs/technical-stack.md` · `docs/ui-map.md` and `docs/design-guidelines.md` (if UI) · `docs/decisions.md`.
 
-**Outputs**: `features/{feat-slug}/feat-prd.md` · `features/{feat-slug}/feat-review.md` · updated `docs/ui-map.md` (entry point registered, if UI).
+**Outputs**: `{feat-slug}/feat-prd.md` · `{feat-slug}/feat-review.md` (both as direct children of the epic directory — never under an intermediate `features/` directory) · updated `docs/ui-map.md` (entry point registered, if UI).
 
 ## Steps
 

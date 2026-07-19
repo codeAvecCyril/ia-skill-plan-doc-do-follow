@@ -16,7 +16,7 @@ If none applies, say so, keep the Architecture Delta in `feat-prd.md` as the arc
 
 **Inputs**: `feat-prd.md` · `epic-arch.md` · `docs/technical-stack.md` · `docs/data-model.md` (if it exists).
 
-**Outputs**: `features/{feat-slug}/feat-arch.md` · updated `docs/data-model.md` and `docs/ui-map.md` if affected.
+**Outputs**: `{feat-slug}/feat-arch.md` (direct child of the epic directory — never under an intermediate `features/` directory) · updated `docs/data-model.md` and `docs/ui-map.md` if affected.
 
 ## Steps
 
