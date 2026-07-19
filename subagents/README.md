@@ -51,7 +51,7 @@ Never hardcode a model id in these files — map `model_class` at install time.
 
 ## Rules for all subagents
 
-- **Scoped context** (Invariant 14): the caller passes exactly the inputs the definition lists — never "read everything". Reviewer briefs always include the Product Spirit block and the relevant `docs/decisions.md` lines.
-- **Respect recorded decisions**: a conflict with a recorded user decision is raised as a question for the user, never applied as a change.
-- **Reviewer output format**: numbered, actionable findings in complete sentences, ordered by severity, each stating the problem, why it matters, and a concrete suggestion. No praise, no restating the document.
-- **Main agent duty**: apply each finding or record in the handoff why it was rejected.
+- **Scoped context** (Invariant 14): the caller passes exactly the inputs the definition lists — never "read everything". Reviewer briefs always include the Product Spirit block and the relevant `docs/decisions.md` lines
+- **Respect recorded decisions**: a conflict with a recorded user decision is raised as a question for the user, never applied as a change
+- **Reviewer output format**: numbered, actionable findings in complete sentences, ordered by severity, each stating the problem, why it matters, and a concrete suggestion. No praise, no restating the document
+- **Main agent duty**: apply each finding; if one is rejected and the disagreement is a genuine judgment call, surface it as a decision question for the human — otherwise drop it silently. The critic exchange itself is never replayed in review documents or handoffs (Invariant 16)

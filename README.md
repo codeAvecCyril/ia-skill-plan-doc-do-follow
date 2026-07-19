@@ -40,7 +40,7 @@ git submodule add git@github.com:codeAvecCyril/ia-skill-plan-doc-do-follow.git .
 - **Status Sync.** One deterministic, idempotent procedure recomputes every level bottom-up from document reality. Every status-changing route ends with it, and `do/sync-status` repairs any drift on demand.
 - **Epic-first architecture.** The epic architecture is the real design level. Features carry a short "Architecture Delta" in their PRD; a dedicated `feat-arch.md` exists only when explicit trigger criteria fire (new integration, new entity, new component, new security surface).
 - **Living global docs.** `docs/data-model.md` (schema truth), `docs/ui-map.md` (navigation truth), `docs/design-guidelines.md` (style contract), and `docs/decisions.md` (binding user decisions) are updated in the same change that affects them — `do/verify` enforces the data and UI gates.
-- **Reviews built for humans.** The AI auto-verifies mechanical checks and collapses them to one line; the human validates at most 10 plain-sentence decisions per review. Validated decisions are recorded and respected by every later route.
+- **Reviews built for humans.** The AI auto-verifies mechanical checks and collapses them to one line; the human validates at most 10 plain-sentence decisions per review. Validated decisions are recorded and respected by every later route. The AI↔critic deliberation stays internal — review documents and handoffs show only the final result and what the human must validate.
 - **Product Spirit.** A 5–10 sentence distillation of the product's identity sits at the top of `project-status.md` and is injected into every planning route and reviewer, so the vision never dissolves into generic AI knowledge.
 - **Model tiering.** Planning routes and reviewers assume a strong model; `plan/tasks` produces tasks a weaker model can execute without opening the PRD, verified by a self-containment check.
 - **Token economy.** `SKILL.md` is a thin router; each route's playbook loads on demand from `routes/`; document scaffolds load from `templates/`; subagent definitions load on demand from `subagents/` with scoped inputs, not "read everything"; execution subagents get self-contained task packets.
@@ -75,7 +75,7 @@ Defined in `subagents/` — one portable Markdown + YAML-frontmatter file per ag
 - **prd-critic** — vision fit, differentiating vs unnecessary features, user journey, clarity of sentences
 - **arch-critic** — data-path validity, global-architecture fit, alternatives, simplification
 - **perf-critic-backend / perf-critic-frontend** — conditional performance reviews at design time and verify time, invoked only when their trigger criteria fire (unbounded data, hot request paths, large lists, real-time flows, explicit NFRs)
-- **task-checker** — every task executable without opening the PRD (runs at `plan/tasks`)
+- **task-checker** — every task executable without opening the PRD; fails only what would actually block execution, capped at two runs after the author's self-review (runs at `plan/tasks`)
 - **feature-coder** — executes one self-contained task packet per instance (runs in `do/all-tasks` waves)
 - **ui-consistency-reviewer** — entry point reachable, style/terminology/states consistent with the design guidelines (runs at `do/verify` for UI features)
 - **doc-coherence-reviewer** — statuses, living docs, and links match reality (runs at epic completion, after `plan/change`, after `plan/migrate`)
