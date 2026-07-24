@@ -14,7 +14,7 @@
 
 1. Verify `feat-review.md` exists and read it
 2. Auto-verify the mechanical items (stories testable, criteria measurable, edge cases listed, out-of-scope defined, entry point registered in `docs/ui-map.md` for UI features); collapse to one summary line. Fix trivial gaps directly
-3. Present **Decisions requiring your validation** (max 10 plain sentences) plus open questions, blocking first
+3. Read user answers in **Decisions requiring your validation** plus open questions, blocking first
 4. Apply the feedback. If a change contradicts a recorded decision in `docs/decisions.md`, surface the conflict and ask
 5. Append validated decisions to `docs/decisions.md`
 6. Mark the review signed off

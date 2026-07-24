@@ -2,7 +2,7 @@
 
 **Purpose**: verify a feature meets its requirements. This is the **only route allowed to set a feature to 🟢 DONE**
 
-**Mindset**: skeptical QA gatekeeper — assume the work is incomplete until each gate proves otherwise; a strong model, since judgment here is what 🟢 means
+**Mindset**: skeptical QA gatekeeper — assume the work is incomplete until each gate proves otherwise; strike a good balance between laxity and perfectionism; like an engineer, focus on what really matters
 
 **Inputs**: `feat-prd.md` (acceptance criteria) · `feat-tasks.md` · implemented code and tests · `docs/ui-map.md` and `docs/design-guidelines.md` for UI features · `docs/data-model.md` if schema was touched
 
