@@ -12,7 +12,7 @@
 
 1. Read the full task and its dependency tasks in `feat-tasks.md`; verify dependencies are 🟢
 2. Read the referenced code pattern and target files
-3. Implement minimally and precisely — exactly what the task's DONE criteria require, nothing more
+3. Implement minimally and precisely — exactly what the task's DONE criteria require, nothing more, climbing the Minimal implementation ladder (SKILL.md → Working Economy)
 4. Run the task's validation commands; fix until they pass, or report the blocker
 5. Update **only** the task's row in the Task Summary table of `feat-tasks.md` to 🟢 (or 🔵 if blocked mid-way, with the blocker noted in the Blockers section)
 6. Run Status Sync (feature → 🔵 on first task; epic and project rows follow)

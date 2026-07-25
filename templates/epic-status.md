@@ -30,4 +30,7 @@ Progress: `▓▓░░░░░░░░` {n}/{total} tasks
 
 ## Changelog
 
-- {date}: {what changed}
+<!-- Milestones only (feature verified, scope change) — routine history lives in git.
+     Most epics need only a handful of lines. -->
+
+- {date}: {milestone}

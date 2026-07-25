@@ -28,7 +28,8 @@
 
 <!-- Max 10 items. Each is a complete, self-contained sentence the reviewer can
      confirm or reject WITHOUT opening another document. Validated decisions are
-     appended to docs/decisions.md. -->
+     appended to docs/decisions.md. Stakeholder answers are recorded verbatim and
+     applied as written — never rewritten, never re-asked. -->
 
 1. {Plain-sentence decision statement}. **Confirm?**
 2. {Plain-sentence decision statement}. **Confirm?**

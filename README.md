@@ -43,9 +43,10 @@ git submodule add git@github.com:codeAvecCyril/ia-skill-plan-doc-do-follow.git .
 - **Reviews built for humans.** The AI auto-verifies mechanical checks and collapses them to one line; the human validates at most 10 plain-sentence decisions per review. Validated decisions are recorded and respected by every later route. The AI↔critic deliberation stays internal — review documents and handoffs show only the final result and what the human must validate.
 - **Product Spirit.** A 5–10 sentence distillation of the product's identity sits at the top of `project-status.md` and is injected into every planning route and reviewer, so the vision never dissolves into generic AI knowledge.
 - **Model tiering.** Planning routes and reviewers assume a strong model; `plan/tasks` produces tasks a weaker model can execute without opening the PRD, verified by a self-containment check.
-- **Token economy.** `SKILL.md` is a thin router; each route's playbook loads on demand from `routes/`; document scaffolds load from `templates/`; subagent definitions load on demand from `subagents/` with scoped inputs, not "read everything"; execution subagents get self-contained task packets.
+- **Token economy.** `SKILL.md` is a thin router; each route's playbook loads on demand from `routes/`; document scaffolds load from `templates/`; subagent definitions load on demand from `subagents/` with scoped inputs, not "read everything"; execution subagents get self-contained task packets. A **Working Economy** section governs the rest: LSP-first navigation and CLI output filters on the input side (`do/init` sets them up), diff-style terse output, a minimal-implementation ladder for all coding, and process-free documents whose changelogs record milestones only.
+- **Subagent economy.** Every spawn passes a cost gate (skip it and check inline when the brief would cost more than the work) and a precise brief stating the checks and the standards the work was built against. Critics converge by contract: one run per document, one scoped re-run maximum on blocking findings, never a third — no review loops.
 
-## 16 Routes, 2 Phases
+## 17 Routes, 2 Phases
 
 **Plan Phase**:
 - `plan/proj` — Extract epics from product vision, bootstrap living docs
@@ -61,9 +62,10 @@ git submodule add git@github.com:codeAvecCyril/ia-skill-plan-doc-do-follow.git .
 - `plan/migrate` — One-shot migration of a v2-documented project to the v3 structure
 
 **Do Phase**:
+- `do/init` — Set up token-saving tooling once per project (LSP servers, CLI output filters like `rtk`/`snip`, optional code-graph index)
 - `do/task` — Implement a task
-- `do/all-tasks` — Implement all feature tasks in parallel waves
-- `do/verify` — Verify completion (the only route that sets 🟢 DONE)
+- `do/all-tasks` — Implement all feature tasks in parallel waves, then run the verification gates inline (no separate `do/verify` pass)
+- `do/verify` — Verify completion when tasks were run one at a time (the verification gates are the only path to 🟢 DONE)
 - `do/sync-status` — Recompute all statuses from reality, repair drift
 - `do/memorize` — Document patterns and best practices
 
@@ -77,7 +79,7 @@ Defined in `subagents/` — one portable Markdown + YAML-frontmatter file per ag
 - **perf-critic-backend / perf-critic-frontend** — conditional performance reviews at design time and verify time, invoked only when their trigger criteria fire (unbounded data, hot request paths, large lists, real-time flows, explicit NFRs)
 - **task-checker** — every task executable without opening the PRD; fails only what would actually block execution, capped at two runs after the author's self-review (runs at `plan/tasks`)
 - **feature-coder** — executes one self-contained task packet per instance (runs in `do/all-tasks` waves)
-- **ui-consistency-reviewer** — entry point reachable, style/terminology/states consistent with the design guidelines (runs at `do/verify` for UI features)
+- **ui-consistency-reviewer** — entry point reachable, style/terminology/states consistent with the design guidelines (runs at the verification gates for UI features with a non-trivial surface; small surfaces are checked inline)
 - **doc-coherence-reviewer** — statuses, living docs, and links match reality (runs at epic completion, after `plan/change`, after `plan/migrate`)
 
 Each route also opens with a one-line **Mindset** that specializes the principal agent (product strategist, staff architect, orchestrator, skeptical QA gatekeeper, …) without any platform-specific model switching.
@@ -120,7 +122,7 @@ Statuses are **derived, not maintained**: the Status Model in `SKILL.md` defines
 
 ## Typical Usage
 
-**New project:** `plan/proj → plan/epic → plan/epic-arch → plan/feat → plan/tasks → do/task → do/verify`
+**New project:** `do/init → plan/proj → plan/epic → plan/epic-arch → plan/feat → plan/tasks → do/all-tasks` (or `do/task → … → do/verify` one task at a time)
 
 **New feature on a shipped epic:** `plan/change` (classifies, reopens statuses, routes to `plan/feat`)
 
@@ -134,7 +136,8 @@ Run `plan/migrate` once — it works even with epics and features half implement
 
 ---
 
-**Version**: 3.1 (single-source status, scope changes, v2 migration, living docs, token-optimized routing, portable subagent definitions in `subagents/`, conditional performance critics, per-route Mindset)
+**Version**: 3.2 (single-source status, scope changes, v2 migration, living docs, portable subagent definitions in `subagents/`, conditional performance critics, per-route Mindset, Working Economy: subagent cost gate and convergence, inline verification in `do/all-tasks`, minimal-implementation ladder, terse output style, `do/init` tooling setup)
+
 **License**: Apache-2.0 — see [LICENSE](LICENSE)
 
 **The philosophy**: Plan well, document clearly, execute focused, follow up consistently. Build great products.

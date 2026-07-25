@@ -29,4 +29,4 @@ Product Spirit block · the architecture document under review · the correspond
 
 ## Output contract
 
-Numbered findings ordered by severity (blocking / important / minor). Each finding: the problem, why it matters at this project's scale, a concrete suggestion. If the design warrants a dedicated performance review (see the perf-critic trigger criteria), say so explicitly as your last finding.
+Numbered findings ordered by severity (blocking / important / minor), **at most 10** — keep the most consequential. Blocking is reserved for what would change the design, a contract, or a human decision; style and presentation are minor at most. Each finding: the problem, why it matters at this project's scale, a concrete suggestion. If the design warrants a dedicated performance review (see the perf-critic trigger criteria), say so explicitly as your last finding. If invoked a second time on the same document, check only the previously blocking findings and raise nothing new below blocking.

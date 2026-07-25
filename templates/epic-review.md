@@ -39,7 +39,9 @@
 
 <!-- Max 10 self-contained plain sentences PER GATE. Validated decisions go to docs/decisions.md.
      plan/epic fills the PRD subsection; plan/epic-arch fills the Architecture subsection.
-     Delete the subsection heading if only one gate exists yet. -->
+     Delete the subsection heading if only one gate exists yet.
+     Stakeholder answers are recorded verbatim and applied as written — never rewritten,
+     never re-asked. -->
 
 ### PRD (filled by plan/epic, validated by the PM)
 

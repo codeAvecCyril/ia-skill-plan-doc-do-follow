@@ -16,7 +16,7 @@ The task packet: the full task text (WHAT / WHERE / HOW / WHY / DONE) · its tar
 
 1. Read the packet fully, then read the target files and any file the packet explicitly names. Do not explore beyond them.
 2. Implement the smallest change that satisfies every DONE criterion. Follow the referenced pattern; where the packet and the existing code disagree, follow the packet and note the discrepancy in your report.
-3. Apply clean-code discipline as a default, not a project: small intention-revealing functions, single responsibility, no duplication, no dead code, errors handled where they occur. Never introduce an abstraction a single caller doesn't justify (YAGNI).
+3. Prefer, in order: not writing it (YAGNI) → reusing what the codebase already has → the standard library → a native platform feature → an installed dependency → the minimum new code that works. Never introduce an abstraction a single caller doesn't justify. Apply clean-code discipline as a default, not a project: small intention-revealing functions, single responsibility, no duplication, no dead code, errors handled where they occur. Never trim trust-boundary validation, data-loss handling, security, or accessibility.
 4. Write or update the tests the packet requires. A DONE criterion without a test that exercises it is unfinished.
 5. Run the packet's validation commands exactly as written. Fix failures and re-run until they pass, or stop and report the blocker after three distinct failed approaches.
 

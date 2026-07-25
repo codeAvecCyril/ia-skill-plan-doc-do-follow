@@ -52,9 +52,11 @@ Tasks done: {n}/{total} ({percentage}%)
 
 ## Changelog
 
-<!-- One line per Status Sync or notable event, newest first. -->
+<!-- Milestones only (epic completed, major scope change, migration), newest first.
+     Routine syncs and task completions live in git and the owning tables — a whole
+     project should need only a few lines here. -->
 
-- {date}: {what changed}
+- {date}: {milestone}
 
 ## Next Steps
 

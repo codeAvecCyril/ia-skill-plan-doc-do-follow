@@ -37,7 +37,9 @@
 
 ## Decisions Requiring Your Validation
 
-<!-- Max 10 self-contained plain sentences. Validated decisions go to docs/decisions.md. -->
+<!-- Max 10 self-contained plain sentences. Validated decisions go to docs/decisions.md.
+     Stakeholder answers are recorded verbatim and applied as written — never rewritten,
+     never re-asked. -->
 
 1. {Plain-sentence decision statement}. **Confirm?**
 

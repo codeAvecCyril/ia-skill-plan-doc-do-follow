@@ -23,4 +23,4 @@ Product Spirit block · the feature PRD's UI Requirements and Entry Points & Nav
 
 ## Output contract
 
-Numbered findings ordered by severity (blocking / important / minor), each citing the file and the guideline or sibling screen it conflicts with, plus a concrete fix. End with a one-line verdict: **PASS** or **FAIL (n blocking)** — `do/verify` uses this as its UI gate.
+Numbered findings ordered by severity (blocking / important / minor), **at most 10** — keep the most consequential. Blocking is reserved for unreachable entry points, missing/broken states, and accessibility failures — never pixel-level polish. Each finding cites the file and the guideline or sibling screen it conflicts with, plus a concrete fix. End with a one-line verdict: **PASS** or **FAIL (n blocking)** — the verification gates use this as the UI gate.

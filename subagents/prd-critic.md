@@ -29,4 +29,4 @@ Product Spirit block · the PRD under review · its parent document (epic-brief 
 
 ## Output contract
 
-Numbered findings ordered by severity (blocking / important / minor). Each finding is one to three complete sentences: the problem, why it matters, a concrete suggestion. No praise, no summary of the document, no finding without a suggestion. End with the single most valuable simplification if the author could apply only one.
+Numbered findings ordered by severity (blocking / important / minor), **at most 10** — keep the most consequential. Blocking is reserved for what would change scope, behavior, or a stakeholder decision; wording and style are minor at most. Each finding is one to three complete sentences: the problem, why it matters, a concrete suggestion. No praise, no summary of the document, no finding without a suggestion. End with the single most valuable simplification if the author could apply only one. If invoked a second time on the same document, check only the previously blocking findings and raise nothing new below blocking.

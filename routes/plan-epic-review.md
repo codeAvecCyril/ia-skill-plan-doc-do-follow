@@ -17,7 +17,7 @@
 3. Present **Decisions requiring your validation** (max 10 plain sentences) plus open questions, blocking first:
    - prd: scope, priorities, user journeys, success criteria, out of scope
    - arch: end-to-end data path, API contracts, data model choices, technology choices, security/performance trade-offs
-4. Apply the feedback. If a change contradicts a recorded decision in `docs/decisions.md`, surface the conflict and ask
+4. Apply the answers **as written** — record them verbatim, never paraphrase, never re-ask an answered question (if an answer is genuinely ambiguous, ask only the clarification). If a change contradicts a recorded decision in `docs/decisions.md`, surface the conflict and ask
 5. Append validated decisions to `docs/decisions.md`
 6. Mark the review signed off; if major changes were requested, note it — the derived status will reflect document reality via Status Sync
 7. Run Status Sync. Handoff: after prd approval → `plan/epic-arch E{n}`; after arch approval → `plan/feat E{n} F1`
