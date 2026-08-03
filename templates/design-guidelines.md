@@ -2,10 +2,9 @@
 
 > **Last Updated**: {date}
 
-<!-- LIVING DOC — the UI style contract every feature must follow; the UI Consistency
-     Reviewer checks implementations against it at do/verify.
-     If the project already has a design system, this file is a SHORT pointer to it
-     plus any project-specific rules — do not duplicate it. -->
+<!-- LIVING DOC — the UI style contract; the ui-consistency-reviewer checks against it
+     at do/verify. If a design system exists, this file is a SHORT pointer to it plus
+     project-specific rules — never a duplicate. -->
 
 ## Design System Reference
 

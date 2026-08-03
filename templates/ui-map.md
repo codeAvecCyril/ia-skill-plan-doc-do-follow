@@ -2,9 +2,8 @@
 
 > **Last Updated**: {date}
 
-<!-- LIVING DOC — the single global truth for how users navigate the application.
-     Every UI feature MUST register its entry point here when its PRD is written
-     (plan/feat step 3); do/verify checks the shipped feature matches this map. -->
+<!-- LIVING DOC — single global truth for navigation. Every UI feature registers its
+     entry point here at PRD time (plan/feat); do/verify checks shipped reality matches. -->
 
 ## Navigation Structure
 

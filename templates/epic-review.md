@@ -37,11 +37,9 @@
 
 ## Decisions Requiring Your Validation
 
-<!-- Max 10 self-contained plain sentences PER GATE. Validated decisions go to docs/decisions.md.
-     plan/epic fills the PRD subsection; plan/epic-arch fills the Architecture subsection.
-     Delete the subsection heading if only one gate exists yet.
-     Stakeholder answers are recorded verbatim and applied as written — never rewritten,
-     never re-asked. -->
+<!-- Max 10 self-contained plain sentences PER GATE; validated decisions go to docs/decisions.md.
+     plan/epic fills PRD; plan/epic-arch fills Architecture; delete a heading with no gate yet.
+     Answers are recorded verbatim and applied as written — never rewritten, never re-asked. -->
 
 ### PRD (filled by plan/epic, validated by the PM)
 
