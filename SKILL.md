@@ -94,7 +94,7 @@ Run at the end of any route that changed a status, or standalone via `do/sync-st
 
 1. Read the Task Summary tables of the affected feature(s) (`do/sync-status`: all features of all epics)
 2. Recompute each feature's status and progress with the derivation rules; update its row in `epic-status.md`
-3. Recompute each affected epic's status and progress; update its row, the Progress section, and the pie chart in `docs/project-status.md` (changelogs record milestones only — see Document style)
+3. Recompute each affected epic's status and progress; update its row, the Progress section, and the pie chart in `docs/project-status.md`. Status Sync itself never writes a changelog entry — only the events named by the changelog hard rule (Document style) get one, written by the route that produced the milestone
 4. Report any drift found (stored status ≠ derived) in the handoff
 
 The procedure is deterministic and idempotent: running it twice changes nothing.
@@ -171,7 +171,9 @@ Never on the chopping block: trust-boundary validation, data-loss handling, secu
 
 - State decisions and facts, never the process that produced them — "the reviewer suggested…", "after discussion we changed…" never appear in a document
 - Justify a choice only where a future reader needs the why (an architecture trade-off, a scope cut): one or two sentences, no soothing rhetoric
-- Changelogs record milestones only (epic completed, scope change, migration) — routine history lives in git, statuses live in the owning tables
+- **Changelog hard rule** — an entry is a single line, `{date}: {fact}`, 25 words maximum. Eligible events only: project changelog — epic completed, major scope change, migration; epic changelog — feature verified 🟢, scope change. Every other event (tasks generated, PRD drafted or approved, wave/task completed, status sync, drift repair) gets **no entry at all**: routine history lives in git, statuses live in the owning tables
+- A changelog entry never contains: critic/subagent exchanges (Invariant 16), task lists or dependency ordering, gate-by-gate results, progress numbers, rationale, or `Next:` commands (those belong to the handoff only)
+- **Existing entries are not precedent**: when a document's changelog already contains long or process-styled entries, they are legacy — still write only the single eligible line, or nothing. Matching the surrounding style instead of this rule is the exact failure this rule exists to stop
 
 ## File Organization
 

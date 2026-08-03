@@ -52,11 +52,14 @@ Tasks done: {n}/{total} ({percentage}%)
 
 ## Changelog
 
-<!-- Milestones only (epic completed, major scope change, migration), newest first.
-     Routine syncs and task completions live in git and the owning tables — a whole
-     project should need only a few lines here. -->
+<!-- HARD RULE — milestones only: epic completed, major scope change, migration.
+     Newest first, one line per entry, ≤25 words. Never: tasks generated, PRD
+     drafted/approved, feature-level events, critic findings, "Next:" commands.
+     A whole project should need only a few lines here — everything else lives in
+     git and the owning tables. If existing entries below violate this, they are
+     legacy — do NOT match them. -->
 
-- {date}: {milestone}
+- {date}: E{n} {epic-name} completed 🟢
 
 ## Next Steps
 

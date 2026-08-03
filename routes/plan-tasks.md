@@ -27,4 +27,4 @@ Write every task to pass them on the first draft:
 5. Generate `feat-tasks.md` from `templates/feat-tasks.md`, writing each task against the quality bar. The **Task Summary table is the single source of truth for task status** — per-task sections carry no status line. Solo mode: omit effort/owner columns
 6. **Self-review before checking**: re-read every task against the five checks and fix gaps yourself — the checker is a safety net, not the editor
 7. Run the **task-checker** subagent on `feat-tasks.md`. Fix every FAIL, then re-run **at most once**, passing only the previously failing tasks. If anything still fails after the second run, fix it against the checker's quoted gaps and proceed — note it in the handoff. Never loop further; MINOR notes are optional polish, not re-run triggers
-8. Run Status Sync (feature 🟣; epic may follow). Handoff: `do/task E{n} F{n} T1` (first unblocked task)
+8. Run Status Sync (feature 🟣; epic may follow). **No changelog entry** — task generation is routine, not a milestone (changelog hard rule); the checker exchange in particular never appears anywhere (Invariant 16). Handoff: `do/task E{n} F{n} T1` (first unblocked task)

@@ -21,6 +21,6 @@
 
 1. Read `feat-prd.md` acceptance criteria and review the implemented code and tests
 2. Run gates 1–6 in order; fix straightforward issues (lint, doc sync) directly
-3. If all gates pass: set the feature to 🟢 and run Status Sync. If the epic thereby completes, run the **doc-coherence-reviewer** subagent and fix reported drift
+3. If all gates pass: set the feature to 🟢 and run Status Sync. Changelog per the hard rule: one line ≤25 words in the epic changelog (`{date}: F{n} {name} verified 🟢`), plus one line in the project changelog **only if the epic thereby completes** — never gate results, fix narration, or `Next:` commands. If the epic completes, run the **doc-coherence-reviewer** subagent and fix reported drift
 4. If a gate fails: keep the feature 🔵, list each gap as a complete sentence with what is needed to close it, and run Status Sync
 5. Handoff: `plan/feat E{n} F{n+1}`, `plan/epic E{n+1}` if the epic is done, or the gap list with the recommended fixing route

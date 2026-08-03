@@ -18,4 +18,4 @@
 4. Apply the answers **as written** — record them verbatim, never paraphrase, never re-ask an answered question (if an answer is genuinely ambiguous, ask only the clarification). If a change contradicts a recorded decision in `docs/decisions.md`, surface the conflict and ask
 5. Append validated decisions to `docs/decisions.md`
 6. Mark the review signed off
-7. Run Status Sync. Handoff: `plan/tasks E{n} F{n}` (default), or `plan/feat-arch E{n} F{n}` if the Architecture Delta flagged trigger criteria
+7. Run Status Sync. **No changelog entry** — a review sign-off is routine, not a milestone (changelog hard rule); the decisions themselves live in `docs/decisions.md`. Handoff: `plan/tasks E{n} F{n}` (default), or `plan/feat-arch E{n} F{n}` if the Architecture Delta flagged trigger criteria

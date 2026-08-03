@@ -30,7 +30,9 @@ Progress: `▓▓░░░░░░░░` {n}/{total} tasks
 
 ## Changelog
 
-<!-- Milestones only (feature verified, scope change) — routine history lives in git.
-     Most epics need only a handful of lines. -->
+<!-- HARD RULE — milestones only: feature verified 🟢, scope change. One line per
+     entry, ≤25 words. Never: tasks generated, PRD drafted/approved, wave progress,
+     critic findings, gate results, "Next:" commands. Routine history lives in git.
+     If existing entries below violate this, they are legacy — do NOT match them. -->
 
-- {date}: {milestone}
+- {date}: F{n} {feature-name} verified 🟢 ({n}/{n} tasks)
