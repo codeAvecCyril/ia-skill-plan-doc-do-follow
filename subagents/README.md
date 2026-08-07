@@ -4,7 +4,7 @@ One file per subagent. Caller route names subagent · principal reads file · as
 
 ## Portable format
 
-Each definition: **Markdown with YAML frontmatter** — shape major platforms converge on (Claude Code `.claude/agents/*.md`, GitHub Copilot `.github/agents/*.agent.md`, opencode `.opencode/agent/*.md`). Only two frontmatter fields universal; only those required:
+Each definition: **Markdown with YAML frontmatter** — shape major platforms converge on (Claude Code `.claude/agents/*.md`, GitHub Copilot `.github/agents/*.agent.md`, Cursor `.cursor/agents/*.md`, OpenCode `.opencode/agents/*.md`). Only two frontmatter fields universal; only those required:
 
 ```yaml
 ---
@@ -25,15 +25,30 @@ capabilities: read-only | read-write | read-run-write   # advisory: what it may 
 
 ## Installing natively (optional)
 
-Files also work as drop-in native agents. When copying into platform registry, add platform-specific keys next to portable ones:
+Prefer **`do/init`** — detects platform(s), asks install y/n, proposes critic/standard model tiers (optional per-agent override), writes native frontmatter per target, records `Native agents:` in Tooling. Manual copy only if skipping `do/init`. Full write rules + **Model Auto vs agent Auto**: `routes/do-init.md`
 
-| Platform | Location | Add |
+| Platform | Path | Native keys (keep `description`; `name` where applicable) |
 | --- | --- | --- |
-| Claude Code | `.claude/agents/{name}.md` | `tools:` (e.g. `Read, Grep, Glob` for read-only), `model:` mapped from `model_class` |
-| GitHub Copilot | `.github/agents/{name}.agent.md` | `tools:` in Copilot vocabulary; rename file to `.agent.md` |
-| opencode | `.opencode/agent/{name}.md` | `mode: subagent`, `tools:`/`permission:` blocks |
+| Cursor | `.cursor/agents/{name}.md` | `model` (`inherit` only — **not** `auto`), `readonly`, `is_background` |
+| Claude Code | `.claude/agents/{name}.md` | `model` (`inherit` / aliases), `tools` (comma allowlist) |
+| GitHub Copilot | `.github/agents/{name}.agent.md` | omit `model` for session Auto · optional pin · `tools` (YAML array) · optional `disable-model-invocation` |
+| OpenCode | `.opencode/agents/{name}.md` | `mode: subagent` · omit `model` to follow parent · `permission` map |
 
-Never hardcode model id in these files — map `model_class` at install time
+### Capability → tools / readonly / permission
+
+| Portable `capabilities` | Cursor | Claude Code `tools` | Copilot `tools` | OpenCode `permission` |
+| --- | --- | --- | --- | --- |
+| `read-only` | `readonly: true` | `Read, Grep, Glob` | `['read', 'search', 'codebase']` | `edit: deny` · `bash: deny` · `task: deny` |
+| `read-write` | `readonly: false` | `Read, Grep, Glob, Edit, Write` | `['read', 'search', 'codebase', 'edit']` | `edit: allow` · `bash: deny` · `task: deny` |
+| `read-run-write` | `readonly: false` | `Read, Grep, Glob, Edit, Write, Bash` | `['read', 'search', 'codebase', 'edit', 'terminal']` | `edit: allow` · `bash: allow` · `task: deny` |
+
+### Tiers
+
+- **critics** (`model_class: reasoning`): `prd-critic`, `arch-critic`, `perf-critic-backend`, `perf-critic-frontend`, `ui-consistency-reviewer`
+- **standard** (`model_class: standard`): `repo-scout`, `task-checker`, `feature-coder`, `doc-coherence-reviewer`
+
+Drop `model_class` / `thinking` / `capabilities` from every native file. Never hardcode vendor model ids in portable skill files — map at install time. Never write Cursor `model: auto`. Never use Copilot `tools: ['*']` or omit tools for `read-only` agents
+
 
 ## Roster
 

@@ -32,7 +32,7 @@ Match intent → first route wins → read `routes/a-b.md` (route `a/b`) → fol
 
 | Intent | Route | Params |
 | ------ | ----- | ------ |
-| Set up token-saving tooling (LSP, output filters) | `do/init` | |
+| Set up token-saving tooling (LSP, filters, economy, native agents) | `do/init` | |
 | Execute one task | `do/task` | E{n} F{n} T{n} |
 | Execute all feature tasks, verify inline | `do/all-tasks` | E{n} F{n} |
 | Verify completed work (task-at-a-time path) | `do/verify` | E{n} F{n} |

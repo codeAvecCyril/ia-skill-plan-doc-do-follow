@@ -46,7 +46,7 @@ git submodule add git@github.com:codeAvecCyril/ia-skill-plan-doc-do-follow.git .
 - **Token economy.** `SKILL.md` is a thin router; each route's playbook loads on demand from `routes/`; document scaffolds load from `templates/`; subagent definitions load on demand from `subagents/` with scoped inputs, not "read everything"; execution subagents get self-contained task packets. A **Working Economy** section governs the rest: LSP-first navigation and CLI output filters on the input side (`do/init` sets them up), **inline-first spawn gates** (prefer principal scout-lite over spawning `repo-scout` when context already holds the answer), Tooling injection into every subagent brief, return-payload caps, a per-project **Subagent economy** profile (`strict` | `balanced` | `quality`) stored in the repo instruction file Tooling section, caveman-concise agent output and agent-facing docs, a minimal-implementation ladder for all coding, and process-free documents whose changelogs record milestones only. Agent-facing files stay instruction-dense — rationale lives here in the README, for humans
 - **Changelog hard rule.** Status-doc changelogs are milestone journals, not activity logs: one line per entry (≤25 words), and only for epic completion / feature verification / scope changes / migration. Everything else — task generation, PRD drafts and approvals, execution waves, critic exchanges — lives in git history and the owning status tables. The rule exists because models copy the style of whatever entries a document already contains; the templates and live docs carry a guard comment, and existing verbose entries are explicitly declared non-precedent
 - **Autonomous execution.** `do/all-tasks` runs its waves start-to-finish without pausing to ask "continue?" between waves — the subagent architecture keeps the orchestrator's context small, so there is nothing to protect by pausing. It stops mid-run only for a genuine blocker (a task unfixable from its packet, or a contradiction needing a user decision)
-- **Subagent economy.** Every prospective spawn runs an ordered inline-first gate (facts in context → ≤5 local tool calls → brief too big → cosmetic → else spawn). `repo-scout` has a stricter bar and a scout-lite checklist the principal can run themselves. Spawned agents receive the Tooling one-liner (`rtk`/LSP/economy profile), question/tool caps, and return-size caps (scout ≤15 lines, critics ≤25). Profile lives in the repo **Tooling** section. Critics still converge by contract: one run per document, one scoped re-run maximum on blocking findings, never a third
+- **Subagent economy.** Every prospective spawn runs an ordered inline-first gate (facts in context → ≤5 local tool calls → brief too big → cosmetic → else spawn). `repo-scout` has a stricter bar and a scout-lite checklist the principal can run themselves. Spawned agents receive the Tooling one-liner (`rtk`/LSP/economy profile), question/tool caps, and return-size caps (scout ≤15 lines, critics ≤25). Profile lives in the repo **Tooling** section. `do/init` can optionally install/sync platform-native agents (Cursor/Claude) from portable defs with critic/standard model tiers. Critics still converge by contract: one run per document, one scoped re-run maximum on blocking findings, never a third
 
 ## 17 Routes, 2 Phases
 
@@ -64,7 +64,7 @@ git submodule add git@github.com:codeAvecCyril/ia-skill-plan-doc-do-follow.git .
 - `plan/migrate` — One-shot migration of a v2-documented project to the v3 structure
 
 **Do Phase**:
-- `do/init` — Set up token-saving tooling once per project (LSP servers, CLI output filters like `rtk`/`snip`, Subagent economy profile, optional code-graph index)
+- `do/init` — Set up token-saving tooling once per project (LSP, CLI filters like `rtk`/`snip`, Subagent economy profile, optional native agent install/sync into `.cursor/agents` or `.claude/agents`, optional code-graph index)
 - `do/task` — Implement a task
 - `do/all-tasks` — Implement all feature tasks in parallel waves, then run the verification gates inline (no separate `do/verify` pass)
 - `do/verify` — Verify completion when tasks were run one at a time (the verification gates are the only path to 🟢 DONE)
@@ -138,8 +138,7 @@ Run `plan/migrate` once — it works even with epics and features half implement
 
 ---
 
-**Version**: 3.4 (3.3 plus: caveman-concise Document style for agent-facing files; PRDs and user-centric docs stay full prose; agent playbooks/templates 
-compressed, inline-first spawn gate, Subagent economy profile in Tooling, repo-scout tool/return caps + scout-lite, Tooling injection into briefs)
+**Version**: 3.6 (3.5 plus: `do/init` native-agent install/sync for Cursor, Claude Code, GitHub Copilot, OpenCode; Model Auto vs agent Auto clarified)
 
 **License**: Apache-2.0 — see [LICENSE](LICENSE)
 
