@@ -12,7 +12,7 @@
 
 ## Automated Checks (verified by the AI)
 
-> ✅ {n}/{total} structural checks passed — {one line listing any failures}.
+> ✅ {n}/{total} structural checks passed — {one line listing any failures}
 
 <details><summary>Details</summary>
 
@@ -26,9 +26,9 @@
 
 ## Decisions Requiring Your Validation
 
-<!-- Max 10 complete, self-contained sentences confirmable without opening another document;
-     validated decisions go to docs/decisions.md. Answers are recorded verbatim and applied
-     as written — never rewritten, never re-asked. -->
+<!-- Max 10 complete self-contained sentences confirmable without opening another doc;
+     validated decisions → docs/decisions.md. Answers recorded verbatim, applied as
+     written — never rewritten, never re-asked -->
 
 1. {Plain-sentence decision statement}. **Confirm?**
 2. {Plain-sentence decision statement}. **Confirm?**
@@ -55,5 +55,5 @@ Legend: ⚪ Pending, ⚡ In Review, 🟢 Approved, 🔴 Needs Changes
 
 ## Next Steps
 
-- If approved: `@plan/epic E{n}` for the highest-priority epic.
-- If needs rework: address the items above, then resubmit.
+- If approved: `@plan/epic E{n}` for the highest-priority epic
+- If needs rework: address the items above, then resubmit

@@ -2,13 +2,13 @@
 
 > **Last Updated**: {date}
 
-<!-- LIVING DOC — the UI style contract; the ui-consistency-reviewer checks against it
-     at do/verify. If a design system exists, this file is a SHORT pointer to it plus
-     project-specific rules — never a duplicate. -->
+<!-- LIVING DOC — UI style contract; ui-consistency-reviewer checks against it at
+     do/verify. If design system exists, this file = SHORT pointer to it plus
+     project-specific rules — never a duplicate -->
 
 ## Design System Reference
 
-{Link to the existing design system / component library docs, if any.}
+{Link to existing design system / component library docs, if any}
 
 ## Tokens & Foundations
 
@@ -26,7 +26,7 @@
 
 ## Standard States
 
-Every screen implements: empty state · loading state · error state — styled per {reference}.
+Every screen implements: empty state · loading state · error state — styled per {reference}
 
 ## Terminology
 
@@ -36,4 +36,4 @@ Every screen implements: empty state · loading state · error state — styled 
 
 ## Accessibility Baseline
 
-- Keyboard navigable, visible focus states, contrast ≥ 4.5:1, touch targets ≥ 44px.
+- Keyboard navigable, visible focus states, contrast ≥ 4.5:1, touch targets ≥ 44px

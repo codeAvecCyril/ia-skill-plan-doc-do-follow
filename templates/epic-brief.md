@@ -6,11 +6,11 @@
 >
 > **Priority**: P{0|1|2}
 
-<!-- Delete sections that do not apply. Never write "N/A". -->
+<!-- Delete unused sections. Never write "N/A" -->
 
 ## Vision
 
-One paragraph describing what this epic is building and why it matters to the product.
+One paragraph describing what this epic is building and why it matters to the product
 
 ## Business Goal
 

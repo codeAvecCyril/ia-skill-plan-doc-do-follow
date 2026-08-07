@@ -12,7 +12,7 @@
 
 ## Automated Checks (verified by the AI)
 
-> ✅ {n}/{total} structural checks passed — {one line listing any failures}.
+> ✅ {n}/{total} structural checks passed — {one line listing any failures}
 
 <details><summary>Details — PRD review</summary>
 
@@ -37,9 +37,9 @@
 
 ## Decisions Requiring Your Validation
 
-<!-- Max 10 self-contained plain sentences PER GATE; validated decisions go to docs/decisions.md.
-     plan/epic fills PRD; plan/epic-arch fills Architecture; delete a heading with no gate yet.
-     Answers are recorded verbatim and applied as written — never rewritten, never re-asked. -->
+<!-- Max 10 self-contained plain sentences PER GATE; validated decisions → docs/decisions.md
+     plan/epic fills PRD; plan/epic-arch fills Architecture; delete heading with no gate yet
+     Answers recorded verbatim, applied as written — never rewritten, never re-asked -->
 
 ### PRD (filled by plan/epic, validated by the PM)
 
@@ -73,4 +73,4 @@ Legend: ⚪ Pending, ⚡ In Review, 🟢 Approved, 🔴 Needs Changes
 
 - PRD approved: `@plan/epic-arch E{n}`
 - Architecture approved: `@plan/feat E{n} F1`
-- Needs rework: address the items above, then resubmit.
+- Needs rework: address the items above, then resubmit

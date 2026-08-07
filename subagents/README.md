@@ -1,45 +1,45 @@
 # Subagent Definitions
 
-One file per subagent. The calling route names the subagent; the principal agent reads its file, assembles the scoped inputs the file lists, and spawns a generic subagent with the file body as its system prompt plus the inputs as its working context. This works on every platform that can spawn a task/subagent — no platform-specific agent registry is required.
+One file per subagent. Caller route names subagent · principal reads file · assembles scoped inputs listed · spawns generic subagent with file body as system prompt + inputs as context. Works on any platform that spawns task/subagent — no platform-specific agent registry required
 
 ## Portable format
 
-Each definition is **Markdown with YAML frontmatter** — the shape every major platform has converged on (Claude Code `.claude/agents/*.md`, GitHub Copilot `.github/agents/*.agent.md`, opencode `.opencode/agent/*.md`). Only two frontmatter fields are universal, and they are the only ones we require:
+Each definition: **Markdown with YAML frontmatter** — shape major platforms converge on (Claude Code `.claude/agents/*.md`, GitHub Copilot `.github/agents/*.agent.md`, opencode `.opencode/agent/*.md`). Only two frontmatter fields universal; only those required:
 
 ```yaml
 ---
 name: kebab-case-identifier
-description: Trigger-style sentence — what it does AND when to invoke it.
+description: Trigger-style sentence — what it does AND when to invoke
 model_class: reasoning | standard   # advisory: capability class, never a model id
-thinking: deep | brief              # advisory: how much deliberation the job deserves
+thinking: deep | brief              # advisory: deliberation the job deserves
 capabilities: read-only | read-write | read-run-write   # advisory: what it may touch
 ---
 ```
 
-`model_class`, `thinking`, and `capabilities` are **advisory hints**, deliberately named so they collide with no platform's reserved keys (platforms ignore unknown frontmatter). They describe the *kind* of model and access the agent needs, never a vendor model name — model names change monthly; capability classes don't.
+`model_class`, `thinking`, `capabilities` = **advisory hints**, named to avoid platform reserved keys (platforms ignore unknown frontmatter). Describe *kind* of model and access needed — never a vendor model name. Model names change monthly; capability classes don't
 
-- `model_class: reasoning` — critics and architects: needs a strong model with real judgment.
-- `model_class: standard` — mechanical checks and packet execution: any competent coding model.
-- `thinking: deep` — enable extended thinking / high reasoning effort where the platform supports it.
-- `capabilities` — the caller must not grant more: a `read-only` critic gets no edit or execute tools.
+- `model_class: reasoning` — critics and architects: strong model with real judgment
+- `model_class: standard` — mechanical checks and packet execution: any competent coding model
+- `thinking: deep` — enable extended thinking / high reasoning effort where platform supports it
+- `capabilities` — caller must not grant more: `read-only` critic gets no edit or execute tools
 
 ## Installing natively (optional)
 
-These files also work as drop-in native agents. When copying one into a platform registry, add the platform-specific keys next to the portable ones:
+Files also work as drop-in native agents. When copying into platform registry, add platform-specific keys next to portable ones:
 
 | Platform | Location | Add |
 | --- | --- | --- |
 | Claude Code | `.claude/agents/{name}.md` | `tools:` (e.g. `Read, Grep, Glob` for read-only), `model:` mapped from `model_class` |
-| GitHub Copilot | `.github/agents/{name}.agent.md` | `tools:` in Copilot's vocabulary; rename file to `.agent.md` |
+| GitHub Copilot | `.github/agents/{name}.agent.md` | `tools:` in Copilot vocabulary; rename file to `.agent.md` |
 | opencode | `.opencode/agent/{name}.md` | `mode: subagent`, `tools:`/`permission:` blocks |
 
-Never hardcode a model id in these files — map `model_class` at install time.
+Never hardcode model id in these files — map `model_class` at install time
 
 ## Roster
 
 | Subagent | Kind | Called by |
 | --- | --- | --- |
-| `repo-scout` | research | planning routes needing ground truth from the code |
+| `repo-scout` | research | planning routes needing ground truth from code |
 | `prd-critic` | reviewer | `plan/epic`, `plan/feat` |
 | `arch-critic` | reviewer | `plan/epic-arch`, `plan/feat-arch` |
 | `perf-critic-backend` | reviewer (conditional) | `plan/epic-arch`, `plan/feat-arch`, `do/verify` |
@@ -51,9 +51,13 @@ Never hardcode a model id in these files — map `model_class` at install time.
 
 ## Rules for all subagents
 
-- **Scoped context** (Invariant 14): the caller passes exactly the inputs the definition lists — never "read everything". Reviewer briefs always include the Product Spirit block and the relevant `docs/decisions.md` lines
-- **Respect recorded decisions**: a conflict with a recorded user decision is raised as a question for the user, never applied as a change
-- **Reviewer output format**: numbered, actionable findings in complete sentences, ordered by severity, each stating the problem, why it matters, and a concrete suggestion. No praise, no restating the document, no preamble or closing summary
-- **Reviewer calibration**: flag as blocking only what would change behavior, a contract, or a human decision; style, verbosity, and formatting are minor at most. At most 10 findings — keep the most consequential
-- **Convergence**: a reviewer runs once per document; one scoped re-run maximum, limited to the previously blocking findings — new remarks on a re-run are accepted only if blocking; never a third run
-- **Main agent duty**: judge each finding by impact — apply it if consequential, drop futile or cosmetic ones silently; if one is rejected and the disagreement is a genuine judgment call, surface it as a decision question for the human. The critic exchange itself is never replayed in review documents or handoffs (Invariant 16)
+- **Scoped context** (Invariant 14): caller passes exactly inputs definition lists — never "read everything". Reviewer briefs always include Product Spirit block and relevant `docs/decisions.md` lines
+- **Tooling injection**: every brief includes Tooling one-liner from repo instruction file (CLI filter, LSP preference, `Subagent economy`). Subagent obeys it. Long-output Shell → use declared filter prefix
+- **Return-payload cap**: scout ≤15 lines · critics ≤25 lines · no preamble/summary · principal never pastes raw returns into docs
+- **Model hints**: honor `model_class` / `thinking` — never elevate above definition; prefer cheapest capable model platform allows for `standard` + `brief`
+- **Respect recorded decisions**: conflict with recorded user decision → raise as question for user, never apply as change
+- **Reviewer output format**: numbered, actionable findings, ordered by severity · each states problem, why it matters, concrete suggestion. No praise, no restating document, no preamble or closing summary
+- **Reviewer calibration**: flag as blocking only what would change behavior, contract, or human decision · style, verbosity, formatting = minor at most. At most 10 findings — keep most consequential
+- **Convergence**: reviewer runs once per document · one scoped re-run maximum, limited to previously blocking findings · new remarks on re-run accepted only if blocking · never a third run
+- **Main agent duty**: judge each finding by impact — apply if consequential, drop futile or cosmetic silently · if rejected and disagreement is genuine judgment call, surface as decision question for human. Critic exchange itself never replayed in review documents or handoffs (Invariant 16)
+- **Caller duty**: run SKILL.md inline-first before spawn; for `repo-scout` prefer scout-lite when gate says inline

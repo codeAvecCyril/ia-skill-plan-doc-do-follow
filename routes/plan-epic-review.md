@@ -1,8 +1,8 @@
 # plan/epic-review E{n} {prd|arch} — Epic Review
 
-**Purpose**: validate the epic specification (prd) or architecture (arch) with stakeholders
+**Purpose**: validate epic specification (prd) or architecture (arch) with stakeholders
 
-**Mindset**: review facilitator — protect the human's time; surface only genuine judgment calls, in plain sentences
+**Mindset**: review facilitator — protect human's time · surface only genuine judgment calls, in plain sentences
 
 **Inputs**:
 - prd: `epic-prd.md` · `epic-brief.md` · `epic-review.md`
@@ -13,9 +13,9 @@
 ## Steps
 
 1. Verify `epic-review.md` exists and read it
-2. Auto-verify the mechanical items (completeness, testable criteria, valid references, consistency with parents); collapse to one summary line. Fix trivial gaps directly
+2. Auto-verify mechanical items (completeness, testable criteria, valid references, consistency with parents); collapse to one summary line · fix trivial gaps directly
 3. Present **Decisions requiring your validation** (max 10 plain sentences) plus open questions, blocking first — prd: scope, priorities, user journeys, success criteria, out of scope; arch: data path, API contracts, data model, technology choices, trade-offs
-4. Apply the answers **as written** — record verbatim, never paraphrase, never re-ask (if ambiguous, ask only the clarification). If a change contradicts `docs/decisions.md`, surface the conflict and ask
+4. Apply answers **as written** — record verbatim, never paraphrase, never re-ask (if ambiguous, ask only clarification) · if change contradicts `docs/decisions.md`, surface conflict and ask
 5. Append validated decisions to `docs/decisions.md`
-6. Mark the review signed off
-7. Run Status Sync. No changelog entry (changelog hard rule). Handoff: prd approved → `plan/epic-arch E{n}`; arch approved → `plan/feat E{n} F1`
+6. Mark review signed off
+7. Run Status Sync · no changelog entry (changelog hard rule) · Handoff: prd approved → `plan/epic-arch E{n}`; arch approved → `plan/feat E{n} F1`

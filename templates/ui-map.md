@@ -3,7 +3,7 @@
 > **Last Updated**: {date}
 
 <!-- LIVING DOC — single global truth for navigation. Every UI feature registers its
-     entry point here at PRD time (plan/feat); do/verify checks shipped reality matches. -->
+     entry point here at PRD time (plan/feat); do/verify checks shipped reality matches -->
 
 ## Navigation Structure
 

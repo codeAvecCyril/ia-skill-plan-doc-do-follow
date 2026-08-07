@@ -1,21 +1,21 @@
 ---
 name: plan-doc-do-follow
-description: Structured product development workflow from planning through execution. Manages epics, features, and tasks with single-source-of-truth status tracking, business reviews, scope changes, and clear routing from product vision to delivery. Use when the user references plan or do commands related to project planning, documentation, execution, scope changes, status synchronization, or verification.
+description: Product workflow Plan→Doc→Do→Follow. Epics/features/tasks, single-source status, business reviews, scope change, vision→delivery routing. Use on plan/do commands for planning, docs, execution, status sync, verification
 license: Apache-2.0
 ---
 
 # Plan-Doc-Do-Follow Skill
 
-Product development workflow: **Plan** → **Doc** → **Do** → **Follow**.
+**Plan** → **Doc** → **Do** → **Follow**
 
-Use: match the user's intent to a route below (first match wins) → read `routes/a-b.md` (route `a/b`) and follow it → apply the Global Invariants and the Status Model. Load only the route file needed, the templates it references, and the subagents it invokes — never all of them.
+Match intent → first route wins → read `routes/a-b.md` (route `a/b`) → follow it → apply Global Invariants + Status Model. Load only needed route, its templates, its subagents — never all
 
 ## Routes
 
 ### Planning
 
 | Intent | Route | Params |
-| --- | --- | --- |
+| ------ | ----- | ------ |
 | Extract epics from product vision | `plan/proj` | |
 | Validate epics with stakeholders | `plan/proj-review` | |
 | Create epic PRD and tracking | `plan/epic` | E{n} |
@@ -23,15 +23,15 @@ Use: match the user's intent to a route below (first match wins) → read `route
 | Design epic architecture | `plan/epic-arch` | E{n} |
 | Create feature PRD | `plan/feat` | E{n} F{n} |
 | Validate feature spec or architecture | `plan/feat-review` | E{n} F{n} {prd\|arch} |
-| Feature architecture (exception cases only) | `plan/feat-arch` | E{n} F{n} |
-| Break a feature into tasks | `plan/tasks` | E{n} F{n} |
+| Feature architecture (exception only) | `plan/feat-arch` | E{n} F{n} |
+| Break feature into tasks | `plan/tasks` | E{n} F{n} |
 | Scope change — add/update feature or epic, even implemented | `plan/change` | description |
-| Migrate a v2-documented project to v3 (one-shot) | `plan/migrate` | |
+| Migrate v2 project docs to v3 (one-shot) | `plan/migrate` | |
 
 ### Execution
 
 | Intent | Route | Params |
-| --- | --- | --- |
+| ------ | ----- | ------ |
 | Set up token-saving tooling (LSP, output filters) | `do/init` | |
 | Execute one task | `do/task` | E{n} F{n} T{n} |
 | Execute all feature tasks, verify inline | `do/all-tasks` | E{n} F{n} |
@@ -41,115 +41,160 @@ Use: match the user's intent to a route below (first match wins) → read `route
 
 ## Global Invariants (all routes)
 
-1. **Spirit check**: stay aligned with `docs/product.md`; the Product Spirit block (top of `docs/project-status.md`) goes verbatim into every planning route's context and every reviewer brief
-2. **User's will**: decisions recorded in `docs/decisions.md` are binding; any deviation is raised as a question, never applied silently
-3. **Business first**: specification review before the next phase
-4. **Architecture check**: stay aligned with `docs/global_architecture.md` and `docs/technical-stack.md`
-5. **One fact, one file**: every status and fact has one owning file (Status Model); other documents link to it, never copy it
-6. **Plain language**: anything a human must read or validate is complete, self-contained sentences — no unexplained abbreviations
-7. **No empty scaffolding**: delete template sections that do not apply; never "N/A" or placeholders
-8. **No guessing**: on blocking ambiguity, ask before generating output; label questions blocking / important / minor
-9. **Traceability**: each document references its parent; stories ↔ requirements ↔ tasks ↔ tests stay linked
-10. **Living global docs**: `docs/data-model.md`, `docs/ui-map.md`, `docs/decisions.md` are updated in the same change that affects them, never "later"
-11. **Model tiering**: `plan/*` routes and reviewers assume a strong model; every task from `plan/tasks` must be executable by a weaker model without opening the PRD
-12. **Status Sync**: every status-changing route ends with the Status Sync procedure
-13. **Handoff format**: end every route with a short summary, current progress, the exact next command, and open questions
-14. **Scoped subagents**: subagents receive only the inputs their definition lists
-15. **Mindset per route**: adopt the working posture in the route's Mindset line
-16. **Deliberation stays internal**: critic exchanges (findings, fixes, iteration counts) never appear in documents or handoffs — the human sees only the final result and what they must validate
-17. **Economy everywhere**: the Working Economy rules apply to every route and every subagent
+1. **Spirit check**: align with `docs/product.md`; Product Spirit (top of `docs/project-status.md`) verbatim in every planning route + reviewer brief
+2. **User's will**: `docs/decisions.md` binding; deviation = question, never silent apply
+3. **Business first**: spec review before next phase
+4. **Architecture check**: align with `docs/global_architecture.md` + `docs/technical-stack.md`
+5. **One fact, one file**: status/fact has one owning file (Status Model); others link, never copy
+6. **Audience language**: human/business = complete sentences, no unexplained abbreviations; agent-facing = Document style (caveman-concise)
+7. **No empty scaffolding**: delete unused template sections; never "N/A" or placeholders
+8. **No guessing**: blocking ambiguity → ask first; label blocking / important / minor
+9. **Traceability**: each doc references parent; stories ↔ requirements ↔ tasks ↔ tests linked
+10. **Living global docs**: `docs/data-model.md`, `docs/ui-map.md`, `docs/decisions.md` updated in same change that affects them — never "later"
+11. **Model tiering**: `plan/*` + reviewers = strong model; every `plan/tasks` task executable by weaker model without opening PRD
+12. **Status Sync**: every status-changing route ends with Status Sync procedure
+13. **Handoff format**: short summary · current progress · exact next command · open questions
+14. **Scoped subagents**: only inputs their definition lists
+15. **Mindset per route**: adopt route's Mindset line
+16. **Deliberation stays internal**: critic exchanges never in docs/handoffs — human sees final result + what to validate
+17. **Economy everywhere**: Working Economy on every route and subagent
 
 ## Status Model
 
-`⚪ TODO` · `🟡 SPEC` specified · `🟣 PLAN` tasks generated · `🔵 DEV` in progress · `🟢 DONE` completed and verified.
+`⚪ TODO` · `🟡 SPEC` specified · `🟣 PLAN` tasks generated · `🔵 DEV` in progress · `🟢 DONE` completed and verified
 
 ### Ownership — single source of truth
 
-| Fact | Owning file (the ONLY place it is written) |
-| --- | --- |
+| Fact | Owning file (ONLY place written) |
+| ---- | -------------------------------- |
 | Task status | `feat-tasks.md` — Task Summary table |
 | Feature status and progress | `epic-status.md` — Feature table |
 | Epic status and progress | `docs/project-status.md` — Epic Roadmap table |
 | Project progress | `docs/project-status.md` — Progress section |
 
-There is **no `feat-status.md` file**. Per-task sections carry no status line. Mermaid diagrams are decorative: regenerated from the owning tables, never a source of truth.
+**No `feat-status.md`**. Per-task sections: no status line. Mermaid = decorative, regenerated from owning tables, never source of truth
 
 ### Derivation rules
 
-- **Feature**: no `feat-prd.md` → ⚪ · PRD exists → 🟡 · `feat-tasks.md` exists, no task beyond TODO → 🟣 · any task DEV/DONE → 🔵 · 🟢 **only** via the verification gates (`do/verify`, or the final phase of `do/all-tasks`). Tasks added to a 🟢 feature revert it to 🔵
+- **Feature**: no `feat-prd.md` → ⚪ · PRD exists → 🟡 · `feat-tasks.md` exists, no task beyond TODO → 🟣 · any task DEV/DONE → 🔵 · 🟢 **only** via verification gates (`do/verify`, or final phase of `do/all-tasks`). Tasks added to 🟢 feature → revert to 🔵
 - **Epic**: no `epic-prd.md` → ⚪ · PRD exists → 🟡 · all features ≥ 🟣 → 🟣 · any feature 🔵/🟢 (not all 🟢) → 🔵 · all 🟢 → 🟢
 - **Project**: same aggregation over epics
-- **Progress**: done tasks / total tasks (0 if no tasks), summed at epic and project level
+- **Progress**: done tasks / total tasks (0 if none), summed at epic and project level
 
 ### Status Sync procedure
 
-At the end of any status-changing route (standalone: `do/sync-status`, over all epics):
+End of any status-changing route (standalone: `do/sync-status`, all epics):
 
-1. Read the Task Summary tables of the affected feature(s)
-2. Recompute each feature's status and progress; update its row in `epic-status.md`
-3. Recompute each affected epic; update its row, the Progress section, and the pie chart in `docs/project-status.md`. Status Sync never writes a changelog entry — only the events named by the changelog hard rule (Document style) get one, written by the route that produced the milestone
-4. Report any drift (stored ≠ derived) in the handoff
+1. Read Task Summary tables of affected feature(s)
+2. Recompute each feature status + progress; update row in `epic-status.md`
+3. Recompute each affected epic; update its row, Progress section, pie chart in `docs/project-status.md`. Status Sync never writes changelog — only events named by changelog hard rule (Document style), written by route that produced milestone
+4. Report drift (stored ≠ derived) in handoff
 
-Deterministic and idempotent.
+Deterministic and idempotent
 
 ## Subagents
 
-Definitions in `subagents/` — one file per agent (format: `subagents/README.md`). To invoke: read its file, assemble exactly the inputs it lists (reviewers always get the Product Spirit block), spawn a subagent with the file body as its system prompt.
+Defs in `subagents/` — one file per agent (format: `subagents/README.md`). Invoke: read file → assemble exactly listed inputs (reviewers always get Product Spirit) → spawn with file body as system prompt
 
-**Before any spawn**:
+### Economy profile
 
-- **Cost gate**: skip the subagent and check inline when the brief would approach the size of the work itself, the needed facts are already in context, or the expected findings are cosmetic
-- **Precise brief**: state the exact questions/checks, the standards the work was built against, and what is out of scope
-- **Front-load the bar**: before drafting a document, read the Review questions of the critic that will review it and draft to pass them on the first try
+Read `Subagent economy:` from repository instruction file **Tooling** section (`do/init` writes it). Missing → `balanced`
 
-**Handling critic findings**: apply a finding if it changes behavior, a contract, or a human decision; drop futile or cosmetic ones silently. A rejected finding that is a genuine judgment call becomes a decision question for the human. **Convergence**: one run per document; at most one re-run, only after substantial rework of blocking findings and scoped to them — re-run findings accepted only if blocking; never a third run. Never report the exchange itself (Invariant 16).
+| Profile | Behavior |
+| ------- | -------- |
+| `strict` | Inline-first hard · scout almost always inline · question/tool/return caps enforced · critics still spawn |
+| `balanced` | Inline-first as written below · caps enforced · soft warn if >5 scout questions |
+| `quality` | Cost gate advisory only · caps still apply to scout tool use and return size |
+
+### Before any spawn (inline-first)
+
+Run in order — first match wins → **do not spawn**:
+
+1. Facts already in principal context → work **inline**
+2. Answerable by principal in ≤5 Grep/Glob/Read (or LSP) calls → **inline** (use scout-lite checklist in `subagents/repo-scout.md`)
+3. Brief would approach size of expected answer → **inline**
+4. Findings likely cosmetic / mechanical checklist on small surface → **inline** (same as today's Cost gate)
+5. Else spawn
+
+**repo-scout extra** (under `strict` / `balanced`): spawn only if ≥3 falsifiable questions **and** search spans ≥2 areas principal has not opened, **or** principal context already fat and isolation clearly cheaper. Otherwise scout-lite inline
+
+**When spawning**:
+
+- **Tooling injection**: brief includes one-line Tooling block from repo instruction file (CLI filter prefix, LSP preference, economy profile) — subagent must obey it
+- **Precise brief**: exact questions/checks · standards work built against · out of scope · for scout, starting paths/globs when area known · ≤5 questions per scout wave (`balanced`/`strict`; split or inline the rest)
+- **Front-load the bar**: before draft, read critic's Review questions; draft to pass first try
+- **Return-payload cap**: scout ≤15 lines · critics ≤25 lines · principal keeps only needed facts — never paste scout dumps into docs
+
+**Critic findings**: apply if changes behavior, contract, or human decision; drop futile/cosmetic silently. Rejected judgment-call → decision question for human. **Convergence**: one run per doc; at most one re-run after substantial rework of blocking findings, scoped to them — re-run accepts blocking only; never third run. Never report exchange (Invariant 16)
 
 | Subagent | Kind | Called by | When |
-| --- | --- | --- | --- |
-| `repo-scout` | research | `plan/epic-arch`, `plan/feat`, `plan/feat-arch`, `plan/change` | plan must be grounded in existing code |
+| -------- | ---- | --------- | ---- |
+| `repo-scout` | research | `plan/epic-arch`, `plan/feat`, `plan/feat-arch`, `plan/change` | plan must ground in existing code |
 | `prd-critic` | reviewer | `plan/epic`, `plan/feat` | always |
 | `arch-critic` | reviewer | `plan/epic-arch`, `plan/feat-arch` | always |
-| `perf-critic-backend` / `-frontend` | reviewer | arch routes, verification gates | only when their trigger criteria (top of their files) fire |
+| `perf-critic-backend` / `-frontend` | reviewer | arch routes, verification gates | only when trigger criteria (top of their files) fire |
 | `task-checker` | reviewer | `plan/tasks` | after self-review; max two runs |
 | `feature-coder` | executor | `do/all-tasks` | one per parallelizable task per wave |
-| `ui-consistency-reviewer` | reviewer | verification gates | UI features with a non-trivial surface |
-| `doc-coherence-reviewer` | reviewer | verification gates · `plan/change` · `plan/migrate` | epic completion · after a change · after migration |
+| `ui-consistency-reviewer` | reviewer | verification gates | UI features, non-trivial surface |
+| `doc-coherence-reviewer` | reviewer | verification gates · `plan/change` · `plan/migrate` | epic completion · after change · after migration |
 
-The verification gates (and their subagents) run in `do/verify` or inline as the final phase of `do/all-tasks`.
+Verification gates (+ their subagents) run in `do/verify` or inline as final phase of `do/all-tasks`
 
 ## Human review UX
 
-Reviews present conclusions, not process: mechanical checks auto-verified and collapsed to one summary line; a **"Decisions requiring your validation"** section of at most 10 plain-sentence statements plus open questions labeled blocking/important/minor; validated decisions appended to `docs/decisions.md`; stakeholder answers recorded **verbatim** and applied as written — never paraphrased, never re-asked (if genuinely ambiguous, ask only the clarification).
+Conclusions, not process. Mechanical checks auto-verified → one summary line. **"Decisions requiring your validation"**: ≤10 plain-sentence statements + open questions labeled blocking/important/minor. Validated decisions → `docs/decisions.md`. Stakeholder answers **verbatim** — never paraphrase, never re-ask (if ambiguous, ask only clarification)
 
 ## Working Economy (Invariant 17)
 
 ### Input economy
 
-- Prefer LSP/semantic navigation over whole-file reads; read scoped line ranges
-- Route long CLI outputs (tests, builds, git, package managers) through the output filter the repository instruction file declares (e.g. `rtk`, `snip`) — `do/init` sets it up
-- Never re-read what is already in context; never load a document "for safety"
+- Prefer LSP/semantic nav over whole-file reads; scoped line ranges
+- Prefer Grep/Glob/LSP over Shell for code search — Shell only when needed
+- Long CLI output (tests, builds, git, package managers) through repo-declared filter (e.g. `rtk`, `snip`) — `do/init` sets up; if Shell used without active hook, prefix manually
+- Never re-read what's in context; never load doc "for safety"
+- Obey economy profile + inline-first before spawning (Subagents)
 
 ### Output style (principal and subagents)
 
-- No preamble, no restating the request, no trailing summary
-- Code changes as diffs or targeted edits, never full-file listings unless asked
-- Research answers ≤10 lines unless depth is requested
-- The Handoff (Invariant 13) is the only closing block: ≤5 lines
+- Caveman-concise (same bar as agent-facing docs): no preamble, no restating request, no trailing summary, no filler/hedging
+- Code, commands, paths, errors: byte-exact — never paraphrase
+- Code changes as diffs or targeted edits — never full-file listings unless asked
+- Research answers ≤10 lines unless depth requested; subagent returns obey Return-payload cap
+- Handoff (Invariant 13) = only closing block: ≤5 lines
 
 ### Minimal implementation (do routes and feature-coder)
 
-Understand the problem fully, then stop at the first rung that holds:
+Understand fully, stop at first rung that holds:
 
-1. Doesn't need to exist → skip (YAGNI) · 2. Already in the codebase → reuse · 3. Stdlib does it → use it · 4. Native platform feature → use it · 5. Installed dependency → use it · 6. One line suffices → one line · 7. Only then write the minimum that works.
+1. Doesn't need to exist → skip (YAGNI)
+2. Already in codebase → reuse
+3. Stdlib does it → use it
+4. Native platform feature → use it
+5. Installed dependency → use it
+6. One line suffices → one line
+7. Only then write minimum that works
 
-Never cut: trust-boundary validation, data-loss handling, security, accessibility.
+Never cut: trust-boundary validation, data-loss handling, security, accessibility
 
-### Document style (all generated documents)
+### Document style
 
-- State decisions and facts, never the process that produced them — "the reviewer suggested…", "after discussion we changed…" never appear
-- Justify a choice only where a future reader needs the why (a trade-off, a scope cut): 1–2 sentences
-- **Changelog hard rule**: an entry is one line, `{date}: {fact}`, ≤25 words. Eligible events only — project changelog: epic completed, major scope change, migration; epic changelog: feature verified 🟢, scope change. Every other event (tasks generated, PRD drafted/approved, waves, syncs, drift repairs) gets **no entry**. Never include: critic/subagent exchanges (Invariant 16), task lists, gate results, progress numbers, `Next:` commands
-- Existing verbose changelog entries are legacy, never precedent — still write only the single eligible line, or nothing
+Two audiences — pick by file purpose, not route mood
+
+**Human / business (full prose)** — PRDs (`epic-prd.md`, `feat-prd.md`), `docs/product.md`, Product Spirit, human review bodies (`*-review.md` decision sections), user-centric docs (`developer-setup`, onboarding, human READMEs). Complete sentences. Stakeholder-readable. No unexplained abbreviations
+
+**Agent-facing (caveman-concise)** — skill playbooks (`SKILL.md`, `routes/`, `subagents/`, template comments), `feat-tasks.md`, `epic-arch.md` / `feat-arch.md`, status tables/notes, living technical docs (`data-model.md`, `ui-map.md`, `decisions.md`), `docs/patterns/*`. Inspired by [caveman](https://github.com/JuliusBrussee/caveman) **full**:
+
+- Facts and orders only — drop articles/filler/hedging when meaning clear; fragments OK
+- Short synonyms; pattern `[thing] [action] [reason]` · `[next step]`
+- No invented abbreviations (`cfg`/`impl`/`fn`); well-known tech acronyms OK (DB/API/HTTP)
+- Paths, symbols, code, commands, error strings: exact
+- Never drop `not`/`never`/`no`/`only`/`except`
+- No trailing period before linefeed (mid-line periods in multi-clause lines stay)
+- Decisions and facts only — never process ("reviewer suggested…", "after discussion…")
+- Justify only when future agent needs why (trade-off, scope cut): ≤2 short lines
+- Auto-clarity: fuller prose for security warnings, irreversible steps, or fragments that risk misread order/negation — then resume concise
+
+**Changelog hard rule**: one line `{date}: {fact}`, ≤25 words. Eligible only — project: epic completed, major scope change, migration; epic: feature verified 🟢, scope change. All else (tasks generated, PRD drafted/approved, waves, syncs, drift repairs) = **no entry**. Never: critic exchanges (Invariant 16), task lists, gate results, progress numbers, `Next:` commands. Verbose existing entries = legacy, never precedent — write only eligible line, or nothing
 
 ## File Organization
 
@@ -180,8 +225,8 @@ docs/
 
 ## Platform integration
 
-For repository conventions use whichever exists, in this precedence: `CLAUDE.md` · `AGENTS.md` · `.github/copilot-instructions.md` · `.cursor/rules/` · `.github/instructions/`. `do/memorize` writes back to the file(s) actually present.
+Repo conventions, precedence: `CLAUDE.md` · `AGENTS.md` · `.github/copilot-instructions.md` · `.cursor/rules/` · `.github/instructions/`. `do/memorize` writes back to file(s) actually present
 
 ## Templates
 
-In `templates/` — names mirror output files.
+In `templates/` — names mirror output files

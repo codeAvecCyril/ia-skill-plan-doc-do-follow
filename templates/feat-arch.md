@@ -8,13 +8,13 @@
 >
 > **Last Updated**: {date}
 
-<!-- This document exists only for exception cases (see routes/plan-feat-arch.md).
-     Describe ONLY the delta relative to epic-arch.md; reference it for everything else.
-     Delete sections that do not apply — never "N/A". -->
+<!-- Exists only for exception cases (see routes/plan-feat-arch.md)
+     Describe ONLY delta vs epic-arch.md; reference it for everything else
+     Delete unused sections — never "N/A" -->
 
 ## Design Delta
 
-{Diagram or description of what this feature adds or changes within the epic architecture.}
+{Diagram or description of what this feature adds or changes within epic architecture}
 
 ## New Components & Modules
 
@@ -22,7 +22,7 @@
 
 ## Data Model Delta
 
-<!-- docs/data-model.md is the global truth — update it in the same change. -->
+<!-- docs/data-model.md = global truth — update it in same change -->
 
 - {new/changed entity or field}: {description} → recorded in `docs/data-model.md#{anchor}`
 
@@ -34,19 +34,19 @@
 
 ## Technology Decisions
 
-{Only decisions specific to this feature, each with a one-sentence rationale; reference `docs/technical-stack.md` otherwise.}
+{Only decisions specific to this feature, each with one-sentence rationale; else reference `docs/technical-stack.md`}
 
 ## Security Considerations
 
-{Only if this feature opens a new security surface: input validation, authorization, data protection.}
+{Only if feature opens new security surface: input validation, authorization, data protection}
 
 ## Error Handling & Observability
 
-{Key error scenarios, what to log, what to monitor — only where feature-specific.}
+{Key error scenarios, what to log, what to monitor — only where feature-specific}
 
 ## Testing Strategy
 
-{Approach for the delta: what needs unit / integration / end-to-end coverage.}
+{Approach for delta: unit / integration / end-to-end coverage needed}
 
 ## Known Constraints & Trade-offs
 

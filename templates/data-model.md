@@ -2,10 +2,10 @@
 
 > **Last Updated**: {date}
 
-<!-- LIVING DOC — single global truth for the data schema. Arch docs describe deltas and
-     link here, never fork it. Any schema/migration change updates this file in the same
-     change (do/verify enforces). If schema docs exist elsewhere, this file is a pointer
-     to them plus the change log. -->
+<!-- LIVING DOC — single global truth for data schema. Arch docs describe deltas and
+     link here, never fork it. Any schema/migration change updates this file in same
+     change (do/verify enforces). If schema docs exist elsewhere, this file = pointer
+     to them plus change log -->
 
 ## Entity Overview
 

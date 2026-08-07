@@ -1,8 +1,8 @@
 # Decision Log
 
-<!-- Binding user decisions, one line each, newest first. A contradicting change is
-     surfaced and re-confirmed, never applied silently. Append-only: a reversed decision
-     gets a NEW line referencing the old one. -->
+<!-- Binding user decisions, one line each, newest first. Contradicting change is
+     surfaced and re-confirmed, never applied silently. Append-only: reversed decision
+     gets NEW line referencing old one -->
 
 | Date   | Decision (complete sentence)                      | Why                       | Decided by | Source            |
 | ------ | ------------------------------------------------- | ------------------------- | ---------- | ----------------- |

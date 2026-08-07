@@ -6,8 +6,8 @@
 >
 > **Priority**: P{0|1|2}
 
-<!-- Writing rules: complete sentences a stakeholder can validate in isolation;
-     no unexplained abbreviations. Delete sections that do not apply — never "N/A". -->
+<!-- Writing rules: complete sentences stakeholder can validate in isolation;
+     no unexplained abbreviations. Delete unused sections — never "N/A" -->
 
 ## Overview
 
@@ -29,7 +29,7 @@
 
 ## Features
 
-<!-- The feature list drives plan/feat and epic-status.md. -->
+<!-- Feature list drives plan/feat and epic-status.md -->
 
 | Code | Feature | Priority | One-sentence intent |
 | ---- | ------- | -------- | ------------------- |
@@ -37,7 +37,7 @@
 
 ## User Stories & Use Cases
 
-- As a {role}, I want to {action} so that {business value}.
+- As a {role}, I want to {action} so that {business value}
 
 ## Success Criteria
 

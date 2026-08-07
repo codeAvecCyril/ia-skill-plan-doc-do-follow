@@ -6,12 +6,12 @@
 >
 > **Last Updated**: {date}
 
-<!-- Epic-level status lives in docs/project-status.md (Epic Roadmap), not here. -->
-<!-- Delete any section below that does not apply. Never write "N/A". -->
+<!-- Epic-level status lives in docs/project-status.md (Epic Roadmap), not here -->
+<!-- Delete unused sections. Never write "N/A" -->
 
 ## Feature Table
 
-<!-- OWNING TABLE: this is the single source of truth for feature status and progress. -->
+<!-- OWNING TABLE: single source of truth for feature status and progress -->
 
 | Code | Feature        | Status | Progress (tasks) | Notes |
 | ---- | -------------- | ------ | ---------------- | ----- |
@@ -26,13 +26,13 @@ Progress: `▓▓░░░░░░░░` {n}/{total} tasks
 
 ## Blockers
 
-- [ ] {blocker, as a complete sentence — delete section if none}
+- [ ] {blocker as complete sentence — delete section if none}
 
 ## Changelog
 
 <!-- HARD RULE — milestones only: feature verified 🟢, scope change. One line per
      entry, ≤25 words. Never: tasks generated, PRD drafted/approved, wave progress,
-     critic findings, gate results, "Next:" commands. Routine history lives in git.
-     If existing entries below violate this, they are legacy — do NOT match them. -->
+     critic findings, gate results, "Next:" commands. Routine history lives in git
+     If existing entries below violate this, they are legacy — do NOT match them -->
 
 - {date}: F{n} {feature-name} verified 🟢 ({n}/{n} tasks)

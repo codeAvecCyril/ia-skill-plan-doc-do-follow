@@ -12,7 +12,7 @@
 
 ## Automated Checks (verified by the AI)
 
-> ✅ {n}/{total} structural checks passed — {one line listing any failures}.
+> ✅ {n}/{total} structural checks passed — {one line listing any failures}
 
 <details><summary>Details — PRD review</summary>
 
@@ -37,8 +37,8 @@
 
 ## Decisions Requiring Your Validation
 
-<!-- Max 10 self-contained plain sentences; validated decisions go to docs/decisions.md.
-     Answers are recorded verbatim and applied as written — never rewritten, never re-asked. -->
+<!-- Max 10 self-contained plain sentences; validated decisions → docs/decisions.md
+     Answers recorded verbatim, applied as written — never rewritten, never re-asked -->
 
 1. {Plain-sentence decision statement}. **Confirm?**
 
@@ -66,4 +66,4 @@ Legend: ⚪ Pending, ⚡ In Review, 🟢 Approved, 🔴 Needs Changes
 
 - PRD approved: `@plan/tasks E{n} F{n}` (or `@plan/feat-arch E{n} F{n}` if a trigger criterion fired)
 - Architecture approved: `@plan/tasks E{n} F{n}`
-- Needs rework: address the items above, then resubmit.
+- Needs rework: address the items above, then resubmit

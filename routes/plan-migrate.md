@@ -1,21 +1,21 @@
 # plan/migrate — One-Shot Migration from Skill v2
 
-**Purpose**: migrate a v2-documented project to the v3 structure in one pass, epics/features in any state. Documentation only — never touches code. Idempotent
+**Purpose**: migrate v2-documented project to v3 structure in one pass, epics/features in any state · documentation only — never touches code · idempotent
 
-**Mindset**: careful archivist — preserve history, resolve conflicts by evidence, never rewrite what still works. Strong model
+**Mindset**: careful archivist — preserve history · resolve conflicts by evidence · never rewrite what still works · strong model
 
-**Inputs**: the `docs/` tree · `docs/product.md` · old review files · the implemented code (read-only, to reverse-engineer schema and navigation)
+**Inputs**: `docs/` tree · `docs/product.md` · old review files · implemented code (read-only, to reverse-engineer schema and navigation)
 
-**Outputs**: consolidated owning tables · `feat-status.md` files removed · Product Spirit block · living docs bootstrapped · a migration report
+**Outputs**: consolidated owning tables · `feat-status.md` files removed · Product Spirit block · living docs bootstrapped · migration report
 
 ## Steps
 
-1. **Inventory.** Enumerate epics/features from `docs/epics/`. Detect v2 artifacts: `feat-status.md` files, per-task `**Status**:` lines, duplicated task tables, status legends/boilerplate
-2. **Consolidate task statuses.** Collect each task's status from all v2 locations; resolve disagreements **most-advanced-wins** (⚪ < 🟡 < 🟣 < 🔵 < 🟢), with one guard: before accepting a disputed 🟢, spot-check the task's files/tests exist in the code; if not, keep the lower status and flag it. Write into the Task Summary table (sole owner from now on), strip per-task status lines. List every conflict + resolution in the report
-3. **Remove `feat-status.md` files.** Create/complete the `epic-status.md` Feature table where missing (from `templates/epic-status.md`); carry over blockers/notes worth keeping first
-4. **Distill the Product Spirit block** from `docs/product.md` (5–10 complete sentences) at the top of `docs/project-status.md`. Determine mode (solo/team) — ask only if ambiguous
-5. **Bootstrap the living docs** (skip those that do not apply): `docs/decisions.md` seeded from sign-offs, answered questions, and validated changes in old reviews · `docs/data-model.md` reverse-engineered from the actual schema (migrations, ORM models — code is the truth for the implemented half; may start as a pointer to existing schema docs) · `docs/ui-map.md` from the actual routing/navigation code, plus planned screens from PRDs marked with status · `docs/design-guidelines.md` pointing to an existing design system, else minimal from template
-6. **Do not rewrite legacy documents.** Missing v3 sections (Entry Points, Architecture Delta) are filled **lazily** the first time a route touches that feature. List these in the report
-7. **Run Status Sync** over everything, then the **doc-coherence-reviewer** subagent; fix reported drift
-8. **Produce the migration report**: status conflicts/resolutions · statuses changed (old → new, reason) · living docs created and their seeds · documents pending lazy migration · open questions (blocking first)
-9. Handoff with the most useful next command (typically the first unblocked `do/task`, or `do/verify` for a feature whose tasks are all 🟢)
+1. **Inventory.** Enumerate epics/features from `docs/epics/` · detect v2 artifacts: `feat-status.md` files, per-task `**Status**:` lines, duplicated task tables, status legends/boilerplate
+2. **Consolidate task statuses.** Collect each task's status from all v2 locations; resolve disagreements **most-advanced-wins** (⚪ < 🟡 < 🟣 < 🔵 < 🟢), with one guard: before accepting disputed 🟢, spot-check task's files/tests exist in code; if not, keep lower status and flag it · write into Task Summary table (sole owner from now on), strip per-task status lines · list every conflict + resolution in report
+3. **Remove `feat-status.md` files.** Create/complete `epic-status.md` Feature table where missing (from `templates/epic-status.md`); carry over blockers/notes worth keeping first
+4. **Distill Product Spirit block** from `docs/product.md` (5–10 complete sentences) at top of `docs/project-status.md` · determine mode (solo/team) — ask only if ambiguous
+5. **Bootstrap living docs** (skip those that do not apply): `docs/decisions.md` seeded from sign-offs, answered questions, and validated changes in old reviews · `docs/data-model.md` reverse-engineered from actual schema (migrations, ORM models — code is truth for implemented half; may start as pointer to existing schema docs) · `docs/ui-map.md` from actual routing/navigation code, plus planned screens from PRDs marked with status · `docs/design-guidelines.md` pointing to existing design system, else minimal from template
+6. **Do not rewrite legacy documents.** Missing v3 sections (Entry Points, Architecture Delta) filled **lazily** first time route touches that feature · list these in report
+7. **Run Status Sync** over everything, then **doc-coherence-reviewer** subagent; fix reported drift
+8. **Produce migration report**: status conflicts/resolutions · statuses changed (old → new, reason) · living docs created and their seeds · documents pending lazy migration · open questions (blocking first)
+9. Handoff with most useful next command (typically first unblocked `do/task`, or `do/verify` for feature whose tasks are all 🟢)
