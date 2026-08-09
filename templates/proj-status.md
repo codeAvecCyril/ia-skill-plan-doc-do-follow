@@ -18,9 +18,9 @@
 
 <!-- OWNING TABLE: single source of truth for epic status and progress -->
 
-| Code | Epic        | Status | Priority | Progress (tasks) | Features |
-| ---- | ----------- | ------ | -------- | ---------------- | -------- |
-| E1   | {epic-name} | ⚪     | P0       | 0/0              | {n}      |
+| Code | Epic        | Status | Priority | Progress (features) | Features |
+| ---- | ----------- | ------ | -------- | ------------------- | -------- |
+| E1   | {epic-name} | ⚪     | P0       | 0/0                 | {n}      |
 
 ## Progress
 
@@ -34,7 +34,7 @@ pie title Project Progress
 	"DEV" : 0
 ```
 
-Tasks done: {n}/{total} ({percentage}%)
+Epics done: {n}/{total} ({percentage}%)
 
 ## Dependencies
 

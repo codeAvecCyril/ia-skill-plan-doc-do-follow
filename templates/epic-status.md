@@ -17,7 +17,7 @@
 | ---- | -------------- | ------ | ---------------- | ----- |
 | F1   | {feature-name} | ⚪     | 0/0              |       |
 
-Progress: `▓▓░░░░░░░░` {n}/{total} tasks
+Progress: `▓▓░░░░░░░░` {n}/{total} features
 
 ## Dependencies (optional)
 

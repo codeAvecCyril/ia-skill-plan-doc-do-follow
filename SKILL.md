@@ -79,15 +79,18 @@ Match intent → first route wins → read `routes/a-b.md` (route `a/b`) → fol
 - **Feature**: no `feat-prd.md` → ⚪ · PRD exists → 🟡 · `feat-tasks.md` exists, no task beyond TODO → 🟣 · any task DEV/DONE → 🔵 · 🟢 **only** via verification gates (`do/verify`, or final phase of `do/all-tasks`). Tasks added to 🟢 feature → revert to 🔵
 - **Epic**: no `epic-prd.md` → ⚪ · PRD exists → 🟡 · all features ≥ 🟣 → 🟣 · any feature 🔵/🟢 (not all 🟢) → 🔵 · all 🟢 → 🟢
 - **Project**: same aggregation over epics
-- **Progress**: done tasks / total tasks (0 if none), summed at epic and project level
+- **Progress** (completion ratios — not task counts; tasks incomplete until broken down):
+  - **Feature**: 🟢 tasks / all tasks in that feature's Task Summary (`0` if none) — shown in `epic-status.md` Feature table
+  - **Epic**: 🟢 features / all features of that epic (`—` if no features listed) — shown in `docs/project-status.md` Epic Roadmap + `epic-status.md` Progress line
+  - **Project**: 🟢 epics / all epics — shown in `docs/project-status.md` Progress section
 
 ### Status Sync procedure
 
 End of any status-changing route (standalone: `do/sync-status`, all epics):
 
 1. Read Task Summary tables of affected feature(s)
-2. Recompute each feature status + progress; update row in `epic-status.md`
-3. Recompute each affected epic; update its row, Progress section, pie chart in `docs/project-status.md`. Status Sync never writes changelog — only events named by changelog hard rule (Document style), written by route that produced milestone
+2. Recompute each feature status + task progress; update row in `epic-status.md`; recompute epic Progress line as 🟢 features / all features
+3. Recompute each affected epic status; update its Roadmap row (feature-ratio progress), Progress section (epic-ratio), and pie chart in `docs/project-status.md`. Status Sync never writes changelog — only events named by changelog hard rule (Document style), written by route that produced milestone
 4. Report drift (stored ≠ derived) in handoff
 
 Deterministic and idempotent
