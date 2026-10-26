@@ -13,11 +13,13 @@
 1. Detect project's languages and commands producing long outputs (tests, builds, linters, package managers)
 2. **LSP** — check language server per detected language (e.g. Claude Code plugins `pyright-lsp`, `typescript-lsp`, `rust-analyzer`); recommend missing ones
 3. **CLI output filters** — recommend compression proxy for long-output commands: `rtk` (Rust, zero config) or `snip` (Go, YAML filters), with prefix convention (e.g. `rtk git diff`)
-4. **Code graph / semantic index** — large codebases only, if environment supports MCP; skip for small repositories (inline-first / Cost gate)
+4. **Code graph / semantic index** — large codebases only, if environment supports MCP; skip for small repositories (inline-first / Cost gate) · structural search: `ast-grep` (pattern-aware grep/rewrite) if installed or wanted
+4b. **Skill scripts** — check `python3 --version` ≥3.9 and `pddf --help` runs (SKILL.md → Bundled scripts) · record path in Tooling
+4c. **Tool-surface audit** — list enabled MCP servers; each costs tool definitions on every turn — propose disabling unused ones per project, prefer deferred tool loading
 5. **Subagent economy profile** — present `strict` | `balanced` | `quality` (SKILL.md → Economy profile); recommend `strict` when token cost dominates, `balanced` as default, `quality` only if user prioritizes isolated review over tokens. Record chosen value
 6. **Native agents (optional)** — see section below; skip entirely if user declines
 7. Present recommendations one line each with expected saving; install only what user approves
-8. Record adopted tooling in repository instruction file — one short **Tooling** section: active LSPs · filter prefix and target commands · index/graph tool if any · `Subagent economy: {strict|balanced|quality}` · if native agents installed: one line per platform, e.g. `Native agents (cursor): .cursor/agents (9) · critics=inherit · standard=inherit` · `Native agents (claude): …` · `Native agents (copilot): …` · `Native agents (opencode): …`. Every route and every subagent brief reads this file
+8. Record adopted tooling in repository instruction file — one short **Tooling** section: active LSPs · filter prefix and target commands · index/graph tool if any · `Skill scripts: python3 {skill-dir}/scripts/pddf.py` · `Subagent economy: {strict|balanced|quality}` · if native agents installed: one line per platform, e.g. `Native agents (cursor): .cursor/agents (9) · critics=inherit · standard=inherit` · `Native agents (claude): …` · `Native agents (copilot): …` · `Native agents (opencode): …`. Every route and every subagent brief reads this file
 9. Handoff: resume interrupted route, or `plan/proj` for fresh project
 
 ## Native agents install / sync
@@ -44,6 +46,7 @@ Offer every target that applies (user may pick more than one):
 4. Propose **tier defaults** (one question per platform if model vocab differs — not nine agents):
    - **critics** (`model_class: reasoning`): default platform "follow session" (see Model Auto below) — `prd-critic`, `arch-critic`, `perf-critic-*`, `ui-consistency-reviewer`
    - **standard** (`model_class: standard`): same default — `repo-scout`, `task-checker`, `feature-coder`, `doc-coherence-reviewer`
+   - **Effort**: apply Thinking → effort table below where platform allows · Cursor sets effort only on a pinned model id — with `inherit`, executors run at parent's effort; to keep `feature-coder` at medium, propose pinning standard tier with `[effort=medium]`
 5. Optional: "Customize per agent?" **y/n** — only if **y**, list roster; user may set model per file. Accept only values allowed for that platform (below) — never invent ids
 6. Confirm write path(s) and proceed
 
@@ -60,14 +63,28 @@ UI **"Auto"** (Cursor / Copilot chat model picker) is **not** the same as a fron
 
 ### Shared write invariants (all platforms)
 
-For each `subagents/{name}.md` except `README.md`:
+For each `subagents/{name}.md` except `README.md` and files with `invocation: principal` (e.g. `feature-coordinator` — adopted by principal, never installed):
 
 1. Keep Markdown **body** as-is (system prompt)
 2. Keep portable `name` + `description` as the native identity/description (OpenCode: filename = id; still set `description`)
-3. Drop portable-only keys: `model_class`, `thinking`, `capabilities` — never copy them into native files
+3. Drop portable-only keys: `model_class`, `thinking`, `capabilities`, `invocation` — never copy them into native files; `thinking` is translated per platform (Thinking → effort, below)
 4. `model` = tier default or per-agent override from Ask steps (or omit where platform default = follow session)
 5. Overwrite existing same-name roster files on refresh; never delete user-added agents outside the roster
 6. Create target directory if missing (after user confirmed that platform)
+
+### Thinking → effort
+
+| Portable `thinking` | Claude Code `effort` | Cursor (pinned id only) | Copilot `reasoning-effort` | OpenCode `reasoningEffort` |
+| ------------------- | -------------------- | ----------------------- | -------------------------- | -------------------------- |
+| `brief` | `low` | `{id}[effort=low]` | `low` | `low` |
+| `medium` | `medium` | `{id}[effort=medium]` | `medium` | `medium` |
+| `deep` | `high` | `{id}[effort=high]` | `high` | `high` |
+
+- **Claude Code**: frontmatter `effort` — parsed by current versions though not yet in the subagent docs; omit if user's version rejects it
+- **Cursor**: no effort field · options ride on model id in brackets (`model: claude-opus-5[effort=high]`; combine as `[effort=high,context=300k]`) · valid values depend on model · impossible with `inherit` · legacy suffix form (`{id}-medium`) only if user's Cursor predates brackets
+- **Copilot**: frontmatter `reasoning-effort` (`low`…`max`), VS Code Copilot harness, model-dependent · works with `model` omitted · Copilot cloud agent has its own config reference — unverified there, omit for cloud-only agents
+- **OpenCode**: `reasoningEffort` = provider passthrough option, documented in `opencode.json` agent config (not validated by OpenCode, provider-specific) · write only when model pinned to a provider that accepts it (user confirms) · frontmatter passthrough unconfirmed — prefer `opencode.json` → `agent.{name}.reasoningEffort`
+- Unsupported or unconfirmed → omit; never invent values
 
 ### Write rules (Cursor) → `.cursor/agents/{name}.md`
 
@@ -89,7 +106,8 @@ Map:
 | -------- | ------ |
 | `capabilities: read-only` | `readonly: true` |
 | `capabilities: read-write` / `read-run-write` | `readonly: false` |
-| `model_class` / `thinking` | drop |
+| `model_class` | drop |
+| `thinking` | append `[effort=…]` to pinned model id; with `inherit` drop |
 
 `model`: **`inherit`** (recommended default) or exact id from Cursor picker. **Forbidden**: `auto`, `fast`, or other undocumented aliases. Omitting `model` is OK (same as inherit)
 
@@ -103,8 +121,11 @@ name: {name}
 description: {description}
 tools: {comma-separated allowlist}
 model: inherit
+effort: {low|medium|high}
 ---
 ```
+
+`effort` from portable `thinking`: `brief` → `low` · `medium` → `medium` · `deep` → `high`. Keeps executors (e.g. `feature-coder`) at medium so they follow the plan instead of re-architecting it. Omit only if user's Claude Code version rejects the key
 
 Map `capabilities` → `tools` allowlist (do **not** omit `tools` for read-only agents — omit inherits everything):
 
@@ -127,6 +148,7 @@ Filename **must** end with `.agent.md`. Frontmatter:
 name: {name}
 description: {description}
 tools: [{allowlist}]
+reasoning-effort: {low|medium|high}
 ---
 ```
 
@@ -173,6 +195,7 @@ Notes:
 - Always `mode: subagent` for skill roster agents (invoked by primary / `@`, not Tab primary)
 - **Model Auto / follow parent**: **omit** `model` — OpenCode subagents then use the invoking parent's model. If user pins: `model: {provider}/{model-id}` they confirm (e.g. `anthropic/claude-sonnet-4-20250514`) — never invent
 - Optional: `temperature: 0.1` for critics if user wants; skip by default
+- Effort: `reasoningEffort` per Thinking → effort table, only with pinned model whose provider accepts it
 - Do not copy Cursor/Claude/Copilot frontmatter keys into OpenCode files
 - If both `.opencode/agent/` (legacy singular) and `.opencode/agents/` exist, prefer `agents/` per current OpenCode docs
 

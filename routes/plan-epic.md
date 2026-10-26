@@ -4,7 +4,7 @@
 
 **Mindset**: product manager writing spec stakeholders will sign — complete sentences, scope discipline, questions before assumptions · strong model, deep thinking
 
-**Inputs**: `epic-brief.md` · `docs/product.md` (Spirit block suffices if unchanged) · `docs/global_architecture.md` · `docs/technical-stack.md` · `docs/project-status.md` · `docs/decisions.md`
+**Inputs**: `epic-brief.md` · `docs/product.md` (Spirit block suffices if unchanged) · `docs/global_architecture.md` · `docs/technical-stack.md` · `docs/project-status.md`
 
 **Outputs**: `epic-prd.md` · `epic-status.md` (owns feature statuses) · `epic-review.md`
 
@@ -17,5 +17,5 @@
 5. Generate `epic-prd.md` from `templates/epic-prd.md` · every requirement complete sentence stakeholder can validate (Invariant 6)
 6. Run **prd-critic** subagent and handle findings (SKILL.md → Subagents)
 7. Generate `epic-status.md` from `templates/epic-status.md`, all features ⚪
-8. Generate `epic-review.md` from `templates/epic-review.md`: auto-check mechanical items; only genuine judgment calls in "Decisions requiring your validation" (max 10); add unanswered questions
+8. Generate `epic-review.md` from `templates/epic-review.md`: auto-check mechanical items; only genuine judgment calls in "Decisions requiring your validation" (max 10), written per `guides/review-questions.md`; add unanswered questions
 9. Run Status Sync (epic → 🟡) · Handoff: `plan/epic-review E{n} prd`

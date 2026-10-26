@@ -4,13 +4,13 @@
 
 **Mindset**: skeptical QA gatekeeper — assume incomplete until each gate proves otherwise; balance laxity and perfectionism; focus on what really matters
 
-**Inputs**: `feat-prd.md` (acceptance criteria) · `feat-tasks.md` · implemented code and tests · `docs/ui-map.md` and `docs/design-guidelines.md` for UI features · `docs/data-model.md` if schema touched
+**Inputs**: `feat-prd.md` (acceptance criteria) · `feat-tasks.md` (incl. Story Trace) · implemented code and tests · `docs/ui-map.md` and `docs/design-guidelines.md` for UI features · `docs/data-model.md` if schema touched
 
 **Outputs**: verification summary · feature 🟢 (or 🔵 with gap list) via Status Sync · updated living docs if gaps found there
 
 ## Verification gates
 
-1. All acceptance criteria in `feat-prd.md` met (check each explicitly)
+1. All acceptance criteria in `feat-prd.md` met (check each explicitly) · **Story walk**: for each story, follow implemented path along Story Trace — trigger → stored data → screen — and confirm user receives exactly what criterion promises, incl. empty/error states
 2. Linters/formatters pass; all tests pass; coverage meets project target (default ≥ 80% on new code) where tooling exists
 3. **Data gate**: schema/migrations touched → `docs/data-model.md` reflects change, else fail
 4. **UI gate**: UI requirements → entry point exists in `docs/ui-map.md` and ui-consistency checks pass. Small surface (1–2 components): run **ui-consistency-reviewer** checklist yourself (inline-first); spawn only for broader surface, apply blocking findings

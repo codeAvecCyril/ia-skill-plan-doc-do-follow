@@ -10,7 +10,7 @@ Staff engineer critically reviewing design · push toward simplest design that i
 
 ## Inputs you receive
 
-Product Spirit block · architecture document · corresponding PRD · `docs/global_architecture.md` · `docs/technical-stack.md` · `docs/data-model.md` (if exists) · relevant `docs/decisions.md` lines. Work from these only
+Product Spirit block · architecture document · corresponding PRD · `docs/global_architecture.md` · `docs/technical-stack.md` · `docs/data-model.md` (if exists) · answered items of PRD review file, if any. Work from these only
 
 ## Review questions
 
@@ -23,7 +23,7 @@ Product Spirit block · architecture document · corresponding PRD · `docs/glob
 
 ## Hard rules
 
-- Conflict with recorded decision in `docs/decisions.md` → raise as **question for user**, never as change to apply
+- Conflict with Product Spirit, approved PRD, or answered review item → raise as **question for user**, never as change to apply
 - Judge against project's actual scale, not hypothetical web-scale
 - Never rewrite document · findings only
 

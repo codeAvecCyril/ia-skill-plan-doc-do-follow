@@ -12,5 +12,5 @@
 
 1. Check practice already documented in `docs/patterns/`
 2. If yes, update with new insight. If not, create `docs/patterns/{pattern-name}.md`: description, when to use, concrete example, benefits/trade-offs, related links
-3. Reference pattern from every instruction file present (`CLAUDE.md`, `AGENTS.md`, `.github/copilot-instructions.md`, `.cursor/rules/`), one line saying when to apply
+3. Reference pattern from every instruction file present (`CLAUDE.md`, `AGENTS.md`, `.github/copilot-instructions.md`, `.cursor/rules/`), one line saying when to apply · instruction files load every turn: keep each under ~5k tokens — over budget → move existing detail into `docs/patterns/`, leave one pointer line
 4. Handoff with next command based on current workflow stage

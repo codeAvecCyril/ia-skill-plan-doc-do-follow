@@ -26,5 +26,5 @@ If none applies: say so, keep Architecture Delta as record, route to `plan/tasks
 4. Generate `feat-arch.md` from `templates/feat-arch.md`
 5. Sync living docs in same change: entities → `docs/data-model.md`; screens/navigation → `docs/ui-map.md`
 6. Run **arch-critic** subagent and handle findings (SKILL.md → Subagents) · check perf-critic trigger criteria (top of their files): run each side that fires, resolve blockers; if none fires, skip and note it
-7. **Update `feat-review.md`** (create from `templates/feat-review.md` if missing): auto-verify architecture checklist, collapse to one line; add **"Architecture — Decisions Requiring Your Validation"** (max 10 plain sentences) plus arch-specific open questions; set Tech Lead sign-off row to ⚪ pending · leave PRD-review content untouched
+7. **Update `feat-review.md`** (create from `templates/feat-review.md` if missing): auto-verify architecture checklist, collapse to one line; add **"Architecture — Decisions Requiring Your Validation"** (max 10 items, written per `guides/review-questions.md`) plus arch-specific open questions; set Tech Lead sign-off row to ⚪ pending · leave PRD-review content untouched
 8. Handoff: `plan/feat-review E{n} F{n} arch` or `plan/tasks E{n} F{n}`

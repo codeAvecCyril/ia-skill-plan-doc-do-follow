@@ -1,18 +1,20 @@
 # do/all-tasks E{n} F{n} — Execute All Feature Tasks
 
-**Purpose**: execute all feature tasks in dependency-ordered waves via subagents, then verify inline — no separate `do/verify` pass
+**Purpose**: execute all feature tasks in dependency-ordered waves of **feature-coder** subagents, run by **feature-coordinator**, then verify inline — no separate `do/verify` pass
 
-**Mindset**: orchestrator — dispatch, integrate, track; implement in-line only inherently sequential tasks. Standard model; judgment went into task packets
+**Mindset**: adopt `subagents/feature-coordinator.md` in full — principal = coordinator: owns plan fidelity, code quality, live Task Summary, user feedback · reasoning-class model recommended for principal; coders run standard model, medium thinking
 
-**Inputs**: `feat-tasks.md` · `subagents/feature-coder.md` · repository instruction file(s) (SKILL.md → Platform integration) · `routes/do-verify.md` for final phase
+**Inputs**: `feat-tasks.md` · `subagents/feature-coordinator.md` · `subagents/feature-coder.md` · repository instruction file(s) (SKILL.md → Platform integration) · `routes/do-verify.md` for final phase · `routes/plan-redesign.md` only on design gap
 
-**Outputs**: implemented code and tests · Task Summary table fully updated · feature verified 🟢 (or 🔵 with gap list) · statuses cascaded via Status Sync
+**Outputs**: implemented code and tests · Task Summary updated after **each** task · progress report after each wave · feature 🟢 (or 🔵 with gap list) · statuses cascaded via Status Sync
 
 ## Steps
 
-1. Read `feat-tasks.md`; compute execution waves from dependency DAG (tasks in wave mutually independent)
-2. Per wave, run one **feature-coder** subagent per task with **task packet**: full task text, target file paths, referenced pattern file content, DONE criteria, repository instruction file content. Do **not** tell subagents to read PRD, architecture, or whole tasks file — packet is the context
-3. After each wave: check each coder's report (DONE criteria confirmed, validation output pasted), update completed rows in Task Summary table, run linter and fix issues, record any task-quality defects reported — then continue straight to next wave, no pause, no asking user. Stop mid-run only for genuine blocker: failed task unfixable from its packet, or contradiction requiring user decision
-4. Execute inherently sequential tasks (e.g. final integration tests) directly, following Minimal implementation ladder (SKILL.md → Working Economy)
-5. **Verification phase** — when all tasks 🟢, run gates of `routes/do-verify.md` inline (conditional subagents where triggers fire; inline-first — check small surfaces yourself). All pass → feature 🟢; any fail → 🔵 with each gap as complete sentence
-6. Run Status Sync. Changelog per hard rule: one feature-verified 🟢 line in epic changelog (project changelog only on epic completion) — never waves, gates, or task details. Handoff: `plan/feat E{n} F{n+1}`, `plan/epic E{n+1}` if epic done, or gap list with recommended fixing route
+1. **Preflight**: `pddf lint-tasks E{n} F{n}` (FAIL → triage: local defect = fix-packet, contradiction = redesign) · `pddf waves E{n} F{n}` · read Story Trace, Shared Contracts, Design Gaps via `pddf section` — never Task Details · open gap → stop, handoff `plan/redesign E{n} F{n}` · resume-safe: skip 🟢 rows, re-dispatch 🔵 rows whose work is absent · post one line: `{n} tasks · {w} waves · critical path {…}`
+2. **Dispatch wave**: `pddf task … 🔵` (first call writes Execution line with `--wave`) · one feature-coder per task · brief = identical head (Tooling one-liner, "obey `feature-coder` rules") + tail `Run: pddf packet E{n} F{n} T{n} — its output is your whole task packet` — packet by reference, never retyped · coder without shell → paste `pddf packet` output · never PRD, architecture, or whole tasks file
+3. **Accept each task as it returns** (coordinator → Acceptance): accepted → `pddf task … 🟢 --wave k/w --eta {eta}` immediately · rejected → re-dispatch with concrete feedback (max 2 retries) · escalation → coordinator → Escalation triage. Coder questions never reach user
+4. **Close wave**: run linter/formatter and wave's targeted tests; fix integration breaks · `pddf sync` · progress report (coordinator → Reports) · continue straight to next wave — never ask "continue?"
+5. Inherently sequential tasks (final integration tests, ordered migrations): dispatch singly, or implement inline under `subagents/feature-coder.md` discipline
+6. **Design gap** (triage verdict `redesign`): stop dispatching tasks that depend on the gap; let independent in-flight tasks finish and accept them · gap recorded in Design Gaps · run `plan/redesign E{n} F{n}`: inline if principal is reasoning-class (load route, re-read PRD/architecture/tasks fresh — set execution context aside), else stop with handoff `plan/redesign E{n} F{n}` on a strong model · after redesign, resume at step 1
+7. **Verification phase** — all tasks 🟢: run gates of `routes/do-verify.md` inline, incl. Story walk (conditional subagents where triggers fire; inline-first for small surfaces). All pass → feature 🟢, remove Execution line; any fail → 🔵 with each gap as complete sentence
+8. Run Status Sync. Changelog per hard rule: one feature-verified 🟢 line in epic changelog (project changelog only on epic completion) — never waves, gates, or task details · final report (coordinator → Reports) · Handoff: `plan/feat E{n} F{n+1}`, `plan/epic E{n+1}` if epic done, or gap list with recommended fixing route

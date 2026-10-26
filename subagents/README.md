@@ -11,7 +11,8 @@ Each definition: **Markdown with YAML frontmatter** — shape major platforms co
 name: kebab-case-identifier
 description: Trigger-style sentence — what it does AND when to invoke
 model_class: reasoning | standard   # advisory: capability class, never a model id
-thinking: deep | brief              # advisory: deliberation the job deserves
+thinking: deep | medium | brief     # advisory: deliberation the job deserves
+invocation: principal               # optional: role adopted by principal, never spawned or installed natively
 capabilities: read-only | read-write | read-run-write   # advisory: what it may touch
 ---
 ```
@@ -20,7 +21,8 @@ capabilities: read-only | read-write | read-run-write   # advisory: what it may 
 
 - `model_class: reasoning` — critics and architects: strong model with real judgment
 - `model_class: standard` — mechanical checks and packet execution: any competent coding model
-- `thinking: deep` — enable extended thinking / high reasoning effort where platform supports it
+- `thinking: deep` — high reasoning effort where platform supports it (mapping per platform: `routes/do-init.md` → Thinking → effort) · `medium` — enough to follow a plan carefully, not enough to re-architect it (executors) · `brief` — mechanical checks
+- `invocation: principal` — playbook the principal session adopts (e.g. `feature-coordinator`, which must spawn coders — most platforms forbid subagents spawning subagents) · `do/init` skips it
 - `capabilities` — caller must not grant more: `read-only` critic gets no edit or execute tools
 
 ## Installing natively (optional)
@@ -29,10 +31,10 @@ Prefer **`do/init`** — detects platform(s), asks install y/n, proposes critic/
 
 | Platform | Path | Native keys (keep `description`; `name` where applicable) |
 | --- | --- | --- |
-| Cursor | `.cursor/agents/{name}.md` | `model` (`inherit` only — **not** `auto`), `readonly`, `is_background` |
-| Claude Code | `.claude/agents/{name}.md` | `model` (`inherit` / aliases), `tools` (comma allowlist) |
-| GitHub Copilot | `.github/agents/{name}.agent.md` | omit `model` for session Auto · optional pin · `tools` (YAML array) · optional `disable-model-invocation` |
-| OpenCode | `.opencode/agents/{name}.md` | `mode: subagent` · omit `model` to follow parent · `permission` map |
+| Cursor | `.cursor/agents/{name}.md` | `model` (`inherit` or pinned id, effort as `{id}[effort=…]` — **not** `auto`), `readonly`, `is_background` |
+| Claude Code | `.claude/agents/{name}.md` | `model` (`inherit` / aliases), `tools` (comma allowlist), `effort` (from `thinking`) |
+| GitHub Copilot | `.github/agents/{name}.agent.md` | omit `model` for session Auto · optional pin · `tools` (YAML array) · `reasoning-effort` · optional `disable-model-invocation` |
+| OpenCode | `.opencode/agents/{name}.md` | `mode: subagent` · omit `model` to follow parent · `permission` map · `reasoningEffort` (provider option, pinned model only) |
 
 ### Capability → tools / readonly / permission
 
@@ -46,6 +48,7 @@ Prefer **`do/init`** — detects platform(s), asks install y/n, proposes critic/
 
 - **critics** (`model_class: reasoning`): `prd-critic`, `arch-critic`, `perf-critic-backend`, `perf-critic-frontend`, `ui-consistency-reviewer`
 - **standard** (`model_class: standard`): `repo-scout`, `task-checker`, `feature-coder`, `doc-coherence-reviewer`
+- **not installed**: `feature-coordinator` (`invocation: principal`) — run `do/all-tasks` on a reasoning-class session
 
 Drop `model_class` / `thinking` / `capabilities` from every native file. Never hardcode vendor model ids in portable skill files — map at install time. Never write Cursor `model: auto`. Never use Copilot `tools: ['*']` or omit tools for `read-only` agents
 
@@ -59,18 +62,19 @@ Drop `model_class` / `thinking` / `capabilities` from every native file. Never h
 | `arch-critic` | reviewer | `plan/epic-arch`, `plan/feat-arch` |
 | `perf-critic-backend` | reviewer (conditional) | `plan/epic-arch`, `plan/feat-arch`, `do/verify` |
 | `perf-critic-frontend` | reviewer (conditional) | `plan/epic-arch`, `plan/feat-arch`, `do/verify` |
-| `task-checker` | reviewer | `plan/tasks` |
-| `feature-coder` | executor | `do/all-tasks` (one per parallelizable task) |
+| `task-checker` | reviewer | `plan/tasks`, `plan/redesign` |
+| `feature-coordinator` | principal role | `do/all-tasks` (adopted, never spawned) |
+| `feature-coder` | executor | `do/all-tasks` via coordinator (one per parallelizable task) |
 | `ui-consistency-reviewer` | reviewer | `do/verify` (UI features) |
 | `doc-coherence-reviewer` | reviewer | `do/verify` (epic completion), `plan/change`, `plan/migrate` |
 
 ## Rules for all subagents
 
-- **Scoped context** (Invariant 14): caller passes exactly inputs definition lists — never "read everything". Reviewer briefs always include Product Spirit block and relevant `docs/decisions.md` lines
+- **Scoped context** (Invariant 14): caller passes exactly inputs definition lists — never "read everything". Reviewer briefs always include Product Spirit block and answered items of parent review file
 - **Tooling injection**: every brief includes Tooling one-liner from repo instruction file (CLI filter, LSP preference, `Subagent economy`). Subagent obeys it. Long-output Shell → use declared filter prefix
 - **Return-payload cap**: scout ≤15 lines · critics ≤25 lines · no preamble/summary · principal never pastes raw returns into docs
 - **Model hints**: honor `model_class` / `thinking` — never elevate above definition; prefer cheapest capable model platform allows for `standard` + `brief`
-- **Respect recorded decisions**: conflict with recorded user decision → raise as question for user, never apply as change
+- **Respect approved docs**: conflict with Product Spirit, approved PRD/architecture, or answered review item → raise as question for user, never apply as change
 - **Reviewer output format**: numbered, actionable findings, ordered by severity · each states problem, why it matters, concrete suggestion. No praise, no restating document, no preamble or closing summary
 - **Reviewer calibration**: flag as blocking only what would change behavior, contract, or human decision · style, verbosity, formatting = minor at most. At most 10 findings — keep most consequential
 - **Convergence**: reviewer runs once per document · one scoped re-run maximum, limited to previously blocking findings · new remarks on re-run accepted only if blocking · never a third run

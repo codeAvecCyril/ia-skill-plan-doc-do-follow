@@ -21,7 +21,7 @@
 - [ ] Edge cases and out-of-scope are documented
 - [ ] Success metrics are defined
 - [ ] Every statement is a complete sentence with no unexplained abbreviations
-- [ ] Consistent with the Product Spirit block and `docs/decisions.md`
+- [ ] Consistent with the Product Spirit block, the epic brief, and earlier review answers
 
 </details>
 
@@ -37,23 +37,42 @@
 
 ## Decisions Requiring Your Validation
 
-<!-- Max 10 self-contained plain sentences PER GATE; validated decisions → docs/decisions.md
-     plan/epic fills PRD; plan/epic-arch fills Architecture; delete heading with no gate yet
-     Answers recorded verbatim, applied as written — never rewritten, never re-asked -->
+<!-- Write every item per guides/review-questions.md (load it) — mandatory format below
+     Only real decisions · plain words · impact of each answer · bold **Confirm?** = full question
+     Answer applied into reviewed doc; question + answer stay here verbatim — never rewritten, never re-asked
+     Max 10 items PER GATE · plan/epic fills PRD, plan/epic-arch fills Architecture; delete heading with no gate yet -->
 
-### PRD (filled by plan/epic, validated by the PM)
+### PRD (filled by plan/epic, answered by the product owner)
 
-1. {Plain-sentence decision statement}. **Confirm?**
+#### D1 — {the choice, in plain words}
 
-### Architecture (filled by plan/epic-arch, validated by the Tech Lead)
+**Situation**: {which user, business process, or moment this touches — plain words}
+**Impact**:
+- **If yes**: {concrete consequence for users, effort, cost, risk}
+- **If no**: {concrete consequence}
+**Recommendation**: {option + one-sentence reason} · {Easy | Hard to change later — why}
 
-1. {Plain-sentence decision statement}. **Confirm?**
+**Confirm?** {one explicit question, answerable by yes/no or A/B}
+> **Your answer**:
+
+### Architecture (filled by plan/epic-arch, answered by the tech lead)
+
+#### A1 — {the choice, in plain words}
+
+**Situation**: {which user, business process, or moment this touches — plain words}
+**Impact**:
+- **If yes**: {concrete consequence for users, effort, cost, risk}
+- **If no**: {concrete consequence}
+**Recommendation**: {option + one-sentence reason} · {Easy | Hard to change later — why}
+
+**Confirm?** {one explicit question, answerable by yes/no or A/B}
+> **Your answer**:
 
 ## Open Questions
 
-- [blocking] {question}
-- [important] {question}
-- [minor] {question}
+<!-- Plain words, blocking first — guides/review-questions.md → Open questions -->
+
+- [blocking] {plain question} — Why it matters: {what stays blocked} — For: {product owner | tech lead}
 
 ## Sign-Off
 

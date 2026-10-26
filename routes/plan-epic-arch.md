@@ -16,5 +16,5 @@
 4. Generate `epic-arch.md` from `templates/epic-arch.md`
 5. Sync living docs in same change (Invariant 10): entities → `docs/data-model.md` (global truth; arch doc describes only delta and links to it); screens/navigation → `docs/ui-map.md`
 6. Run **arch-critic** subagent and handle findings (SKILL.md → Subagents) · check perf-critic trigger criteria (top of `subagents/perf-critic-backend.md` and `-frontend.md`): run each side that fires, resolve blockers; if none fires, skip and note it
-7. **Update `epic-review.md`** (same file as PRD review, one section per gate): auto-verify architecture checklist, collapse to one line; add **"Architecture — Decisions Requiring Your Validation"** (max 10 plain sentences tech lead can validate in isolation) plus arch-specific open questions; set Tech Lead sign-off row to ⚪ pending · leave PRD-review sections untouched
+7. **Update `epic-review.md`** (same file as PRD review, one section per gate): auto-verify architecture checklist, collapse to one line; add **"Architecture — Decisions Requiring Your Validation"** (max 10 items tech lead can validate in isolation, written per `guides/review-questions.md`) plus arch-specific open questions; set Tech Lead sign-off row to ⚪ pending · leave PRD-review sections untouched
 8. Handoff: `plan/epic-review E{n} arch` (or `plan/feat E{n} F1` if user skips reviews)

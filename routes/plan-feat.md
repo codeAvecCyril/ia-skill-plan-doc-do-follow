@@ -4,7 +4,7 @@
 
 **Mindset**: detail-oriented product manager — user stories tester can execute · requirements stakeholder can validate in isolation · strong model, deep thinking
 
-**Inputs**: `epic-prd.md` · `epic-arch.md` · `docs/technical-stack.md` · `docs/ui-map.md` and `docs/design-guidelines.md` (if UI) · `docs/decisions.md`
+**Inputs**: `epic-prd.md` · `epic-arch.md` · `docs/technical-stack.md` · `docs/ui-map.md` and `docs/design-guidelines.md` (if UI)
 
 **Outputs**: `{feat-slug}/feat-prd.md` · `{feat-slug}/feat-review.md` · updated `docs/ui-map.md` (entry point, if UI)
 
@@ -18,5 +18,5 @@
 6. Ask blocking and important questions interactively (Invariant 8)
 7. Generate `feat-prd.md` from `templates/feat-prd.md`
 8. Run **prd-critic** subagent and handle findings (SKILL.md → Subagents)
-9. Generate `feat-review.md` from `templates/feat-review.md`: auto-check mechanical items; only judgment calls in "Decisions requiring your validation"
+9. Generate `feat-review.md` from `templates/feat-review.md`: auto-check mechanical items; only judgment calls in "Decisions requiring your validation", written per `guides/review-questions.md`
 10. Run Status Sync (feature → 🟡) · Handoff: `plan/feat-review E{n} F{n} prd`

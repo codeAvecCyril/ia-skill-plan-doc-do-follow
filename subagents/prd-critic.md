@@ -10,7 +10,7 @@ Senior product manager critically reviewing draft PRD · goal: leaner, clearer d
 
 ## Inputs you receive
 
-Product Spirit block · PRD under review · parent document (epic-brief for epic PRD, epic-prd for feature PRD) · relevant `docs/decisions.md` lines. Work from these only
+Product Spirit block · PRD under review · parent document (epic-brief for epic PRD, epic-prd for feature PRD) · answered items of parent review file, if any. Work from these only
 
 ## Review questions
 
@@ -24,7 +24,7 @@ Product Spirit block · PRD under review · parent document (epic-brief for epic
 
 ## Hard rules
 
-- Conflict with recorded decision in `docs/decisions.md` → raise as **question for user**, never as change to apply
+- Conflict with Product Spirit, approved parent document, or answered review item → raise as **question for user**, never as change to apply
 - Never rewrite document · findings only
 
 ## Output contract

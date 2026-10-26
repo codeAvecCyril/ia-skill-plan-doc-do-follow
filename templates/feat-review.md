@@ -22,7 +22,7 @@
 - [ ] Architecture Delta is present (or explicitly "None")
 - [ ] Test strategy is defined
 - [ ] Every statement is a complete sentence with no unexplained abbreviations
-- [ ] Consistent with the Product Spirit block and `docs/decisions.md`
+- [ ] Consistent with the Product Spirit block, the approved epic documents, and earlier review answers
 
 </details>
 
@@ -37,16 +37,27 @@
 
 ## Decisions Requiring Your Validation
 
-<!-- Max 10 self-contained plain sentences; validated decisions → docs/decisions.md
-     Answers recorded verbatim, applied as written — never rewritten, never re-asked -->
+<!-- Write every item per guides/review-questions.md (load it) — mandatory format below
+     Only real decisions · plain words · impact of each answer · bold **Confirm?** = full question
+     Answer applied into reviewed doc; question + answer stay here verbatim — never rewritten, never re-asked
+     Max 10 items. plan/redesign adds section "Redesign — Decisions Requiring Your Validation" -->
 
-1. {Plain-sentence decision statement}. **Confirm?**
+### D1 — {the choice, in plain words}
+
+**Situation**: {which user, business process, or moment this touches — plain words}
+**Impact**:
+- **If yes**: {concrete consequence for users, effort, cost, risk}
+- **If no**: {concrete consequence}
+**Recommendation**: {option + one-sentence reason} · {Easy | Hard to change later — why}
+
+**Confirm?** {one explicit question, answerable by yes/no or A/B}
+> **Your answer**:
 
 ## Open Questions
 
-- [blocking] {question}
-- [important] {question}
-- [minor] {question}
+<!-- Plain words, blocking first — guides/review-questions.md → Open questions -->
+
+- [blocking] {plain question} — Why it matters: {what stays blocked} — For: {product owner | tech lead}
 
 ## Sign-Off
 

@@ -22,8 +22,10 @@ As a {user role}, I want to {capability} so that {business value}
 
 ## Acceptance Criteria
 
-- [ ] {complete, verifiable sentence}
-- [ ] {complete, verifiable sentence}
+<!-- Numbered AC-{n}: plan/tasks Story Trace and `pddf lint-tasks` check every id is covered -->
+
+- [ ] **AC-1**: {complete, verifiable sentence}
+- [ ] **AC-2**: {complete, verifiable sentence}
 
 ## Edge Cases & Error Handling
 
