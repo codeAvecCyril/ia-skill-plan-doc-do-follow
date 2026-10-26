@@ -182,7 +182,7 @@ Conclusions, not process. Mechanical checks auto-verified → one summary line. 
 | Set one task row (+ Execution line) | `pddf task E{n} F{n} T{n} {⚪\|🔵\|🟢} [--wave k/w] [--eta 40m]` |
 | Pending waves, progress, DAG problems | `pddf waves E{n} F{n}` |
 | One task packet (task text, its contracts, patterns, instruction files) | `pddf packet E{n} F{n} T{n}` |
-| Mechanical task checks (sections, paths, validation commands, external references, Story Trace coverage, DAG) | `pddf lint-tasks E{n} F{n}` |
+| Mechanical task checks (sections, paths, validation commands, external references, Story Trace coverage, DAG) | `pddf lint-tasks E{n} F{n} [--strict]` (planning routes use `--strict`) |
 | One Markdown section | `pddf toc FILE` · `pddf section FILE "Heading"` · `--replace` from stdin (full section incl. heading) |
 | Unanswered review items | `pddf review-open FILE` |
 | Resolve slugs to directories | `pddf find E{n} [F{n}]` |

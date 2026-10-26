@@ -6,26 +6,58 @@ Structured planning with built-in business reviews, single-source-of-truth statu
 
 ## Installation
 
-### Cursor (project skill)
+Claude Code, Cursor, GitHub Copilot, and OpenCode all read project skills from `.claude/skills/`, so **one folder serves every tool** — install once per repository and the whole team gets it, whatever tool each person uses.
 
-```bash
-git submodule add git@github.com:codeAvecCyril/ia-skill-plan-doc-do-follow.git .claude/skills/plan-doc-do-follow
-mkdir -p .cursor/skills/plan-doc-do-follow
-```
-
-Create `.cursor/skills/plan-doc-do-follow/SKILL.md` pointing to `.claude/skills/plan-doc-do-follow/SKILL.md`
-
-### Cursor (personal skill)
-
-```bash
-git clone git@github.com:codeAvecCyril/ia-skill-plan-doc-do-follow.git ~/.cursor/skills/plan-doc-do-follow
-```
-
-### Claude Code (project skill)
+### Project skill (recommended — all platforms)
 
 ```bash
 git submodule add git@github.com:codeAvecCyril/ia-skill-plan-doc-do-follow.git .claude/skills/plan-doc-do-follow
 ```
+
+Without submodules: `git clone` to the same path and commit the folder
+
+### Personal skill (all your repositories, only you)
+
+| Platform | Clone into |
+| -------- | ---------- |
+| Claude Code | `~/.claude/skills/plan-doc-do-follow` |
+| Cursor | `~/.cursor/skills/plan-doc-do-follow` |
+| GitHub Copilot (VS Code, Visual Studio, JetBrains, Copilot CLI) | `~/.copilot/skills/plan-doc-do-follow` |
+| OpenCode | `~/.config/opencode/skills/plan-doc-do-follow` |
+
+One clone for Cursor, GitHub Copilot, and OpenCode together — `~/.agents/skills/` is read by all three (Claude Code still needs `~/.claude/skills/`):
+
+```bash
+git clone git@github.com:codeAvecCyril/ia-skill-plan-doc-do-follow.git ~/.agents/skills/plan-doc-do-follow
+```
+
+### Calling a route
+
+| Platform | How |
+| -------- | --- |
+| Claude Code | `/plan-doc-do-follow plan/tasks E1 F2`, or just write `plan/tasks E1 F2` |
+| Cursor | type `/`, pick **plan-doc-do-follow**, add the route — or just write the route in Agent chat |
+| GitHub Copilot | agent mode: type `/`, pick **plan-doc-do-follow**, add the route |
+| OpenCode | write the route; the agent loads the skill through its `skill` tool |
+
+### Platform notes
+
+- **All platforms**: bundled scripts need `python3` ≥ 3.9 on the PATH; approve `python3 …/scripts/pddf.py` once in the terminal tool's auto-approve list to avoid a prompt per call
+- **GitHub Copilot**: Copilot cloud agent and code review on GitHub.com read project skills (`.github/skills`, `.claude/skills`, `.agents/skills`) but not personal ones — use the project install there. In a monorepo opened from a subfolder, enable `chat.useCustomizationsInParentRepositories`. Native subagents install into `.github/agents/` through `do/init`
+- **Cursor**: older releases needed a pointer `SKILL.md` in `.cursor/skills/`; current releases read `.claude/skills/` directly
+- **Native agents** (optional, any platform): `do/init` installs the reviewer and coder subagents into the platform's own agent folder with model and thinking-level settings
+
+### After installing
+
+Run `do/init` once (tooling, scripts check, economy profile, native agents), then follow the route map below
+
+### Upgrading from an earlier version
+
+1. Update the skill: `git submodule update --remote .claude/skills/plan-doc-do-follow` (personal install: `git -C {skill-dir} pull`), then commit the new pointer
+2. Re-run `do/init` — refreshes native agents (new instructions, thinking level) and records the scripts path; idempotent
+3. Run `do/sync-status` (or `python3 {skill-dir}/scripts/pddf.py sync --check` to preview). Each `REVIEW` line is a feature marked done whose task rows say otherwise: shipped → mark its rows 🟢 with `pddf task`; really reopened → `pddf sync --reopen E{n}F{n}`
+4. From 3.6 or earlier: `docs/decisions.md` is no longer read — archive it; carry any decision the PRDs never captured into them with `plan/change`. Features whose tasks are not started yet: re-run `plan/tasks` to get Story Trace and Shared Contracts; features in progress resume with `do/all-tasks` as they are
+5. Optional: draft any missing `docs/product.md`, `docs/global_architecture.md`, or `docs/technical-stack.md` from `templates/`; keep the repository instruction file under about 5k tokens
 
 ### Project prerequisites
 
@@ -186,7 +218,7 @@ Run `plan/migrate` once — it works even with epics and features half implement
 
 ---
 
-**Version**: 3.8 (3.7 plus: bundled `scripts/pddf.py`; Working Economy refreshed — cache, turns, tool surface, compaction, cost per successful task; route map; numbered acceptance criteria) · 3.7 (3.6 plus: `docs/decisions.md` removed — answers applied into reviewed docs; review-question writing guide with examples; feature-coordinator + `plan/redesign`; Story Trace and Shared Contracts in `plan/tasks`; medium-thinking feature-coder; `product.md`, `global_architecture.md`, `technical-stack.md` templates; thinking → effort mapping for Claude Code, Cursor, Copilot, OpenCode)
+**Version**: 3.8.1 (installation for all four platforms, upgrade guide, `lint-tasks --strict` so pre-3.7 features run without a Story Trace) · 3.8 (3.7 plus: bundled `scripts/pddf.py`; Working Economy refreshed — cache, turns, tool surface, compaction, cost per successful task; route map; numbered acceptance criteria) · 3.7 (3.6 plus: `docs/decisions.md` removed — answers applied into reviewed docs; review-question writing guide with examples; feature-coordinator + `plan/redesign`; Story Trace and Shared Contracts in `plan/tasks`; medium-thinking feature-coder; `product.md`, `global_architecture.md`, `technical-stack.md` templates; thinking → effort mapping for Claude Code, Cursor, Copilot, OpenCode)
 
 **License**: Apache-2.0 — see [LICENSE](LICENSE)
 

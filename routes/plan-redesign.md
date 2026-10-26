@@ -17,6 +17,6 @@
    - (b) **behavior change** — a PRD promise cannot hold as written → add "Redesign — Decisions Requiring Your Validation" to `feat-review.md` per `guides/review-questions.md` (what users would get differently, options, impact of each, recommendation) · leave tasks untouched · Status Sync · handoff `plan/feat-review E{n} F{n} prd`, then `plan/redesign` again · real scope change → `plan/change`
 4. **Design the fix once, globally**: simplest change closing every confirmed gap while keeping every story whole · check against `epic-arch.md` and Shared Contracts · update Architecture Delta (or `feat-arch.md`) and living docs in same change (Invariant 10)
 5. **Amend tasks**: pending tasks (⚪, or 🔵 not accepted) edited in place · 🟢 tasks never rewritten — append corrective tasks `T{next}…` depending on what they fix · update Task Summary, Story Trace, Shared Contracts · every amended or new task meets `plan/tasks` quality bar
-6. **Self-review**: replay each impacted story through task texts only · `pddf lint-tasks E{n} F{n}` until 0 FAIL · run **task-checker** on amended + new tasks with acceptance criteria list · one re-run max
+6. **Self-review**: replay each impacted story through task texts only · `pddf lint-tasks E{n} F{n} --strict` until 0 FAIL · run **task-checker** on amended + new tasks with acceptance criteria list · one re-run max
 7. **Close gaps**: `G{n} … · closed {date}: {one-line fix} → T{…}` · Status Sync (appended ⚪ tasks keep feature 🔵) · no changelog entry (scope unchanged)
 8. Handoff: `do/all-tasks E{n} F{n}` (resumes from Task Summary)

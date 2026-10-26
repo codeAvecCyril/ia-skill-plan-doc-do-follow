@@ -9,7 +9,7 @@ Stdlib only, Python >= 3.9. Run from the repository root (or pass --docs).
   task E1 F2 T3 🟢 [--wave 2/4] [--eta 40m]   set one Task Summary row (+ Execution line)
   waves E1 F2                    pending execution waves, progress, dependency problems
   packet E1 F2 T3                print one task packet (task text, contracts, patterns)
-  lint-tasks E1 F2               mechanical checks on feat-tasks.md (+ Story Trace coverage)
+  lint-tasks E1 F2 [--strict]    mechanical checks on feat-tasks.md (+ Story Trace coverage)
   section FILE HEADING [--replace]   print one Markdown section, or replace it from stdin
   toc FILE                       headings with line numbers
   review-open FILE               unanswered **Confirm?** items in a review file
@@ -590,7 +590,7 @@ EXTERNAL_REF = re.compile(
 SETUP_KINDS = re.compile(r"test|config|setup|infra|migration|doc|chore|refactor", re.I)
 
 
-def cmd_lint_tasks(docs: Path, e: str, f: str) -> int:
+def cmd_lint_tasks(docs: Path, e: str, f: str, strict: bool) -> int:
     path = tasks_file(docs, e, f)
     lines = read(path)
     _, tasks = load_tasks(lines)
@@ -621,7 +621,10 @@ def cmd_lint_tasks(docs: Path, e: str, f: str) -> int:
         trace = "\n".join(lines[s:e_])
     except PddfError:
         trace = None
-        issues.append("no Story Trace section")
+        if strict:
+            issues.append("no Story Trace section")
+        else:
+            warnings.append("no Story Trace section — pre-3.7 format, story checks skipped (plan/tasks regenerates it)")
     if trace is not None:
         traced = set(re.findall(rf"\b{TASK}\b", trace))
         for code in sorted(traced - set(tasks), key=task_key):
@@ -642,7 +645,8 @@ def cmd_lint_tasks(docs: Path, e: str, f: str) -> int:
                 if code not in tasks:
                     issues.append(f"Shared Contracts row {table.cell(r, 0)!r} names unknown task {code}")
     except PddfError:
-        warnings.append("no Shared Contracts table (fine only if no interface crosses tasks)")
+        if trace is not None or strict:
+            warnings.append("no Shared Contracts table (fine only if no interface crosses tasks)")
     for line in issues:
         print(f"FAIL {line}")
     for line in warnings:
@@ -719,6 +723,8 @@ def main(argv: list[str] | None = None) -> int:
         p = sub.add_parser(name)
         p.add_argument("epic")
         p.add_argument("feature")
+        if name == "lint-tasks":
+            p.add_argument("--strict", action="store_true", help="planning mode: missing Story Trace is a FAIL, not a WARN")
     p = sub.add_parser("packet")
     for name in ("epic", "feature", "task"):
         p.add_argument(name)
@@ -741,7 +747,7 @@ def main(argv: list[str] | None = None) -> int:
         if a.cmd == "waves":
             return cmd_waves(docs, a.epic, a.feature)
         if a.cmd == "lint-tasks":
-            return cmd_lint_tasks(docs, a.epic, a.feature)
+            return cmd_lint_tasks(docs, a.epic, a.feature, a.strict)
         if a.cmd == "packet":
             return cmd_packet(docs, a.epic, a.feature, a.task)
         if a.cmd == "section":
