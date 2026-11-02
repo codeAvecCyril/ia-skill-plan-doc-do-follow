@@ -632,6 +632,24 @@ def cmd_lint_tasks(docs: Path, e: str, f: str, strict: bool) -> int:
         for code, task in tasks.items():
             if code not in traced and not SETUP_KINDS.search(task.kind + " " + task.title):
                 warnings.append(f"{code}: not in Story Trace and not a setup/test task — orphan?")
+        try:
+            st = Table(lines, "Story Trace")
+            tcol = st.col("tested by", required=False)
+        except PddfError:
+            st, tcol = None, None
+        if st is not None and tcol is None:
+            msg = "Story Trace has no 'Tested by' column — pre-3.9 format, test placement unchecked"
+            (issues if strict else warnings).append(msg)
+        elif st is not None:
+            for r in st.rows:
+                cells = split_row(lines[r])[1:-1]
+                cell = cells[tcol] if tcol < len(cells) else ""
+                testers = re.findall(rf"\b{TASK}\b", cell)
+                if not testers:
+                    issues.append(f"Story Trace row {cells[0].strip()[:40]!r}: no 'Tested by' task")
+                for code in testers:
+                    if code in tasks and not re.search(r"test", tasks[code].kind + " " + tasks[code].title, re.I):
+                        warnings.append(f"{code} in 'Tested by' is not a Test task — fine only for risk-critical steps")
         prd = path.parent / "feat-prd.md"
         if prd.exists():
             ids = sorted(set(re.findall(r"\b(?:US|AC)-\d+(?:\.\d+)?\b", prd.read_text(encoding="utf-8"))))

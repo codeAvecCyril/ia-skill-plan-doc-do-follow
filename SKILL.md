@@ -141,7 +141,7 @@ Run in order — first match wins → **do not spawn**:
 | `perf-critic-backend` / `-frontend` | reviewer | arch routes, verification gates | only when trigger criteria (top of their files) fire |
 | `task-checker` | reviewer | `plan/tasks`, `plan/redesign` | after self-review; max two runs |
 | `feature-coordinator` | principal role | `do/all-tasks` | principal adopts it — **never spawned** (subagents cannot spawn subagents) |
-| `feature-coder` | executor | `do/all-tasks` (via coordinator) | one per parallelizable task per wave |
+| `feature-coder` | executor | `do/all-tasks` (via coordinator) | one per parallelizable task per wave · stuck → STOP + HANDOVER, re-dispatched once on escalation tier |
 | `ui-consistency-reviewer` | reviewer | verification gates | UI features, non-trivial surface |
 | `doc-coherence-reviewer` | reviewer | verification gates · `plan/change` · `plan/migrate` | epic completion · after change · after migration |
 
@@ -182,7 +182,7 @@ Conclusions, not process. Mechanical checks auto-verified → one summary line. 
 | Set one task row (+ Execution line) | `pddf task E{n} F{n} T{n} {⚪\|🔵\|🟢} [--wave k/w] [--eta 40m]` |
 | Pending waves, progress, DAG problems | `pddf waves E{n} F{n}` |
 | One task packet (task text, its contracts, patterns, instruction files) | `pddf packet E{n} F{n} T{n}` |
-| Mechanical task checks (sections, paths, validation commands, external references, Story Trace coverage, DAG) | `pddf lint-tasks E{n} F{n} [--strict]` (planning routes use `--strict`) |
+| Mechanical task checks (sections, paths, validation commands, external references, Story Trace coverage, Tested by, DAG) | `pddf lint-tasks E{n} F{n} [--strict]` (planning routes use `--strict`) |
 | One Markdown section | `pddf toc FILE` · `pddf section FILE "Heading"` · `--replace` from stdin (full section incl. heading) |
 | Unanswered review items | `pddf review-open FILE` |
 | Resolve slugs to directories | `pddf find E{n} [F{n}]` |

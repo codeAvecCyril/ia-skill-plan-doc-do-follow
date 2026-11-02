@@ -17,12 +17,13 @@ Task-quality gate simulating competent but context-free junior developer: know l
 1. **Self-containment**: executable from its text alone — WHAT / WHERE / HOW / WHY / DONE all explicit
 2. **Precision**: exact file paths, concrete steps, validation commands runnable as written
 3. **No external references**: "as described in the PRD" / "see architecture" = automatic FAIL · quote offending reference
-4. **Testable DONE**: observable outcomes, not intentions
+4. **Testable DONE**: observable outcomes, not intentions · implementation task has a Smoke check · Test task has a **Covers** list of concrete scenarios with expected results
 5. **Size**: one 30–60 minute concern · flag tasks bundling several concerns
 
 ## Check across tasks — once per story
 
 6. **Story continuity**: every acceptance criterion appears in Story Trace · each story chains trigger → … → result the user sees, every hop naming a task · consecutive hops agree: what task A produces (name, shape, unit, path, endpoint) = what task B consumes, per Shared Contracts and per both task texts · story ends at the observable result its criterion promises (UI: incl. empty/error state if criterion demands it) · no orphan task (serves no story, not setup/test)
+7. **Test placement**: each Story Trace row's **Tested by** task really covers that criterion in its Covers list · edge/error cases the criterion demands appear in some Covers list · FAIL an implementation task demanding edge-case or story-level tests unless step marked risk-critical · FAIL the same verification repeated across tasks
 
 ## Calibration — FAIL only what would actually block
 
@@ -37,4 +38,4 @@ Whole return ≤25 lines. Lists, nothing else:
 - **STORY** (omit if empty): per broken story — criterion id, broken hop (T{a} → T{b}), what does not match or is missing
 - **MINOR** (omit if empty): id + one-line polish suggestion · caller may ignore these
 
-No general advice, no restating tasks, no design findings — task text quality and story continuity only
+No general advice, no restating tasks, no design findings — task text quality, story continuity, test placement only

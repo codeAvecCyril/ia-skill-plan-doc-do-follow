@@ -19,7 +19,7 @@
 5. **Subagent economy profile** — present `strict` | `balanced` | `quality` (SKILL.md → Economy profile); recommend `strict` when token cost dominates, `balanced` as default, `quality` only if user prioritizes isolated review over tokens. Record chosen value
 6. **Native agents (optional)** — see section below; skip entirely if user declines
 7. Present recommendations one line each with expected saving; install only what user approves
-8. Record adopted tooling in repository instruction file — one short **Tooling** section: active LSPs · filter prefix and target commands · index/graph tool if any · `Skill scripts: python3 {skill-dir}/scripts/pddf.py` · `Subagent economy: {strict|balanced|quality}` · if native agents installed: one line per platform, e.g. `Native agents (cursor): .cursor/agents (9) · critics=inherit · standard=inherit` · `Native agents (claude): …` · `Native agents (copilot): …` · `Native agents (opencode): …`. Every route and every subagent brief reads this file
+8. Record adopted tooling in repository instruction file — one short **Tooling** section: active LSPs · filter prefix and target commands · index/graph tool if any · `Skill scripts: python3 {skill-dir}/scripts/pddf.py` · `Subagent economy: {strict|balanced|quality}` · `feature-coder escalation={id|principal}` · if native agents installed: one line per platform, e.g. `Native agents (cursor): .cursor/agents (9) · critics=inherit · standard=inherit` · `Native agents (claude): …` · `Native agents (copilot): …` · `Native agents (opencode): …`. Every route and every subagent brief reads this file
 9. Handoff: resume interrupted route, or `plan/proj` for fresh project
 
 ## Native agents install / sync
@@ -46,6 +46,7 @@ Offer every target that applies (user may pick more than one):
 4. Propose **tier defaults** (one question per platform if model vocab differs — not nine agents):
    - **critics** (`model_class: reasoning`): default platform "follow session" (see Model Auto below) — `prd-critic`, `arch-critic`, `perf-critic-*`, `ui-consistency-reviewer`
    - **standard** (`model_class: standard`): same default — `repo-scout`, `task-checker`, `feature-coder`, `doc-coherence-reviewer`
+   - **Escalation tier** (stuck-coder watchdog, `subagents/feature-coordinator.md` → Watchdog): stronger model a stuck `feature-coder` is re-dispatched on · default = principal's model (reasoning class) · user may name one picker id · record as `feature-coder escalation={id|principal}` in Tooling
    - **Effort**: apply Thinking → effort table below where platform allows · Cursor sets effort only on a pinned model id — with `inherit`, executors run at parent's effort; to keep `feature-coder` at medium, propose pinning standard tier with `[effort=medium]`
 5. Optional: "Customize per agent?" **y/n** — only if **y**, list roster; user may set model per file. Accept only values allowed for that platform (below) — never invent ids
 6. Confirm write path(s) and proceed
@@ -71,6 +72,7 @@ For each `subagents/{name}.md` except `README.md` and files with `invocation: pr
 4. `model` = tier default or per-agent override from Ask steps (or omit where platform default = follow session)
 5. Overwrite existing same-name roster files on refresh; never delete user-added agents outside the roster
 6. Create target directory if missing (after user confirmed that platform)
+7. **Escalated coder variant** — only on platforms whose spawn tool has no per-call model override (Cursor, Copilot, OpenCode; not Claude Code — Agent `model` param covers it): write `feature-coder-escalated` = copy of `feature-coder`, `description` prefixed `Escalation only — dispatched by feature-coordinator after a stuck feature-coder.`, `model` = escalation tier (`inherit`/omit when `principal`), effort from `thinking: deep`
 
 ### Thinking → effort
 

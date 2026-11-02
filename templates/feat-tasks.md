@@ -40,9 +40,9 @@ graph TD
 <!-- Each acceptance criterion, told start to finish: trigger → processing → stored data → screen → result promised
      Every hop owned by a task; unowned hop = design hole, close before handing off -->
 
-| Criterion (verbatim) | Path: trigger → … → result user gets | Tasks |
-| -------------------- | ------------------------------------ | ----- |
-| {US-1 AC-2: "{quoted}"} | {e.g. click Save → `POST /api/plans` → `plans` row → `GET /api/plans` → list shows plan + "Saved" toast} | T2 → T3 → T5 |
+| Criterion (verbatim) | Path: trigger → … → result user gets | Tasks | Tested by |
+| -------------------- | ------------------------------------ | ----- | --------- |
+| {US-1 AC-2: "{quoted}"} | {e.g. click Save → `POST /api/plans` → `plans` row → `GET /api/plans` → list shows plan + "Saved" toast} | T2 → T3 → T5 | T6 |
 
 ## Shared Contracts
 
@@ -58,7 +58,9 @@ graph TD
 ## Task Details
 
 <!-- Every task executable by weaker model WITHOUT opening PRD or any other doc:
-     WHAT / WHERE / HOW / WHY / DONE all explicit -->
+     WHAT / WHERE / HOW / WHY / DONE all explicit
+     Implementation tasks: Smoke check only (+ tests for steps marked risk-critical)
+     Test tasks (Type Test): Covers list instead of Steps detail; edge cases, error paths, story-level tests -->
 
 ### T1: {title}
 
@@ -79,8 +81,8 @@ graph TD
 
 **Done when (DONE)**:
 - [ ] {verifiable criterion}
-- [ ] Tests: {what to test and how}
-- [ ] Validation command(s): `{runnable command}`
+- [ ] Smoke check: {one fast check, e.g. typecheck touched files + one happy-path test}
+- [ ] Validation command(s): `{runnable command — scoped, never full suite}`
 
 **Notes**: {known pitfalls — delete if none}
 
@@ -89,6 +91,27 @@ graph TD
 ### T2: {title}
 
 {same structure}
+
+---
+
+### T6: Test — {story slice or layer}
+
+**Objective (WHAT/WHY)**: {prove criteria X–Y end to end, incl. edge and error paths}
+**Context**: {code under test, how to run it, fixtures available}
+
+**Files (WHERE)**:
+- Create: `exact/path/to/test_file`
+
+**Covers**:
+- {US-1 AC-2}: {scenario → expected observable result}
+- Edge: {empty / invalid / boundary case → expected result}
+- Error: {failure case → expected result}
+
+**Contracts**: {Shared Contract lines under test, copied exactly}
+
+**Done when (DONE)**:
+- [ ] One test per Covers item, all passing — implementation defect → report DEFECT, never fix code outside this task
+- [ ] Validation command(s): `{runnable command scoped to these tests}`
 
 ---
 

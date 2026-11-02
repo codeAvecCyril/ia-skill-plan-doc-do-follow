@@ -48,6 +48,7 @@ Prefer **`do/init`** — detects platform(s), asks install y/n, proposes critic/
 
 - **critics** (`model_class: reasoning`): `prd-critic`, `arch-critic`, `perf-critic-backend`, `perf-critic-frontend`, `ui-consistency-reviewer`
 - **standard** (`model_class: standard`): `repo-scout`, `task-checker`, `feature-coder`, `doc-coherence-reviewer`
+- **escalation**: stuck `feature-coder` re-dispatched once on escalation tier (default principal's model) — per-spawn model override where platform has one, else native `feature-coder-escalated` (`routes/do-init.md` → write invariant 7)
 - **not installed**: `feature-coordinator` (`invocation: principal`) — run `do/all-tasks` on a reasoning-class session
 
 Drop `model_class` / `thinking` / `capabilities` from every native file. Never hardcode vendor model ids in portable skill files — map at install time. Never write Cursor `model: auto`. Never use Copilot `tools: ['*']` or omit tools for `read-only` agents
@@ -73,7 +74,7 @@ Drop `model_class` / `thinking` / `capabilities` from every native file. Never h
 - **Scoped context** (Invariant 14): caller passes exactly inputs definition lists — never "read everything". Reviewer briefs always include Product Spirit block and answered items of parent review file
 - **Tooling injection**: every brief includes Tooling one-liner from repo instruction file (CLI filter, LSP preference, `Subagent economy`). Subagent obeys it. Long-output Shell → use declared filter prefix
 - **Return-payload cap**: scout ≤15 lines · critics ≤25 lines · no preamble/summary · principal never pastes raw returns into docs
-- **Model hints**: honor `model_class` / `thinking` — never elevate above definition; prefer cheapest capable model platform allows for `standard` + `brief`
+- **Model hints**: honor `model_class` / `thinking` — never elevate above definition, except feature-coordinator's one-time Watchdog escalation; prefer cheapest capable model platform allows for `standard` + `brief`
 - **Respect approved docs**: conflict with Product Spirit, approved PRD/architecture, or answered review item → raise as question for user, never apply as change
 - **Reviewer output format**: numbered, actionable findings, ordered by severity · each states problem, why it matters, concrete suggestion. No praise, no restating document, no preamble or closing summary
 - **Reviewer calibration**: flag as blocking only what would change behavior, contract, or human decision · style, verbosity, formatting = minor at most. At most 10 findings — keep most consequential
