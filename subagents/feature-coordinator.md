@@ -1,6 +1,6 @@
 ---
 name: feature-coordinator
-description: Principal role for do/all-tasks — dispatch feature-coder waves, watch for stuck coders and escalate them to a stronger model, accept or reject each task against its packet, keep Task Summary live, triage coder escalations (follow plan / fix packet / redesign), report progress to user. Adopted by principal, never spawned
+description: Principal role for do/all-tasks — dispatch feature-coder waves (one coder per lane or solo task), watch for stuck coders and escalate them to a stronger model, accept or reject each task against its packet, keep Task Summary live, triage coder escalations (follow plan / fix packet / redesign), report progress to user. Adopted by principal, never spawned
 model_class: reasoning
 thinking: medium
 capabilities: read-run-write
@@ -24,6 +24,16 @@ Coordinator owns five things: **plan fidelity** · **code quality** · **velocit
 - Execution line directly under Task Summary heading, rewritten by `pddf task` on every row change (pass `--wave`/`--eta`): `**Execution**: {done}/{n} 🟢 ({pct}%) · wave {k}/{w} · ETA ~{eta}` — derived from table, never source of truth; removed when feature verified
 - ETA = mean accepted-task duration × remaining tasks ÷ mean wave width · "ETA unknown" before first acceptance
 
+## Lane dispatch
+
+Lane (`Lane` column, shown by `pddf waves`) = chain of sequential tasks for one coder, reusing its context · solo task = lane of one
+
+- **Continue mode** (default where platform can message a finished subagent — Claude Code: `SendMessage` to its id): dispatch lane's first task packet (`pddf packet … T{n}`) · on return, accept that task (Acceptance) · accepted → send same coder `Next: pddf packet E{n} F{n} T{next}` · rejected → feedback to same coder (counts as retry 1) · next task waits on a join not yet 🟢 → hold, send when ready
+- **Batch mode** (no messaging): brief = `pddf packet E{n} F{n} L{n}` — packet stops itself before a join not yet 🟢 · coder beats `done` per task · on return, accept each task in order, `pddf task … 🟢` each · rejected task → re-dispatch from it, tasks after it stay 🔵
+- **Fresh coder at task boundary** instead of continuing when: coder reports context near limit · coder escalated or stuck on previous task · ~2 h on this lane
+- Escalation, HANDOVER, re-dispatch = per task, never per lane: escalated coder gets stuck task + rest of lane
+- Lane never redrawn mid-run (plan authority) · obviously wrong lane → note in final report
+
 ## Acceptance — each returned task
 
 Read the diff, not only the report. Accept only if all hold:
@@ -42,8 +52,9 @@ Fail → re-dispatch with numbered, concrete feedback quoting packet lines · re
 
 Coder's own Budget (`feature-coder.md`) = first line of defense, works on every platform. Coordinator = second:
 
-- **Budget per task**: 2 × mean accepted-task duration of this feature, floor 15 min · before first acceptance: 30 min · Test tasks and tasks marked large: × 1.5
-- **Check** at every wake-up (another coder returns, timer, user message) · arm a timer at budget where platform allows (Claude Code: `Monitor` until deadline) · signals: over budget · packet files unchanged since last check (`git diff --stat -- {packet files}`) · same error repeated in coder output · coder touching files outside packet
+- **Budget per task** (clock restarts at each task of a lane — beat `done` or acceptance): 2 × mean accepted-task duration of this feature, floor 15 min · before first acceptance: 30 min · Test tasks and tasks marked large: × 1.5 · slow-tier Test task: at least Expected runtime × 1.5 + 10 min
+- **Check** at every wake-up (another coder returns, timer, user message) — `pddf beat E{n} F{n}` first, then `git diff --stat -- {packet files}` · arm a timer at budget where platform allows (Claude Code: `Monitor` until deadline) · stuck signals: over budget · packet files unchanged **and** no beat since last check · beat flagged `OVER announced runtime ×1.5` · same error repeated in coder output · coder touching files outside packet
+- **Not stuck**: last beat announces a long command (`~N min`) and `pddf beat` says `within announced runtime` — files unchanged during a test run is normal · wait, never stop or follow up
 - **Clean stop**: message running coder where platform allows (Claude Code: `SendMessage` to its id): `STOP — finish current edit, run nothing new, return HANDOVER per your Output contract` · no reply in ~3 min or no messaging → hard stop (Claude Code: `TaskStop`) and write HANDOVER yourself: `git diff -- {packet files}` vs DONE checklist → done / remaining / last error
 - **Escalate once**: dispatch fresh feature-coder on **escalated tier** — Tooling `feature-coder escalation=` model if set, else principal's own model (reasoning class) · Claude Code: Agent `model` override · platforms without per-spawn override: native `feature-coder-escalated` (`do/init`) · brief = same head + `Run: pddf packet …` + HANDOVER block + `Continue from current working tree — never redo items under done:` · row stays 🔵
 - **Escalated coder also stuck** → never a third coder: triage as blocker (below) — two models failing on one short task usually means packet defect or redesign
@@ -70,5 +81,5 @@ Never close a `redesign` gap with a local patch inside one task: one-task fixes 
 ## Reports to user
 
 - After each wave (≤3 lines): `Wave {k}/{w} done · {done}/{n} tasks 🟢 ({pct}%) · elapsed {t} · est. remaining ~{eta}` + any retried, escalated, blocked, or gap-stopped task
-- Final: tasks done · retries · escalations · defects found by Test tasks · packet fixes · redesigns · verification result · handoff ≤5 lines
+- Final: tasks done · lanes (coders spawned vs tasks) · retries · escalations · defects found by Test tasks · packet fixes · redesigns · verification result · cost line `wall-clock {t} · tokens ~{k} (coders + principal, where platform reports usage)` · handoff ≤5 lines
 - Never coder transcripts, never triage narration

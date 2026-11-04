@@ -23,7 +23,8 @@ Task-quality gate simulating competent but context-free junior developer: know l
 ## Check across tasks — once per story
 
 6. **Story continuity**: every acceptance criterion appears in Story Trace · each story chains trigger → … → result the user sees, every hop naming a task · consecutive hops agree: what task A produces (name, shape, unit, path, endpoint) = what task B consumes, per Shared Contracts and per both task texts · story ends at the observable result its criterion promises (UI: incl. empty/error state if criterion demands it) · no orphan task (serves no story, not setup/test)
-7. **Test placement**: each Story Trace row's **Tested by** task really covers that criterion in its Covers list · edge/error cases the criterion demands appear in some Covers list · FAIL an implementation task demanding edge-case or story-level tests unless step marked risk-critical · FAIL the same verification repeated across tasks
+7. **Test placement**: each Story Trace row's **Tested by** task really covers that criterion in its Covers list · edge/error cases the criterion demands appear in some Covers list · FAIL an implementation task demanding edge-case or story-level tests unless step marked risk-critical · FAIL the same verification repeated across tasks · FAIL a fast-tier Test task whose Covers needs volume, load, real timing, or real network (belongs in slow tier) · FAIL performance/load tests in a fast-tier task
+8. **Lanes** (lint already checked chain shape, size, Test-with-producer): FAIL a lane mixing toolchains (e.g. Python + TypeScript) · MINOR an obvious single-successor chain left unmerged
 
 ## Calibration — FAIL only what would actually block
 

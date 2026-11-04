@@ -13,7 +13,7 @@
 1. `pddf packet E{n} F{n} T{n}` — task text, its contracts, patterns, dependency warning (never read whole tasks file) · open Design Gap touching task → stop, handoff `plan/redesign E{n} F{n}` · `pddf task E{n} F{n} T{n} 🔵`
 2. Read referenced pattern and target files
 3. Implement exactly what DONE criteria require, climbing Minimal implementation ladder (SKILL.md → Working Economy)
-4. Run task's validation commands at the test level task names (implementation → Smoke check; Test task → its Covers list; `subagents/feature-coder.md` → Process 4); fix until they pass, or report blocker · plan cannot work as written (test: `subagents/feature-coordinator.md` → Escalation triage) → never ask user design questions: record gap in Design Gaps, handoff `plan/redesign E{n} F{n}` · taste disagreement → follow task
+4. Run task's validation commands at the test level task names (implementation → Smoke check; Test task → its Covers list and Tier; `subagents/feature-coder.md` → Process 4); fix until they pass, or report blocker · plan cannot work as written (test: `subagents/feature-coordinator.md` → Escalation triage) → never ask user design questions: record gap in Design Gaps, handoff `plan/redesign E{n} F{n}` · taste disagreement → follow task
 5. `pddf task E{n} F{n} T{n} 🟢` (stays 🔵 if blocked, blocker noted in Blockers section)
 6. Run Status Sync (`pddf sync`) (feature → 🔵 on first task; epic and project rows follow)
 7. Handoff: next unblocked `do/task E{n} F{n} T{n}`, or `do/verify E{n} F{n}` if all tasks 🟢

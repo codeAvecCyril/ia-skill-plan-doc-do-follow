@@ -14,16 +14,18 @@
 <!-- OWNING TABLE: SINGLE source of truth for task status
      Per-task sections below carry NO status — update only this table
      do/all-tasks: row 🔵 at dispatch, 🟢 at acceptance, one row at a time
+     Lane: L{n} = sequential chain one coder runs back to back (same layer, ≤4 tasks, no Test task with its producer, rows contiguous in order) · — = solo
      Execution line: added by feature-coordinator during do/all-tasks, derived, removed when verified -->
 
 **Execution**: {done}/{n} 🟢 ({pct}%) · wave {k}/{w} · ETA ~{eta}
 
-| Code | Task    | Type                                        | Depends on | Status |
-| ---- | ------- | ------------------------------------------- | ---------- | ------ |
-| T1   | {title} | Database/Backend/API/Frontend/Test/Config   | —          | ⚪     |
-| T2   | {title} | {type}                                      | T1         | ⚪     |
+| Code | Task    | Type                                        | Depends on | Lane | Status |
+| ---- | ------- | ------------------------------------------- | ---------- | ---- | ------ |
+| T1   | {title} | Database/Backend/API/Frontend/Test/Config   | —          | L1   | ⚪     |
+| T2   | {title} | {type}                                      | T1         | L1   | ⚪     |
 
 **Parallelizable**: {e.g. T2 and T3 independent}
+**Lanes**: {e.g. L1 T1 → T2 → T3 · L2 T4 → T5}
 **Critical path**: {e.g. T1 → T2 → T4}
 
 ## Dependency Graph (optional, decorative)
@@ -60,7 +62,8 @@ graph TD
 <!-- Every task executable by weaker model WITHOUT opening PRD or any other doc:
      WHAT / WHERE / HOW / WHY / DONE all explicit
      Implementation tasks: Smoke check only (+ tests for steps marked risk-critical)
-     Test tasks (Type Test): Covers list instead of Steps detail; edge cases, error paths, story-level tests -->
+     Test tasks (Type Test): Tier fast|slow + Covers list instead of Steps detail; edge cases, error paths, story-level tests
+     slow tier = perf/load/volume/real timing or network: own task, tagged with project slow mechanism, Expected runtime stated -->
 
 ### T1: {title}
 
@@ -96,6 +99,8 @@ graph TD
 
 ### T6: Test — {story slice or layer}
 
+**Tier**: {fast | slow — slow: tests tagged per Tooling `Slow tests:`}
+**Expected runtime**: {~N min — slow tier only, delete for fast}
 **Objective (WHAT/WHY)**: {prove criteria X–Y end to end, incl. edge and error paths}
 **Context**: {code under test, how to run it, fixtures available}
 
@@ -111,6 +116,7 @@ graph TD
 
 **Done when (DONE)**:
 - [ ] One test per Covers item, all passing — implementation defect → report DEFECT, never fix code outside this task
+- [ ] Tier respected: fast-tier tests each under threshold (durations reported) · slow-tier tests tagged slow
 - [ ] Validation command(s): `{runnable command scoped to these tests}`
 
 ---

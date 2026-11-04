@@ -8,7 +8,8 @@ Stdlib only, Python >= 3.9. Run from the repository root (or pass --docs).
   sync [--check] [--reopen E1F2]   Status Sync: recompute feature/epic/project statuses
   task E1 F2 T3 🟢 [--wave 2/4] [--eta 40m]   set one Task Summary row (+ Execution line)
   waves E1 F2                    pending execution waves, progress, dependency problems
-  packet E1 F2 T3                print one task packet (task text, contracts, patterns)
+  packet E1 F2 T3|L1             print one task packet, or one lane packet (its pending tasks in order)
+  beat E1 F2 [T3 MESSAGE...]     coder: append a progress beat · no task: last beat per task, with age
   lint-tasks E1 F2 [--strict]    mechanical checks on feat-tasks.md (+ Story Trace coverage)
   section FILE HEADING [--replace]   print one Markdown section, or replace it from stdin
   toc FILE                       headings with line numbers
@@ -31,6 +32,8 @@ WORD_RE = re.compile(r"\b(TODO|SPEC|PLAN|DEV|DONE)\b")
 HEADING_RE = re.compile(r"^(#{1,6})\s+(.*?)\s*#*\s*$")
 EXECUTION_RE = re.compile(r"^\*\*Execution\*\*:.*$", re.M)
 TASK = r"T\d+[a-z]?"  # T5a / T5b allowed (split tasks)
+LANE = r"L\d+"  # dispatch unit: sequential chain of tasks run by one coder
+LANE_MAX = 4
 FRACTION_RE = re.compile(r"(\d+)\s*/\s*(\d+)")
 
 
@@ -232,8 +235,14 @@ def tasks_file(docs: Path, e: str, f: str) -> Path:
 
 
 class Task:
-    def __init__(self, code: str, title: str, kind: str, deps: list[str], status: str | None, row: int):
+    def __init__(self, code: str, title: str, kind: str, deps: list[str], status: str | None, row: int,
+                 lane: str | None = None):
         self.code, self.title, self.kind, self.deps, self.status, self.row = code, title, kind, deps, status, row
+        self.lane = lane
+
+    @property
+    def is_test(self) -> bool:
+        return bool(re.search(r"test", self.kind + " " + self.title, re.I))
 
 
 def load_tasks(lines: list[str]) -> tuple[Table, dict[str, Task]]:
@@ -242,12 +251,14 @@ def load_tasks(lines: list[str]) -> tuple[Table, dict[str, Task]]:
     c_title = table.col("task", "title", required=False)
     c_type = table.col("type", required=False)
     c_deps = table.col("depend", required=False)
+    c_lane = table.col("lane", required=False)
     tasks: dict[str, Task] = {}
     for row in table.rows:
         m = re.search(rf"\b{TASK}\b", table.cell(row, c_code))
         if not m:
             continue
         deps = re.findall(rf"\b{TASK}\b", table.cell(row, c_deps)) if c_deps is not None else []
+        lane = re.search(rf"\b{LANE}\b", table.cell(row, c_lane)) if c_lane is not None else None
         tasks[m.group(0)] = Task(
             m.group(0),
             table.cell(row, c_title) if c_title not in (None, c_code) else "",
@@ -255,8 +266,41 @@ def load_tasks(lines: list[str]) -> tuple[Table, dict[str, Task]]:
             deps,
             status_of(table.cell(row, c_status)),
             row,
+            lane.group(0) if lane else None,
         )
     return table, tasks
+
+
+def lanes_of(tasks: dict[str, Task]) -> dict[str, list[str]]:
+    """Lane id → member codes in Task Summary order · task without lane = solo lane keyed by its own code."""
+    out: dict[str, list[str]] = {}
+    for code, task in tasks.items():
+        out.setdefault(task.lane or code, []).append(code)
+    return out
+
+
+LAYERS = {"frontend": re.compile(r"front|ui\b|component", re.I), "backend": re.compile(r"back|api|database|db\b|worker", re.I)}
+
+
+def lane_issues(tasks: dict[str, Task]) -> tuple[list[str], list[str]]:
+    """(fails, warnings) for lane shape: sequential chain, size cap, independent Test tasks, one layer."""
+    fails: list[str] = []
+    warns: list[str] = []
+    for lane, members in lanes_of(tasks).items():
+        if len(members) < 2:
+            continue
+        for prev, cur in zip(members, members[1:]):
+            if prev not in tasks[cur].deps:
+                fails.append(f"{lane}: {cur} must depend on {prev} — lane = sequential chain, in Task Summary order")
+        if len(members) > LANE_MAX:
+            fails.append(f"{lane}: {len(members)} tasks > {LANE_MAX} — split the lane")
+        for code in members:
+            if tasks[code].is_test and (prod := [d for d in tasks[code].deps if d in members]):
+                fails.append(f"{lane}: Test task {code} shares lane with its producer {', '.join(prod)} — tests need an independent coder")
+        layers = {name for name, rx in LAYERS.items() for c in members if rx.search(tasks[c].kind)}
+        if len(layers) > 1:
+            warns.append(f"{lane}: mixes frontend and backend tasks — split unless one toolchain covers both")
+    return fails, warns
 
 
 def execution_line(tasks: dict[str, Task], wave: str | None, eta: str | None, old: str | None) -> str:
@@ -530,6 +574,15 @@ def cmd_waves(docs: Path, e: str, f: str) -> int:
     print(f"{done}/{len(tasks)} 🟢 · {len(waves)} pending wave(s)")
     for n, wave in enumerate(waves, 1):
         print(f"Wave {n}: " + ", ".join(f"{c}{'' if tasks[c].status in (None, '⚪') else ' ' + tasks[c].status}" for c in wave))
+    wave_of = {c: n for n, wave in enumerate(waves, 1) for c in wave}
+    for lane, members in lanes_of(tasks).items():
+        pending = [c for c in members if tasks[c].status != "🟢"]
+        if len(members) < 2 or not pending:
+            continue
+        joins = sorted({d for c in pending[1:] for d in tasks[c].deps if d in tasks and d not in members
+                        and tasks[d].status != "🟢"}, key=task_key)
+        print(f"Lane {lane}: {' → '.join(pending)} · starts wave {wave_of.get(pending[0], '?')}"
+              + (f" · joins {', '.join(joins)}" if joins else ""))
     for p in problems:
         print(f"PROBLEM: {p}")
     return 1 if problems else 0
@@ -552,16 +605,33 @@ def contracts_for(lines: list[str], code: str) -> list[str]:
     return [lines[hdr], lines[hdr + 1], *hits] if hits else []
 
 
+def task_block(lines: list[str], code: str) -> tuple[list[str], set[str]]:
+    """Task section + its contracts (if not inlined) · pattern paths it names."""
+    start, end = task_section(lines, code)
+    body = lines[start:end]
+    out = list(body)
+    if not any("**Contracts**" in ln for ln in body) and (rows := contracts_for(lines, code)):
+        out += ["", f"#### Shared Contracts touching {code} (exact — never change them)", "", *rows]
+    return out, set(re.findall(r"docs/patterns/[\w./-]+\.md", "\n".join(body)))
+
+
+def print_patterns(patterns: set[str], root: Path) -> None:
+    if patterns:
+        print("\n## Patterns to read before coding\n")
+        for p in sorted(patterns):
+            print(f"- {p}" + ("" if (root / p).exists() else "  (MISSING — report as task-quality defect)"))
+
+
 def cmd_packet(docs: Path, e: str, f: str, t: str) -> int:
     path = tasks_file(docs, e, f)
     lines = read(path)
     _, tasks = load_tasks(lines)
+    root = docs.parent
+    if re.fullmatch(LANE, t.strip().upper()):
+        return lane_packet(lines, tasks, path, root, e, f, t.strip().upper())
     code = task_code(t)
     if code not in tasks:
         raise PddfError(f"{code} not in Task Summary of {path}")
-    start, end = task_section(lines, code)
-    body = lines[start:end]
-    root = docs.parent
     blocked = [d for d in tasks[code].deps if d in tasks and tasks[d].status != "🟢"]
     print(f"# Task packet — {e.upper()} {f.upper()} {code}")
     print(f"Source: {path} (do not open it — this packet is your whole context)")
@@ -570,15 +640,96 @@ def cmd_packet(docs: Path, e: str, f: str, t: str) -> int:
     if blocked:
         print("WARNING: dependencies not 🟢 yet: " + ", ".join(blocked))
     print()
-    print("\n".join(body))
-    if not any("**Contracts**" in ln for ln in body) and (rows := contracts_for(lines, code)):
-        print("\n## Shared Contracts touching " + code + " (exact — never change them)\n")
-        print("\n".join(rows))
-    patterns = sorted(set(re.findall(r"docs/patterns/[\w./-]+\.md", "\n".join(body))))
-    if patterns:
-        print("\n## Patterns to read before coding\n")
-        for p in patterns:
-            print(f"- {p}" + ("" if (root / p).exists() else "  (MISSING — report as task-quality defect)"))
+    block, patterns = task_block(lines, code)
+    print("\n".join(block).replace("#### Shared Contracts", "## Shared Contracts"))
+    print_patterns(patterns, root)
+    return 0
+
+
+def lane_packet(lines: list[str], tasks: dict[str, Task], path: Path, root: Path, e: str, f: str, lane: str) -> int:
+    members = lanes_of(tasks).get(lane)
+    if not members:
+        raise PddfError(f"no task in lane {lane} of {path}")
+    pending = [c for c in members if tasks[c].status != "🟢"]
+    if not pending:
+        raise PddfError(f"lane {lane}: every task already 🟢")
+    included: list[str] = []
+    stop: tuple[str, list[str]] | None = None
+    for code in pending:
+        ext = [d for d in tasks[code].deps if d in tasks and d not in members and tasks[d].status != "🟢"]
+        if ext and included:
+            stop = (code, ext)
+            break
+        included.append(code)
+    print(f"# Lane packet — {e.upper()} {f.upper()} {lane}: {' → '.join(included)}")
+    print(f"Source: {path} (do not open it — this packet is your whole context)")
+    if instr := instruction_files(root):
+        print("Repository instructions (read and obey): " + ", ".join(instr))
+    first_ext = [d for d in tasks[included[0]].deps if d in tasks and d not in members and tasks[d].status != "🟢"]
+    if first_ext:
+        print("WARNING: dependencies not 🟢 yet: " + ", ".join(first_ext))
+    print(f"Order: tasks below, one at a time, in order · after each task passes its validation: "
+          f"`pddf beat {e.upper()} {f.upper()} T{{n}} done` · Budget resets per task · "
+          f"stuck on one task → HANDOVER for that task, stop the lane")
+    if stop:
+        print(f"Lane pauses before {stop[0]} (waits on {', '.join(stop[1])}): stop after {included[-1]}, return report")
+    patterns: set[str] = set()
+    for code in included:
+        block, pats = task_block(lines, code)
+        patterns |= pats
+        print()
+        print("\n".join(block))
+    print_patterns(patterns, root)
+    return 0
+
+
+def run_log(docs: Path, e: str, f: str) -> Path:
+    return docs.parent / ".pddf" / "run" / f"e{code_num(e, 'e')}f{code_num(f, 'f')}.log"
+
+
+BEAT_RE = re.compile(r"^(\S+) (\S+) (.*)$")
+ANNOUNCED_RE = re.compile(r"~\s*(\d+)\s*(m|min)\b", re.I)
+
+
+def cmd_beat(docs: Path, e: str, f: str, t: str | None, message: list[str]) -> int:
+    _, tasks = load_tasks(read(tasks_file(docs, e, f)))
+    path = run_log(docs, e, f)
+    now = dt.datetime.now(dt.timezone.utc)
+    if t is not None:
+        code = task_code(t)
+        if code not in tasks:
+            raise PddfError(f"{code} not in Task Summary")
+        msg = " ".join(message).strip() or "alive"
+        path.parent.mkdir(parents=True, exist_ok=True)
+        ignore = path.parent.parent / ".gitignore"
+        if not ignore.exists():
+            ignore.write_text("*\n", encoding="utf-8")
+        with path.open("a", encoding="utf-8") as fh:
+            fh.write(f"{now.strftime('%Y-%m-%dT%H:%M:%SZ')} {code} {msg}\n")
+        print(f"beat {code}: {msg}")
+        return 0
+    last: dict[str, tuple[dt.datetime, str]] = {}
+    if path.exists():
+        for line in path.read_text(encoding="utf-8").splitlines():
+            if m := BEAT_RE.match(line):
+                try:
+                    when = dt.datetime.strptime(m.group(1), "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=dt.timezone.utc)
+                except ValueError:
+                    continue
+                last[m.group(2)] = (when, m.group(3))
+    active = [c for c, task in tasks.items() if task.status == "🔵"]
+    for code in sorted(set(last) | set(active), key=task_key):
+        if code not in last:
+            print(f"{code} 🔵 no beat yet")
+            continue
+        when, msg = last[code]
+        age = (now - when).total_seconds() / 60
+        hint = ""
+        if a := ANNOUNCED_RE.search(msg):
+            hint = " · within announced runtime" if age <= 1.5 * int(a.group(1)) else " · OVER announced runtime ×1.5"
+        print(f"{code} {age:.0f}m ago: {msg}{hint}")
+    if not last and not active:
+        print("no beats")
     return 0
 
 
@@ -597,6 +748,9 @@ def cmd_lint_tasks(docs: Path, e: str, f: str, strict: bool) -> int:
     issues: list[str] = []
     _, problems = compute_waves(tasks)
     issues += problems
+    lane_fails, lane_warns = lane_issues(tasks)
+    issues += lane_fails
+    warnings: list[str] = list(lane_warns)
     for code in tasks:
         try:
             start, end = task_section(lines, code)
@@ -612,10 +766,20 @@ def cmd_lint_tasks(docs: Path, e: str, f: str, strict: bool) -> int:
             issues.append(f"{code}: no validation command in backticks")
         for m in EXTERNAL_REF.finditer(text):
             issues.append(f"{code}: external reference {m.group(0)!r} — inline the content instead")
+        if tasks[code].is_test and tasks[code].status != "🟢":
+            tier = re.search(r"\*\*Tier\*\*\s*:\s*(fast|slow)\b", text, re.I)
+            if not tier:
+                (issues if strict else warnings).append(f"{code}: Test task without '**Tier**: fast|slow' line")
+            elif tier.group(1).lower() == "slow" and not re.search(r"\*\*Expected runtime\*\*\s*:", text, re.I):
+                (issues if strict else warnings).append(f"{code}: slow Test task without '**Expected runtime**: ~N min' line")
     section_codes = {m.group(1) for _, _, h in headings(lines) if (m := re.match(rf"({TASK})\b", h))}
     for code in sorted(section_codes - set(tasks), key=task_key):
         issues.append(f"{code}: has a section but no Task Summary row")
-    warnings: list[str] = []
+    if strict and len(tasks) > 1 and not any(t.lane for t in tasks.values()):
+        try:
+            Table(lines, "Task Summary").col("lane")
+        except PddfError:
+            warnings.append("no Lane column — every task dispatched to its own coder (pre-3.10 format)")
     try:
         s, e_ = section_bounds(lines, "Story Trace")
         trace = "\n".join(lines[s:e_])
@@ -744,8 +908,14 @@ def main(argv: list[str] | None = None) -> int:
         if name == "lint-tasks":
             p.add_argument("--strict", action="store_true", help="planning mode: missing Story Trace is a FAIL, not a WARN")
     p = sub.add_parser("packet")
-    for name in ("epic", "feature", "task"):
+    for name in ("epic", "feature"):
         p.add_argument(name)
+    p.add_argument("task", help="T{n}, or L{n} for a lane packet")
+    p = sub.add_parser("beat")
+    p.add_argument("epic")
+    p.add_argument("feature")
+    p.add_argument("task", nargs="?", help="omit to show last beat per task")
+    p.add_argument("message", nargs="*")
     p = sub.add_parser("section")
     p.add_argument("file", type=Path)
     p.add_argument("heading")
@@ -768,6 +938,8 @@ def main(argv: list[str] | None = None) -> int:
             return cmd_lint_tasks(docs, a.epic, a.feature, a.strict)
         if a.cmd == "packet":
             return cmd_packet(docs, a.epic, a.feature, a.task)
+        if a.cmd == "beat":
+            return cmd_beat(docs, a.epic, a.feature, a.task, a.message)
         if a.cmd == "section":
             return cmd_section(a.file, a.heading, a.replace)
         if a.cmd == "toc":

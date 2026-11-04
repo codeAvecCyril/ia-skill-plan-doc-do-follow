@@ -11,7 +11,7 @@
 ## Verification gates
 
 1. All acceptance criteria in `feat-prd.md` met (check each explicitly) · **Story walk**: for each story, follow implemented path along Story Trace — trigger → stored data → screen — and confirm user receives exactly what criterion promises, incl. empty/error states
-2. Linters/formatters pass; all tests pass; coverage meets project target (default ≥ 80% on new code) where tooling exists
+2. Linters/formatters pass; fast suite passes in full + this feature's slow-tier tests (run once, scoped to their files); coverage meets project target (default ≥ 80% on new code) where tooling exists · new test over fast threshold and not tagged slow → fix or tag (Invariant 20) · full slow tier = pre-deployment, not this gate
 3. **Data gate**: schema/migrations touched → `docs/data-model.md` reflects change, else fail
 4. **UI gate**: UI requirements → entry point exists in `docs/ui-map.md` and ui-consistency checks pass. Small surface (1–2 components): run **ui-consistency-reviewer** checklist yourself (inline-first); spawn only for broader surface, apply blocking findings
 5. **Performance gate (conditional)**: check perf-critic trigger criteria (top of `subagents/perf-critic-backend.md` and `-frontend.md`); run each side that fires on hot paths, resolve blockers; if none fires, skip and note it

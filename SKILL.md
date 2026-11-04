@@ -52,7 +52,7 @@ Match intent → first route wins → read `routes/a-b.md` (route `a/b`) → fol
 8. **No guessing**: blocking ambiguity → ask first; label blocking / important / minor
 9. **Traceability**: each doc references parent; stories ↔ requirements ↔ tasks ↔ tests linked
 10. **Living global docs**: `docs/data-model.md`, `docs/ui-map.md` updated in same change that affects them — never "later"
-11. **Model tiering**: `plan/*` + reviewers = strong model; every `plan/tasks` task executable by weaker model without opening PRD
+11. **Model tiering**: `plan/*` + reviewers = strong model; every `plan/tasks` task executable by weaker model without opening PRD · sequential chains grouped into lanes, one coder each (context reused)
 12. **Status Sync**: every status-changing route ends with Status Sync procedure
 13. **Handoff format**: short summary · current progress · exact next command · open questions
 14. **Scoped subagents**: only inputs their definition lists
@@ -61,6 +61,7 @@ Match intent → first route wins → read `routes/a-b.md` (route `a/b`) → fol
 17. **Economy everywhere**: Working Economy on every route and subagent
 18. **Story continuity**: every plan tells each user story start to finish — trigger → processing → stored data → screen → exactly what user expects; every hop owned by named doc section or task · unowned hop = design defect, fixed in planning, never improvised in execution
 19. **Plan authority**: in `do/*`, approved tasks = contract · executors implement, never redesign, never question user on design · real gap → `plan/redesign` (holistic, strong model), decided by feature-coordinator
+20. **Fast suite stays fast**: default test suite = fast tier, run on every fix and pre-push · tests over threshold (Tooling `Slow tests:`, default 2 s) made fast or tagged slow · perf/load/volume/real-timing/real-network tests always slow tier · slow tier runs only at verification (feature's own slow tests) and before deployment
 
 ## Status Model
 
@@ -141,7 +142,7 @@ Run in order — first match wins → **do not spawn**:
 | `perf-critic-backend` / `-frontend` | reviewer | arch routes, verification gates | only when trigger criteria (top of their files) fire |
 | `task-checker` | reviewer | `plan/tasks`, `plan/redesign` | after self-review; max two runs |
 | `feature-coordinator` | principal role | `do/all-tasks` | principal adopts it — **never spawned** (subagents cannot spawn subagents) |
-| `feature-coder` | executor | `do/all-tasks` (via coordinator) | one per parallelizable task per wave · stuck → STOP + HANDOVER, re-dispatched once on escalation tier |
+| `feature-coder` | executor | `do/all-tasks` (via coordinator) | one per lane or solo task per wave · stuck → STOP + HANDOVER, re-dispatched once on escalation tier |
 | `ui-consistency-reviewer` | reviewer | verification gates | UI features, non-trivial surface |
 | `doc-coherence-reviewer` | reviewer | verification gates · `plan/change` · `plan/migrate` | epic completion · after change · after migration |
 
@@ -180,9 +181,10 @@ Conclusions, not process. Mechanical checks auto-verified → one summary line. 
 | ---- | ------- |
 | Status Sync | `pddf sync [--check] [--reopen E{n}F{n}]` |
 | Set one task row (+ Execution line) | `pddf task E{n} F{n} T{n} {⚪\|🔵\|🟢} [--wave k/w] [--eta 40m]` |
-| Pending waves, progress, DAG problems | `pddf waves E{n} F{n}` |
-| One task packet (task text, its contracts, patterns, instruction files) | `pddf packet E{n} F{n} T{n}` |
-| Mechanical task checks (sections, paths, validation commands, external references, Story Trace coverage, Tested by, DAG) | `pddf lint-tasks E{n} F{n} [--strict]` (planning routes use `--strict`) |
+| Pending waves, lanes, progress, DAG problems | `pddf waves E{n} F{n}` |
+| One task packet (task text, its contracts, patterns, instruction files) · lane packet (its pending tasks in order, stops before unmet join) | `pddf packet E{n} F{n} T{n}` · `pddf packet E{n} F{n} L{n}` |
+| Coder progress beat · coordinator view (last beat per task, age, announced-runtime check) | `pddf beat E{n} F{n} T{n} "msg ~6m"` · `pddf beat E{n} F{n}` — log in `.pddf/run/` (self-gitignored) |
+| Mechanical task checks (sections, paths, validation commands, external references, Story Trace coverage, Tested by, Test tiers, lane shape, DAG) | `pddf lint-tasks E{n} F{n} [--strict]` (planning routes use `--strict`) |
 | One Markdown section | `pddf toc FILE` · `pddf section FILE "Heading"` · `--replace` from stdin (full section incl. heading) |
 | Unanswered review items | `pddf review-open FILE` |
 | Resolve slugs to directories | `pddf find E{n} [F{n}]` |
